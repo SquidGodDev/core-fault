@@ -35,11 +35,6 @@ function GameScene:init()
     -- self.tilemap = LDtk.create_tilemap("Level_0")
     -- gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
     -- self:setTilemap(self.tilemap)
-    -- local levelImage = gfx.image.new("assets/testLevel/png/Level_0")
-    -- self:setCenter(0, 0)
-    -- self:moveTo(0, 0)
-    -- self:setImage(levelImage)
-    -- self:add()
 
     self:createTilemapSprite("leftWall", 8, 8)
     self:createTilemapSprite("topWall", 24, 8)
@@ -49,24 +44,6 @@ function GameScene:init()
     self:createTilemapSprite("topRock", 280, 24)
     self:createTilemapSprite("leftRock", 40, 144)
     self:createTilemapSprite("leftSmallRock", 136, 128)
-
-    -- Create sprites for all tiles
-    -- local mapWidth, mapHeight = self.tilemap:getSize()
-    -- local tilemapImageTable = gfx.imagetable.new("assets/1bit-table-8-8")
-    -- local blankTileIndex = 21
-    -- local tileSize = 8
-    -- for x=1, mapWidth do
-    --     for y=1, mapHeight do
-    --         local tileIndex = self.tilemap:getTileAtPosition(x, y)
-    --         if tileIndex ~= blankTileIndex then
-    --             local tileImage = tilemapImageTable:getImage(tileIndex)
-    --             local tileSprite = gfx.sprite.new(tileImage)
-    --             tileSprite:setCenter(0, 0)
-    --             tileSprite:moveTo((x-1)*tileSize, (y-1)*tileSize)
-    --             tileSprite:add()
-    --         end
-    --     end
-    -- end
 
     self.player = Player(200, 120)
     -- TestEnemy(240, 120, self)

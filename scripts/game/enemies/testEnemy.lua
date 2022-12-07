@@ -10,7 +10,7 @@ math.fastInvSqrt = function(x)
     return x
 end
 
-class('TestEnemy').extends(AnimatedSprite)
+class('TestEnemy').extends(gfx.sprite)
 
 function TestEnemy:init(x, y, gameManager)
     local enemyImage = gfx.image.new("images/enemies/mandrake")
@@ -18,9 +18,6 @@ function TestEnemy:init(x, y, gameManager)
     self:add()
 
     self.gameManager = gameManager
-    -- local enemySpriteSheet = gfx.imagetable.new("images/enemies/mandrake-table-18-17")
-    -- TestEnemy.super.init(self, enemySpriteSheet)
-    -- self:playAnimation()
 
     self:setGroups(COLLISION_GROUPS.ENEMY)
     self:setCollideRect(0, 0, self:getSize())
@@ -51,5 +48,4 @@ function TestEnemy:update()
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity, self.y + self.yVelocity)
     self:moveBy(self.xVelocity, self.yVelocity)
-    -- self:updateAnimation()
 end
