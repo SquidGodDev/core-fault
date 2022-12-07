@@ -68,12 +68,6 @@ function TestEnemy:update()
             else
                 self.yVelocity += self.SeperateVelocity
             end
-
-            -- local intersectMagnitude = math.sqrt(intersectXDiff^2 + intersectYDiff^2)
-            -- local intersectMagnitude = math.sqrt(intersectXDiff^2 + intersectYDiff^2)
-            -- local scaledIntersectMagnitude = self.SeperateVelocity / intersectMagnitude
-            -- self.xVelocity += scaledIntersectMagnitude * intersectXDiff
-            -- self.yVelocity += scaledIntersectMagnitude * intersectYDiff
         end
     end
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
