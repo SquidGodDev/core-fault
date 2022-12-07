@@ -44,6 +44,7 @@ function Player:init(x, y)
     self:setGroups(COLLISION_GROUPS.PLAYER)
     self:setCollideRect(0, 0, self:getSize())
     self.collisionResponse = "slide"
+    self:setTag(TAGS.PLAYER)
 
     self:setZIndex(Z_INDEXES.PLAYER)
 

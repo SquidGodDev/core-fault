@@ -1,6 +1,7 @@
 import "scripts/libraries/LDtk"
 import "scripts/game/player/player"
 import "scripts/game/enemies/testEnemy"
+import "scripts/game/collisions/quadTree"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -31,9 +32,9 @@ function GameScene:init()
     )
     gfx.setScreenClipRect(0, 0, 400, 240)
 
-    -- LDtk.load("assets/testLevel.ldtk")
-    -- self.tilemap = LDtk.create_tilemap("Level_0")
-    -- gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
+    LDtk.load("assets/testLevel.ldtk")
+    self.tilemap = LDtk.create_tilemap("Level_0")
+    gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
     -- self:setTilemap(self.tilemap)
 
     self:createTilemapSprite("leftWall", 8, 8)
@@ -48,19 +49,30 @@ function GameScene:init()
     self.player = Player(200, 120)
     -- TestEnemy(240, 120, self)
 
-    local enemyCount, maxEnemies = 0, 80
+    self.quadTree = QuadTree(0, 0, 808, 544, 4)
+    self.enemiesList = {}
+
+    local enemyCount, maxEnemies = 0, 45
     local spawnTimer = pd.timer.new(100, function(timer)
         enemyCount += 1
-        TestEnemy(200, 120, self)
+        table.insert(self.enemiesList, TestEnemy(200, 120, self, self.quadTree))
         if enemyCount >= maxEnemies then
             timer:remove()
         end
     end)
     spawnTimer.repeats = true
+
+    self.quadTreeRebuildInterval = 40
+    self.rebuildCounter = 0
+
+    self:add()
 end
 
 function GameScene:update()
-
+    if self.rebuildCounter == 0 then
+        self.quadTree:rebuildQuadTree(self.enemiesList)
+    end
+    self.rebuildCounter = (self.rebuildCounter + 1) % self.quadTreeRebuildInterval
 end
 
 function GameScene:createTilemapSprite(name, x, y)
