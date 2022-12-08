@@ -19,6 +19,7 @@ function TestEnemy:init(x, y, gameManager)
     -- self:setCollidesWithGroups({COLLISION_GROUPS.ENEMY, COLLISION_GROUPS.PLAYER})
     self:setCollideRect(0, 0, self:getSize())
     self.collisionResponse = "overlap"
+    self:setTag(TAGS.ENEMY)
 
     local width = self:getSize()
     self.width = width
@@ -26,6 +27,10 @@ function TestEnemy:init(x, y, gameManager)
     self.quarterWidth = width / 4
 
     self.playerTag = TAGS.PLAYER
+
+    self.health = 4
+    self.invincibilityTime = 100
+    self.invincible = false
 
     self.velocity = 0
     self.xVelocity = 0
@@ -59,4 +64,22 @@ function TestEnemy:update()
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)
     self:moveBy(self.xVelocity + seperateX, self.yVelocity + seperateY)
+end
+
+function TestEnemy:damage(amount)
+    if self.invincible then
+        return
+    end
+    self.health -= amount
+    if self.health <= 0 then
+        self.gameManager:enemyDied()
+        self:remove()
+    end
+
+    self:setImageDrawMode(gfx.kDrawModeFillWhite)
+    self.invincible = true
+    pd.timer.new(self.invincibilityTime, function()
+        self:setImageDrawMode(gfx.kDrawModeCopy)
+        self.invincible = false
+    end)
 end

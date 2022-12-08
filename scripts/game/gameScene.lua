@@ -12,7 +12,8 @@ COLLISION_GROUPS = {
 }
 
 Z_INDEXES = {
-    PLAYER = 100
+    PLAYER = 100,
+    WEAPON = 90
 }
 
 TAGS = {
@@ -52,16 +53,17 @@ function GameScene:init()
     local levelWidth, levelHeight = 808, 544
 
     local spawnBorderBuffer = 20
-    local enemyCount, maxEnemies = 0, 90
-    local spawnTimer = pd.timer.new(100, function(timer)
-        enemyCount += 1
+    self.enemyCount = 0
+    self.maxEnemies = 60
+    local spawnTimer = pd.timer.new(1000, function(timer)
+        if self.enemyCount >= self.maxEnemies then
+            return
+        end
+        self.enemyCount += 1
         local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
         local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
-        -- table.insert(self.enemiesList, TestEnemy(spawnX, spawnY, self, self.quadTree))
+        TestEnemy(spawnX, spawnY, self)
         TestEnemy(200, 120, self)
-        if enemyCount >= maxEnemies then
-            timer:remove()
-        end
     end)
     spawnTimer.repeats = true
 
@@ -70,6 +72,10 @@ end
 
 function GameScene:update()
 
+end
+
+function GameScene:enemyDied()
+    self.enemyCount -= 1
 end
 
 function GameScene:createTilemapSprite(name, x, y)

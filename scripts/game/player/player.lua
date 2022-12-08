@@ -1,4 +1,5 @@
 import "scripts/libraries/AnimatedSprite"
+import "scripts/game/player/weapons/beam"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -59,6 +60,8 @@ function Player:init(x, y)
     self:moveTo(x, y)
 
     self.prevDirIndex = -1
+
+    Beam(self)
 end
 
 function Player:update()
