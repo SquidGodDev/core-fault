@@ -9,7 +9,7 @@ local random <const> = math.random
 class('TestEnemy').extends(gfx.sprite)
 
 function TestEnemy:init(x, y, gameManager)
-    local enemyImage = gfx.image.new("images/enemies/mandrake")
+    local enemyImage = gfx.image.new("images/enemies/mandrake2x")
     self:setImage(enemyImage)
     self:add()
 

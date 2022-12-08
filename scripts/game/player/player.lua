@@ -28,7 +28,7 @@ local setDrawOffset <const> = gfx.setDrawOffset
 class('Player').extends(AnimatedSprite)
 
 function Player:init(x, y)
-    local playerSpriteSheet = gfx.imagetable.new("images/player/testPlayer-table-16-17")
+    local playerSpriteSheet = gfx.imagetable.new("images/player/testPlayer-table-32-34")
     -- Player.super.init(self, playerSpriteSheet)
 
     -- for i, direction in ipairs(directions) do
