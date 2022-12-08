@@ -49,12 +49,17 @@ function GameScene:init()
     self.player = Player(200, 120)
     -- TestEnemy(240, 120, self)
 
-    self.quadTree = QuadTree(0, 0, 808, 544, 4)
+    local levelWidth, levelHeight = 808, 544
+    self.quadTree = QuadTree(0, 0, levelWidth, levelHeight, 4)
     self.enemiesList = {}
 
-    local enemyCount, maxEnemies = 0, 45
+    local spawnBorderBuffer = 20
+    local enemyCount, maxEnemies = 0, 70
     local spawnTimer = pd.timer.new(100, function(timer)
         enemyCount += 1
+        local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
+        local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
+        -- table.insert(self.enemiesList, TestEnemy(spawnX, spawnY, self, self.quadTree))
         table.insert(self.enemiesList, TestEnemy(200, 120, self, self.quadTree))
         if enemyCount >= maxEnemies then
             timer:remove()

@@ -3,6 +3,7 @@ import "scripts/libraries/AnimatedSprite"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local math <const> = math
+local sqrt <const> = math.sqrt
 
 class('TestEnemy').extends(gfx.sprite)
 
@@ -48,7 +49,7 @@ function TestEnemy:update()
     if self.directionUpdateCount == 0 then
         local xDiff = self.player.x - self.x
         local yDiff = self.player.y - self.y
-        local magnitude = math.sqrt(xDiff^2 + yDiff^2)
+        local magnitude = sqrt(xDiff^2 + yDiff^2)
         local scaledMagnitude = self.MaxVelocity / magnitude
         self.xVelocity = xDiff * scaledMagnitude
         self.yVelocity = yDiff * scaledMagnitude
@@ -71,6 +72,6 @@ function TestEnemy:update()
         end
     end
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
-    self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)
-    -- self:moveBy(self.xVelocity, self.yVelocity)
+    -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)
+    self:moveBy(self.xVelocity + seperateX, self.yVelocity + seperateY)
 end

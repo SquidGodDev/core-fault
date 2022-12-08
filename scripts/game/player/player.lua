@@ -4,6 +4,9 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local math <const> = math
 
+local floor <const> = math.floor
+local getCrankPosition <const> = pd.getCrankPosition
+
 local directions = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
 
 local calculatedCosine = {}
@@ -54,11 +57,13 @@ function Player:init(x, y)
     self.MaxVelocity = 2
 
     self:moveTo(x, y)
+
+    self.prevDirIndex = -1
 end
 
 function Player:update()
-    local crankPos = pd.getCrankPosition()
-    local dirIndex = math.floor((crankPos + 22.5) / 45) % 8 + 1
+    local crankPos = getCrankPosition()
+    local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
     local animationStartIndex = 1 + (dirIndex - 1) * 4
     self.animationLoop.startFrame = animationStartIndex
     self.animationLoop.endFrame = animationStartIndex + 3
@@ -73,13 +78,16 @@ function Player:update()
     local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
     setDrawOffset(smoothedX, smoothedY)
 
-    self:setImage(self.animationLoop:image())
+    if self.prevDirIndex ~= dirIndex then
+        self.prevDirIndex = dirIndex
+        self:setImage(self.animationLoop:image())
+    end
     -- self:updateAnimation()
 end
 
 function Player:updateMovement(crankAngle)
-    local angleCos = calculatedCosine[math.floor(crankAngle)]
-    local angleSin = calculatedSine[math.floor(crankAngle)]
+    local angleCos = calculatedCosine[floor(crankAngle)]
+    local angleSin = calculatedSine[floor(crankAngle)]
     local maxX = angleCos * self.MaxVelocity
     local maxY = angleSin * self.MaxVelocity
     self.xVelocity = maxX

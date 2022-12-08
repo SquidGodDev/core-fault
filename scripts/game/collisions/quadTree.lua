@@ -90,7 +90,7 @@ function QuadTree:getQuadrantForObject(object)
     end
 end
 
--- Find first object that intersects with the given bounds, and exits immedietly
+-- Find first object that intersects with the given bounds, and exits immediately 
 function QuadTree:fastQuery(x, y, width, height, requester)
     -- If this quad tree does not intersect with the given bounds, return an empty list
     if x + width < self.x or x > self.x + self.width or y + height < self.y or y > self.y + self.height then

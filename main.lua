@@ -10,13 +10,13 @@ import "scripts/game/gameScene"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+math.randomseed(pd.getSecondsSinceEpoch())
+
 GameScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers
 local drawFPS <const> = pd.drawFPS
-
-local levelImage = gfx.image.new("assets/testLevel/png/Level_0")
 
 function pd.update()
     spriteUpdate()
