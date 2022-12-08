@@ -31,7 +31,7 @@ function GameScene:init()
             blackImage:draw(0, 0)
         end
     )
-    gfx.setScreenClipRect(0, 0, 400, 240)
+    gfx.sprite.setAlwaysRedraw(true)
 
     LDtk.load("assets/testLevel.ldtk")
     self.tilemap = LDtk.create_tilemap("Level_0")
