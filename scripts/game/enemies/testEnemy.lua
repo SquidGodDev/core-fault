@@ -8,7 +8,7 @@ local random <const> = math.random
 
 class('TestEnemy').extends(gfx.sprite)
 
-function TestEnemy:init(x, y, gameManager, quadTree)
+function TestEnemy:init(x, y, gameManager)
     local enemyImage = gfx.image.new("images/enemies/mandrake")
     self:setImage(enemyImage)
     self:add()
@@ -32,18 +32,15 @@ function TestEnemy:init(x, y, gameManager, quadTree)
     self.yVelocity = 0
     self.MaxVelocity = 1
 
-    self.SeperateVelocity = 1.5
-    self.SeperateVelocityDiagonal = self.SeperateVelocity^2 / sqrt(self.SeperateVelocity^2 + self.SeperateVelocity^2)
-
     self.player = self.gameManager.player
 
     self:moveTo(x, y)
 
     self.directionUpdateCount = 0
     self.directionUpdateInterval = 60
-    self.interesectUpdateInterval = 30
+    self.randomMoveUpdateInterval = 30
 
-    self.quadTree = quadTree
+    self.randomMoveAmount = 3
 end
 
 function TestEnemy:update()
@@ -55,9 +52,9 @@ function TestEnemy:update()
         local scaledMagnitude = self.MaxVelocity / magnitude
         self.xVelocity = xDiff * scaledMagnitude
         self.yVelocity = yDiff * scaledMagnitude
-    elseif self.directionUpdateCount == self.interesectUpdateInterval then
-        self.xVelocity = (random() - 0.5) * 3
-        self.yVelocity = (random() - 0.5) * 3
+    elseif self.directionUpdateCount == self.randomMoveUpdateInterval then
+        self.xVelocity = (random() - 0.5) * self.randomMoveAmount
+        self.yVelocity = (random() - 0.5) * self.randomMoveAmount
     end
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)

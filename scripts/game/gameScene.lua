@@ -58,6 +58,7 @@ function GameScene:init()
         local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
         local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
         -- table.insert(self.enemiesList, TestEnemy(spawnX, spawnY, self, self.quadTree))
+        TestEnemy(200, 120, self)
         if enemyCount >= maxEnemies then
             timer:remove()
         end
