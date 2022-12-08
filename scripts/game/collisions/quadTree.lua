@@ -2,6 +2,7 @@
 class('QuadTree').extends()
 
 local quadTree <const> = QuadTree
+local tableInsert <const> = table.insert
 
 -- Create a new quad tree with the given bounds
 function QuadTree:init(x, y, width, height, maxLeafSize)
@@ -68,7 +69,7 @@ function QuadTree:insert(object)
         quadrant:insert(object)
     else
         -- Otherwise, add the object to this quad tree
-        table.insert(self.objects, object)
+        self.objects[#self.objects+1] = object
     end
 end
 

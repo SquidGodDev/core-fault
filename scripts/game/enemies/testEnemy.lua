@@ -4,6 +4,7 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local math <const> = math
 local sqrt <const> = math.sqrt
+local random <const> = math.random
 
 class('TestEnemy').extends(gfx.sprite)
 
@@ -31,7 +32,8 @@ function TestEnemy:init(x, y, gameManager, quadTree)
     self.yVelocity = 0
     self.MaxVelocity = 1
 
-    self.SeperateVelocity = 0.8
+    self.SeperateVelocity = 1.5
+    self.SeperateVelocityDiagonal = self.SeperateVelocity^2 / sqrt(self.SeperateVelocity^2 + self.SeperateVelocity^2)
 
     self.player = self.gameManager.player
 
@@ -39,7 +41,7 @@ function TestEnemy:init(x, y, gameManager, quadTree)
 
     self.directionUpdateCount = 0
     self.directionUpdateInterval = 60
-    self.interesectUpdateInterval = 20
+    self.interesectUpdateInterval = 30
 
     self.quadTree = quadTree
 end
@@ -53,23 +55,9 @@ function TestEnemy:update()
         local scaledMagnitude = self.MaxVelocity / magnitude
         self.xVelocity = xDiff * scaledMagnitude
         self.yVelocity = yDiff * scaledMagnitude
-    elseif self.directionUpdateCount % self.interesectUpdateInterval == 0 then
-        local interesectingEnemy = self.quadTree:fastQuery(self.x - self.halfWidth, self.y - self.halfWidth, self.width, self.width, self)
-        if interesectingEnemy then
-            local intersectXDiff = self.x - interesectingEnemy.x
-            local intersectYDiff = self.y - interesectingEnemy.y
-            if intersectXDiff < 0 then
-                self.xVelocity -= self.SeperateVelocity
-            else
-                self.xVelocity += self.SeperateVelocity
-            end
-
-            if intersectYDiff < 0 then
-                self.yVelocity -= self.SeperateVelocity
-            else
-                self.yVelocity += self.SeperateVelocity
-            end
-        end
+    elseif self.directionUpdateCount == self.interesectUpdateInterval then
+        self.xVelocity = (random() - 0.5) * 3
+        self.yVelocity = (random() - 0.5) * 3
     end
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)

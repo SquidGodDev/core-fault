@@ -78,10 +78,7 @@ function Player:update()
     local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
     setDrawOffset(smoothedX, smoothedY)
 
-    if self.prevDirIndex ~= dirIndex then
-        self.prevDirIndex = dirIndex
-        self:setImage(self.animationLoop:image())
-    end
+    self:setImage(self.animationLoop:image())
     -- self:updateAnimation()
 end
 
