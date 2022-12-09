@@ -9,8 +9,11 @@ local random <const> = math.random
 class('TestEnemy').extends(gfx.sprite)
 
 function TestEnemy:init(x, y, gameManager)
-    local enemyImage = gfx.image.new("images/enemies/mandrake2x")
-    self:setImage(enemyImage)
+    local spriteSheet = gfx.imagetable.new("images/enemies/slime-small")
+    self.animationLoop = gfx.animation.loop.new(200, spriteSheet, true)
+    self.startFrame = 1
+    self.endFrame = 4
+    self:setImage(self.animationLoop:image())
     self:add()
 
     self.gameManager = gameManager
@@ -50,6 +53,12 @@ end
 
 function TestEnemy:update()
     local seperateX, seperateY = 0, 0
+    if self.xVelocity < 0 and self:getImageFlip() == gfx.kImageUnflipped then
+        self:setImageFlip(gfx.kImageFlippedX)
+    elseif self.xVelocity > 0 and self:getImageFlip() == gfx.kImageFlippedX then
+        self:setImageFlip(gfx.kImageUnflipped)
+    end
+    self:setImage(self.animationLoop:image(), self:getImageFlip())
     if self.directionUpdateCount == 0 then
         local xDiff = self.player.x - self.x
         local yDiff = self.player.y - self.y
