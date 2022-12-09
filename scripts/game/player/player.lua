@@ -1,5 +1,6 @@
 import "scripts/libraries/AnimatedSprite"
 import "scripts/game/player/weapons/beam"
+import "scripts/game/player/weapons/shockProd"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -62,6 +63,7 @@ function Player:init(x, y)
     self.prevDirIndex = -1
 
     Beam(self)
+    ShockProd(self)
 end
 
 function Player:update()
