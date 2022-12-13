@@ -20,7 +20,7 @@ function ShockProd:init(player)
     self.hitboxHeight = 32
     self.hitboxwidth = 64
 
-    local imagetable = gfx.imagetable.new("images/player/weapons/shockProd-table-64-32")
+    local imagetable = gfx.imagetable.new("images/player/weapons/shockProd")
     self.animationLoop = gfx.animation.loop.new(50, imagetable, false)
     self:setCenter(0, 0)
     self:setZIndex(Z_INDEXES.WEAPON)

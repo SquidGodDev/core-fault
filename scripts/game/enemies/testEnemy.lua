@@ -8,9 +8,10 @@ local random <const> = math.random
 
 class('TestEnemy').extends(gfx.sprite)
 
+local enemySpriteSheet = {gfx.imagetable.new("images/enemies/slime-small"), gfx.imagetable.new("images/enemies/crab-small"), gfx.imagetable.new("images/enemies/fly-small")}
+
 function TestEnemy:init(x, y, gameManager)
-    local spriteSheet = gfx.imagetable.new("images/enemies/slime-small")
-    self.animationLoop = gfx.animation.loop.new(200, spriteSheet, true)
+    self.animationLoop = gfx.animation.loop.new(200, enemySpriteSheet[math.random(3)], true)
     self.startFrame = 1
     self.endFrame = 4
     self:setImage(self.animationLoop:image())
