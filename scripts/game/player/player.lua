@@ -29,7 +29,7 @@ local setDrawOffset <const> = gfx.setDrawOffset
 class('Player').extends(AnimatedSprite)
 
 function Player:init(x, y)
-    local playerSpriteSheet = gfx.imagetable.new("images/player/testPlayer-table-32-34")
+    local playerSpriteSheet = gfx.imagetable.new("images/player/player")
     -- Player.super.init(self, playerSpriteSheet)
 
     -- for i, direction in ipairs(directions) do
@@ -42,7 +42,7 @@ function Player:init(x, y)
 
     self.animationLoop = gfx.animation.loop.new(200, playerSpriteSheet, true)
     self.startFrame = 1
-    self.endFrame = 4
+    self.endFrame = 2
     self:setImage(self.animationLoop:image())
     self:add()
 
@@ -69,9 +69,9 @@ end
 function Player:update()
     local crankPos = getCrankPosition()
     local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
-    local animationStartIndex = 1 + (dirIndex - 1) * 4
+    local animationStartIndex = 1 + (dirIndex - 1) * 2
     self.animationLoop.startFrame = animationStartIndex
-    self.animationLoop.endFrame = animationStartIndex + 3
+    self.animationLoop.endFrame = animationStartIndex + 1
     -- local direction = directions[dirIndex]
     -- self:changeState("run" .. direction)
     self:updateMovement(crankPos)
