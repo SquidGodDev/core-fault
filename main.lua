@@ -5,14 +5,14 @@ import "CoreLibs/timer"
 import "CoreLibs/animation"
 import "CoreLibs/utilities/sampler"
 
-import "scripts/game/gameScene"
+import "scripts/level/levelScene"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 math.randomseed(pd.getSecondsSinceEpoch())
 
-GameScene()
+LevelScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers

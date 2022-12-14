@@ -1,7 +1,7 @@
 import "scripts/libraries/LDtk"
-import "scripts/game/player/player"
-import "scripts/game/enemies/testEnemy"
-import "scripts/game/collisions/quadTree"
+import "scripts/level/player/player"
+import "scripts/level/enemies/testEnemy"
+import "scripts/level/collisions/quadTree"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -23,9 +23,9 @@ TAGS = {
     WALL = 3
 }
 
-class('GameScene').extends(gfx.sprite)
+class('LevelScene').extends(gfx.sprite)
 
-function GameScene:init()
+function LevelScene:init()
     gfx.setBackgroundColor(gfx.kColorBlack)
     local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
     gfx.sprite.setBackgroundDrawingCallback(
@@ -72,15 +72,15 @@ function GameScene:init()
     self:add()
 end
 
-function GameScene:update()
+function LevelScene:update()
 
 end
 
-function GameScene:enemyDied()
+function LevelScene:enemyDied()
     self.enemyCount -= 1
 end
 
-function GameScene:createTilemapSprite(name, x, y)
+function LevelScene:createTilemapSprite(name, x, y)
     local tilemapImage = gfx.image.new("images/levels/testLevel/"..name)
     local tilemapSprite = gfx.sprite.new(tilemapImage)
     tilemapSprite:setCenter(0, 0)

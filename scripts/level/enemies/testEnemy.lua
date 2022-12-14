@@ -12,14 +12,14 @@ class('TestEnemy').extends(gfx.sprite)
 
 local enemySpriteSheet = {gfx.imagetable.new("images/enemies/slime-small"), gfx.imagetable.new("images/enemies/crab-small"), gfx.imagetable.new("images/enemies/fly-small")}
 
-function TestEnemy:init(x, y, gameManager)
+function TestEnemy:init(x, y, level)
     self.animationLoop = gfx.animation.loop.new(200, enemySpriteSheet[random(3)], true)
     self.startFrame = 1
     self.endFrame = 4
     self:setImage(self.animationLoop:image())
     self:add()
 
-    self.gameManager = gameManager
+    self.level = level
 
     self:setGroups(COLLISION_GROUPS.ENEMY)
     -- self:setCollidesWithGroups({COLLISION_GROUPS.ENEMY, COLLISION_GROUPS.PLAYER})
@@ -43,7 +43,7 @@ function TestEnemy:init(x, y, gameManager)
     self.yVelocity = 0
     self.MaxVelocity = 1
 
-    self.player = self.gameManager.player
+    self.player = self.level.player
 
     self:moveTo(x, y)
 
@@ -99,7 +99,7 @@ function TestEnemy:damage(amount)
     end
     self.health -= amount
     if self.health <= 0 then
-        self.gameManager:enemyDied()
+        self.level:enemyDied()
         self:remove()
     end
 

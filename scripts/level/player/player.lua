@@ -1,7 +1,7 @@
 import "scripts/libraries/AnimatedSprite"
-import "scripts/game/player/weapons/beam"
-import "scripts/game/player/weapons/shockProd"
-import "scripts/game/player/healthbar"
+import "scripts/level/player/weapons/beam"
+import "scripts/level/player/weapons/shockProd"
+import "scripts/level/player/healthbar"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
