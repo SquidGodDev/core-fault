@@ -48,7 +48,7 @@ function ShockProd:fireShock()
 
     local rectX, rectY = self.x - self.hitboxwidth, self.y - self.hitboxHeight / 2
     if self.facingRight then
-        rectX, rectY = self.x, self.y
+        rectX, rectY = self.x, self.y - self.hitboxHeight / 2
     end
     local hitObjects = querySpritesInRect(rectX, rectY, self.hitboxwidth, self.hitboxHeight)
     for i=1, #hitObjects do
@@ -57,7 +57,4 @@ function ShockProd:fireShock()
             curObject:damage(self.damage)
         end
     end
-    pd.timer.new(50, function()
-        
-    end)
 end
