@@ -1,6 +1,7 @@
 import "scripts/libraries/AnimatedSprite"
 import "scripts/game/player/weapons/beam"
 import "scripts/game/player/weapons/shockProd"
+import "scripts/game/player/healthbar"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -9,7 +10,7 @@ local math <const> = math
 local floor <const> = math.floor
 local getCrankPosition <const> = pd.getCrankPosition
 
-local directions = {'N', 'NE', 'E', 'SE', 'S', 'SW', 'W', 'NW'}
+local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
 local calculatedCosine = {}
 local calculatedSine = {}
@@ -26,30 +27,20 @@ end
 local getDrawOffset <const> = gfx.getDrawOffset
 local setDrawOffset <const> = gfx.setDrawOffset
 
-class('Player').extends(AnimatedSprite)
+-- Screen Shake
+local setDisplayOffset <const> = pd.display.setOffset
+local random <const> = math.random
+
+class('Player').extends(gfx.sprite)
 
 function Player:init(x, y)
     local playerSpriteSheet = gfx.imagetable.new("images/player/player")
-    -- Player.super.init(self, playerSpriteSheet)
-
-    -- for i, direction in ipairs(directions) do
-    --     local baseIndex = 1 + (i - 1) * 4
-    --     self:addState("run" .. direction, baseIndex, baseIndex + 3, {tickStep = 5})
-    --     self:addState("idle" .. direction, baseIndex + 1, baseIndex + 1, {tickStep = 5})
-    -- end
-
-    -- self:playAnimation()
 
     self.animationLoop = gfx.animation.loop.new(200, playerSpriteSheet, true)
     self.startFrame = 1
     self.endFrame = 2
     self:setImage(self.animationLoop:image())
     self:add()
-
-    self:setGroups(COLLISION_GROUPS.PLAYER)
-    self:setCollideRect(0, 0, self:getSize())
-    self.collisionResponse = "slide"
-    self:setTag(TAGS.PLAYER)
 
     self:setZIndex(Z_INDEXES.PLAYER)
 
@@ -60,20 +51,55 @@ function Player:init(x, y)
 
     self:moveTo(x, y)
 
-    self.prevDirIndex = -1
+    local maxHealth = 100
+    self.healthbar = Healthbar(maxHealth, self)
+    self.invincible = false
+    self.flashTime = 100
+    self.invincibilityTime = 200
+
+    -- Hitbox/Collisions
+    self:setGroups(COLLISION_GROUPS.PLAYER)
+    self:setCollideRect(0, 0, self:getSize())
+    self.collisionResponse = "slide"
+    self:setTag(TAGS.PLAYER)
+
+    local playerWidth, playerHeight = self:getSize()
+    local hitboxBuffer = 2
+    self.hitboxWidth = playerWidth - hitboxBuffer * 2
+    self.hitboxHeight = playerHeight - hitboxBuffer * 2
+    self.hitboxHalfWidth = playerWidth / 2 - hitboxBuffer
+    self.hitboxHalfHeight = playerHeight / 2 - hitboxBuffer
+
+    self.enemyTag = TAGS.ENEMY
+
+    -- Screen Shake
+    self.shakeTimer = nil
+    self.shakeAmount = 4
+
 
     Beam(self)
     ShockProd(self)
 end
 
 function Player:update()
+    if not self.invincible then
+        local hitboxX = self.x - self.hitboxHalfWidth
+        local hitboxY = self.y - self.hitboxHalfHeight
+        local overlappingSprites = querySpritesInRect(hitboxX, hitboxY, self.hitboxWidth, self.hitboxHeight)
+        for i=1, #overlappingSprites do
+            local enemy = overlappingSprites[i]
+            if enemy:getTag() == self.enemyTag and enemy:canAttack() then
+                self:damage(enemy.attackDamage)
+                enemy:setAttackCooldown()
+            end
+        end
+    end
+
     local crankPos = getCrankPosition()
     local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
     local animationStartIndex = 1 + (dirIndex - 1) * 2
     self.animationLoop.startFrame = animationStartIndex
     self.animationLoop.endFrame = animationStartIndex + 1
-    -- local direction = directions[dirIndex]
-    -- self:changeState("run" .. direction)
     self:updateMovement(crankPos)
 
     local drawOffsetX, drawOffsetY = getDrawOffset()
@@ -84,7 +110,31 @@ function Player:update()
     setDrawOffset(smoothedX, smoothedY)
 
     self:setImage(self.animationLoop:image())
-    -- self:updateAnimation()
+end
+
+function Player:damage(amount)
+    if self.invincible then
+        return
+    end
+
+    self.healthbar:damage(amount)
+    if self.healthbar:isDead() then
+        -- Die a horrible, slow, agonizing death
+        -- Taunt player for how bad they are
+    end
+
+    self:setImageDrawMode(gfx.kDrawModeFillWhite)
+    pd.timer.new(self.flashTime, function()
+        self:setImageDrawMode(gfx.kDrawModeCopy)
+    end)
+    -- self.invincible = true
+    -- pd.timer.new(self.invincibilityTime, function()
+    --     self.invincible = false
+    -- end)
+end
+
+function Player:heal(amount)
+    self.healthbar:heal(amount)
 end
 
 function Player:updateMovement(crankAngle)
@@ -99,4 +149,22 @@ end
 
 function Player:lerp(a, b, t)
     return a * (1-t) + b * t
+end
+
+function Player:screenShake()
+    if self.shakeTimer then
+        self.shakeTimer:remove()
+    end
+    self.shakeTimer = pd.timer.new(700, self.shakeAmount, 0)
+    self.shakeTimer.timerEndedCallback = function()
+        setDisplayOffset(0, 0)
+        self.shakeTimer = nil
+    end
+    self.shakeTimer.updateCallback = function(timer)
+        local shakeAmount = timer.value
+        local shakeAngle = random()*360;
+        shakeX = floor(calculatedCosine[floor(shakeAngle)]*shakeAmount);
+        shakeY = floor(calculatedSine[floor(shakeAngle)]*shakeAmount);
+        setDisplayOffset(shakeX, shakeY)
+    end
 end

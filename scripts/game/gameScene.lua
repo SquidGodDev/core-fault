@@ -12,6 +12,7 @@ COLLISION_GROUPS = {
 }
 
 Z_INDEXES = {
+    UI = 200,
     PLAYER = 100,
     WEAPON = 90
 }
@@ -25,6 +26,7 @@ TAGS = {
 class('GameScene').extends(gfx.sprite)
 
 function GameScene:init()
+    gfx.setBackgroundColor(gfx.kColorBlack)
     local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
     gfx.sprite.setBackgroundDrawingCallback(
         function()

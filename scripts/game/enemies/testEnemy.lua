@@ -53,6 +53,10 @@ function TestEnemy:init(x, y, gameManager)
 
     self.randomMoveAmount = 3
     self.imageFlip = kImageUnflipped
+
+    self.attackOnCooldown = false
+    self.attackCooldown = 1000
+    self.attackDamage = 2
 end
 
 function TestEnemy:update()
@@ -76,6 +80,17 @@ function TestEnemy:update()
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)
     self:moveBy(self.xVelocity, self.yVelocity)
+end
+
+function TestEnemy:setAttackCooldown()
+    self.attackOnCooldown = true
+    pd.timer.new(self.attackCooldown, function()
+        self.attackOnCooldown = false
+    end)
+end
+
+function TestEnemy:canAttack()
+    return not self.attackOnCooldown
 end
 
 function TestEnemy:damage(amount)
