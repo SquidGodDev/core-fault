@@ -54,8 +54,8 @@ function GameScene:init()
 
     local spawnBorderBuffer = 20
     self.enemyCount = 0
-    self.maxEnemies = 60
-    local spawnTimer = pd.timer.new(1000, function(timer)
+    self.maxEnemies = 40
+    local spawnTimer = pd.timer.new(100, function(timer)
         if self.enemyCount >= self.maxEnemies then
             return
         end
@@ -63,7 +63,7 @@ function GameScene:init()
         local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
         local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
         TestEnemy(spawnX, spawnY, self)
-        TestEnemy(200, 120, self)
+        -- TestEnemy(200, 120, self)
     end)
     spawnTimer.repeats = true
 

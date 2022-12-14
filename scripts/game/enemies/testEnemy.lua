@@ -5,13 +5,15 @@ local gfx <const> = playdate.graphics
 local math <const> = math
 local sqrt <const> = math.sqrt
 local random <const> = math.random
+local kImageUnflipped <const> = gfx.kImageUnflipped
+local kImageFlippedX <const> = gfx.kImageFlippedX
 
 class('TestEnemy').extends(gfx.sprite)
 
 local enemySpriteSheet = {gfx.imagetable.new("images/enemies/slime-small"), gfx.imagetable.new("images/enemies/crab-small"), gfx.imagetable.new("images/enemies/fly-small")}
 
 function TestEnemy:init(x, y, gameManager)
-    self.animationLoop = gfx.animation.loop.new(200, enemySpriteSheet[math.random(3)], true)
+    self.animationLoop = gfx.animation.loop.new(200, enemySpriteSheet[random(3)], true)
     self.startFrame = 1
     self.endFrame = 4
     self:setImage(self.animationLoop:image())
@@ -50,17 +52,17 @@ function TestEnemy:init(x, y, gameManager)
     self.randomMoveUpdateInterval = 30
 
     self.randomMoveAmount = 3
+    self.imageFlip = kImageUnflipped
 end
 
 function TestEnemy:update()
-    local seperateX, seperateY = 0, 0
-    if self.xVelocity < 0 and self:getImageFlip() == gfx.kImageUnflipped then
-        self:setImageFlip(gfx.kImageFlippedX)
-    elseif self.xVelocity > 0 and self:getImageFlip() == gfx.kImageFlippedX then
-        self:setImageFlip(gfx.kImageUnflipped)
-    end
-    self:setImage(self.animationLoop:image(), self:getImageFlip())
+    self:setImage(self.animationLoop:image(), self.imageFlip)
     if self.directionUpdateCount == 0 then
+        if self.xVelocity < 0 and self.imageFlip == kImageUnflipped then
+            self.imageFlip = kImageFlippedX
+        elseif self.xVelocity > 0 and self.imageFlip == kImageFlippedX then
+            self.imageFlip = kImageUnflipped
+        end
         local xDiff = self.player.x - self.x
         local yDiff = self.player.y - self.y
         local magnitude = sqrt(xDiff^2 + yDiff^2)
@@ -73,7 +75,7 @@ function TestEnemy:update()
     end
     self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
     -- self:moveWithCollisions(self.x + self.xVelocity + seperateX, self.y + self.yVelocity + seperateY)
-    self:moveBy(self.xVelocity + seperateX, self.yVelocity + seperateY)
+    self:moveBy(self.xVelocity, self.yVelocity)
 end
 
 function TestEnemy:damage(amount)
