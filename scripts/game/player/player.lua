@@ -53,9 +53,7 @@ function Player:init(x, y)
 
     local maxHealth = 100
     self.healthbar = Healthbar(maxHealth, self)
-    self.invincible = false
     self.flashTime = 100
-    self.invincibilityTime = 200
 
     -- Hitbox/Collisions
     self:setGroups(COLLISION_GROUPS.PLAYER)
@@ -82,16 +80,15 @@ function Player:init(x, y)
 end
 
 function Player:update()
-    if not self.invincible then
-        local hitboxX = self.x - self.hitboxHalfWidth
-        local hitboxY = self.y - self.hitboxHalfHeight
-        local overlappingSprites = querySpritesInRect(hitboxX, hitboxY, self.hitboxWidth, self.hitboxHeight)
-        for i=1, #overlappingSprites do
-            local enemy = overlappingSprites[i]
-            if enemy:getTag() == self.enemyTag and enemy:canAttack() then
-                self:damage(enemy.attackDamage)
-                enemy:setAttackCooldown()
-            end
+    -- Check if being damaged by enemies
+    local hitboxX = self.x - self.hitboxHalfWidth
+    local hitboxY = self.y - self.hitboxHalfHeight
+    local overlappingSprites = querySpritesInRect(hitboxX, hitboxY, self.hitboxWidth, self.hitboxHeight)
+    for i=1, #overlappingSprites do
+        local enemy = overlappingSprites[i]
+        if enemy:getTag() == self.enemyTag and enemy:canAttack() then
+            self:damage(enemy.attackDamage)
+            enemy:setAttackCooldown()
         end
     end
 
@@ -124,13 +121,11 @@ function Player:damage(amount)
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)
+    self.healthbar:setFillWhite(true)
     pd.timer.new(self.flashTime, function()
         self:setImageDrawMode(gfx.kDrawModeCopy)
+        self.healthbar:setFillWhite(false)
     end)
-    -- self.invincible = true
-    -- pd.timer.new(self.invincibilityTime, function()
-    --     self.invincible = false
-    -- end)
 end
 
 function Player:heal(amount)
