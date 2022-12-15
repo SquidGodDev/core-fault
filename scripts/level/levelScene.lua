@@ -1,7 +1,6 @@
 import "scripts/libraries/LDtk"
 import "scripts/level/player/player"
 import "scripts/level/enemies/testEnemy"
-import "scripts/level/collisions/quadTree"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -33,24 +32,28 @@ function LevelScene:init()
             blackImage:draw(0, 0)
         end
     )
-    gfx.sprite.setAlwaysRedraw(true)
+    gfx.sprite.setAlwaysRedraw(false)
 
-    LDtk.load("assets/testLevel.ldtk")
-    self.tilemap = LDtk.create_tilemap("Level_0")
-    gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
-    -- self:setTilemap(self.tilemap)
+    -- LDtk.load("assets/testLevel.ldtk")
+    -- self.tilemap = LDtk.create_tilemap("Level_0")
+    -- gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
 
-    self:createTilemapSprite("leftWall", 8, 8)
-    self:createTilemapSprite("topWall", 24, 8)
-    self:createTilemapSprite("rightWall", 784, 8)
-    self:createTilemapSprite("bottomWall", 24, 520)
-    self:createTilemapSprite("topLeftRock", 120, 24)
-    self:createTilemapSprite("topRock", 280, 24)
-    self:createTilemapSprite("leftRock", 40, 144)
-    self:createTilemapSprite("leftSmallRock", 136, 128)
+    -- self:createTilemapSprite("leftWall", 8, 8)
+    -- self:createTilemapSprite("topWall", 24, 8)
+    -- self:createTilemapSprite("rightWall", 784, 8)
+    -- self:createTilemapSprite("bottomWall", 24, 520)
+    -- self:createTilemapSprite("topLeftRock", 120, 24)
+    -- self:createTilemapSprite("topRock", 280, 24)
+    -- self:createTilemapSprite("leftRock", 40, 144)
+    -- self:createTilemapSprite("leftSmallRock", 136, 128)
+    self:createTilemapSprite("verticalWall", 0, 0)
+    self:createTilemapSprite("verticalWall", 800, 0)
+    self:createTilemapSprite("horizontalWall", 32, 0)
+    self:createTilemapSprite("horizontalWall", 32, 800)
+
+
 
     self.player = Player(200, 120)
-    -- TestEnemy(240, 120, self)
 
     local levelWidth, levelHeight = 808, 544
 
@@ -83,6 +86,7 @@ end
 function LevelScene:createTilemapSprite(name, x, y)
     local tilemapImage = gfx.image.new("images/levels/testLevel/"..name)
     local tilemapSprite = gfx.sprite.new(tilemapImage)
+    tilemapSprite:setCollideRect(0, 0, tilemapSprite:getSize())
     tilemapSprite:setCenter(0, 0)
     tilemapSprite:moveTo(x, y)
     tilemapSprite:add()
