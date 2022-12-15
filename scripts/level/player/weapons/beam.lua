@@ -1,5 +1,5 @@
-import "scripts/game/player/weapons/components/hasCooldown"
-import "scripts/game/player/weapons/components/followsPlayer"
+import "scripts/level/player/weapons/components/hasCooldown"
+import "scripts/level/player/weapons/components/followsPlayer"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -44,7 +44,7 @@ function Beam:fireBeam()
     local beamImage = gfx.image.new(self.lineLength * 2 + padding * 2, self.lineLength * 2 + padding * 2)
 
     local beamStartX, beamStartY = self.lineLength + padding, self.lineLength + padding
-    local beamEndX, beamEndY = self.lineLength + targetXOffset, self.lineLength + targetYOffset
+    local beamEndX, beamEndY = self.lineLength + targetXOffset + padding, self.lineLength + targetYOffset + padding
 
     drawTimer.updateCallback = function(timer)
         beamImage:clear(gfx.kColorClear)

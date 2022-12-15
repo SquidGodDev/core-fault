@@ -1,5 +1,5 @@
-import "scripts/game/player/weapons/components/hasCooldown"
-import "scripts/game/player/weapons/components/followsPlayer"
+import "scripts/level/player/weapons/components/hasCooldown"
+import "scripts/level/player/weapons/components/followsPlayer"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics

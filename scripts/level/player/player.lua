@@ -62,11 +62,11 @@ function Player:init(x, y)
     self:setTag(TAGS.PLAYER)
 
     local playerWidth, playerHeight = self:getSize()
-    local hitboxBuffer = 2
-    self.hitboxWidth = playerWidth - hitboxBuffer * 2
-    self.hitboxHeight = playerHeight - hitboxBuffer * 2
-    self.hitboxHalfWidth = playerWidth / 2 - hitboxBuffer
-    self.hitboxHalfHeight = playerHeight / 2 - hitboxBuffer
+    local hurtboxBuffer = 4
+    self.hurtboxWidth = playerWidth - hurtboxBuffer * 2
+    self.hurtboxHeight = playerHeight - hurtboxBuffer * 2
+    self.hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer
+    self.hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
 
     self.enemyTag = TAGS.ENEMY
 
@@ -81,9 +81,9 @@ end
 
 function Player:update()
     -- Check if being damaged by enemies
-    local hitboxX = self.x - self.hitboxHalfWidth
-    local hitboxY = self.y - self.hitboxHalfHeight
-    local overlappingSprites = querySpritesInRect(hitboxX, hitboxY, self.hitboxWidth, self.hitboxHeight)
+    local hurtboxX = self.x - self.hurtboxHalfWidth
+    local hurtboxY = self.y - self.hurtboxHalfHeight
+    local overlappingSprites = querySpritesInRect(hurtboxX, hurtboxY, self.hurtboxWidth, self.hurtboxHeight)
     for i=1, #overlappingSprites do
         local enemy = overlappingSprites[i]
         if enemy:getTag() == self.enemyTag and enemy:canAttack() then
