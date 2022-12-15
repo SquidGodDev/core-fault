@@ -24,7 +24,15 @@ TAGS = {
 
 class('LevelScene').extends(gfx.sprite)
 
-function LevelScene:init()
+function LevelScene:init(gameManager, curLevel)
+    self.gameManager = gameManager
+    self.curLevel = curLevel
+
+    self:setupLevelLayout()
+    self:setupEnemySpawner()
+end
+
+function LevelScene:setupLevelLayout()
     gfx.setBackgroundColor(gfx.kColorBlack)
     local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
     gfx.sprite.setBackgroundDrawingCallback(
@@ -34,53 +42,40 @@ function LevelScene:init()
     )
     gfx.sprite.setAlwaysRedraw(false)
 
-    -- LDtk.load("assets/testLevel.ldtk")
-    -- self.tilemap = LDtk.create_tilemap("Level_0")
-    -- gfx.sprite.addWallSprites(self.tilemap, LDtk.get_empty_tileIDs("Level_0", "Solid"))
-
-    -- self:createTilemapSprite("leftWall", 8, 8)
-    -- self:createTilemapSprite("topWall", 24, 8)
-    -- self:createTilemapSprite("rightWall", 784, 8)
-    -- self:createTilemapSprite("bottomWall", 24, 520)
-    -- self:createTilemapSprite("topLeftRock", 120, 24)
-    -- self:createTilemapSprite("topRock", 280, 24)
-    -- self:createTilemapSprite("leftRock", 40, 144)
-    -- self:createTilemapSprite("leftSmallRock", 136, 128)
     self:createTilemapSprite("verticalWall", 0, 0)
     self:createTilemapSprite("verticalWall", 800, 0)
     self:createTilemapSprite("horizontalWall", 32, 0)
     self:createTilemapSprite("horizontalWall", 32, 800)
 
+    self.player = Player(200, 120, self.gameManager)
+end
 
-
-    self.player = Player(200, 120)
-
-    local levelWidth, levelHeight = 808, 544
+function LevelScene:setupEnemySpawner()
+    local levelWidth, levelHeight = 800, 800
 
     local spawnBorderBuffer = 20
     self.enemyCount = 0
-    self.maxEnemies = 40
-    local spawnTimer = pd.timer.new(100, function(timer)
-        if self.enemyCount >= self.maxEnemies then
+    self.maxEnemies = 35
+    self.enemiesDefeated = 0
+    self.enemiesToDefeat = self.curLevel * 5 + 5
+    local spawnTimer = pd.timer.new(1000, function()
+        if self.enemyCount >= self.maxEnemies or self.enemyCount >= self.enemiesToDefeat then
             return
         end
         self.enemyCount += 1
         local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
         local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
         TestEnemy(spawnX, spawnY, self)
-        -- TestEnemy(200, 120, self)
     end)
     spawnTimer.repeats = true
-
-    self:add()
-end
-
-function LevelScene:update()
-
 end
 
 function LevelScene:enemyDied()
     self.enemyCount -= 1
+    self.enemiesToDefeat -= 1
+    if self.enemiesToDefeat <= 0 then
+        self.gameManager:levelDefeated()
+    end
 end
 
 function LevelScene:createTilemapSprite(name, x, y)

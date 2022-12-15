@@ -33,7 +33,8 @@ local random <const> = math.random
 
 class('Player').extends(gfx.sprite)
 
-function Player:init(x, y)
+function Player:init(x, y, gameManager)
+    self.gameManager = gameManager
     local playerSpriteSheet = gfx.imagetable.new("images/player/player")
 
     self.animationLoop = gfx.animation.loop.new(200, playerSpriteSheet, true)
@@ -116,8 +117,7 @@ function Player:damage(amount)
 
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
-        -- Die a horrible, slow, agonizing death
-        -- Taunt player for how bad they are
+        self.gameManager:runEnded()
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)
