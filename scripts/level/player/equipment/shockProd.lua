@@ -1,5 +1,6 @@
 import "scripts/level/player/equipment/components/hasCooldown"
 import "scripts/level/player/equipment/components/followsPlayer"
+import "scripts/level/player/equipment/components/doesDamage"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -12,8 +13,6 @@ function ShockProd:init(player, data)
     self.player = player
     self.cooldown = data.cooldown
     self.facingRight = true
-    FollowsPlayer(self, player)
-    HasCooldown(self.cooldown, self.fireShock, self)
 
     self.damage = data.damage
     self.enemyTag = TAGS.ENEMY
@@ -26,6 +25,11 @@ function ShockProd:init(player, data)
     self:setZIndex(Z_INDEXES.EQUIPMENT)
 
     self:add()
+
+    -- Components
+    FollowsPlayer(self, player)
+    HasCooldown(self.cooldown, self.fireShock, self)
+    self.damageComponent = DoesDamage(player, self.damage)
 end
 
 function ShockProd:update()
@@ -51,10 +55,5 @@ function ShockProd:fireShock()
         rectX, rectY = self.x, self.y - self.hitboxHeight / 2
     end
     local hitObjects = querySpritesInRect(rectX, rectY, self.hitboxwidth, self.hitboxHeight)
-    for i=1, #hitObjects do
-        local curObject = hitObjects[i]
-        if curObject:getTag() == self.enemyTag then
-            curObject:damage(self.damage)
-        end
-    end
+    self.damageComponent:dealDamage(hitObjects)
 end

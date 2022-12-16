@@ -1,5 +1,6 @@
 import "scripts/level/player/equipment/components/hasCooldown"
 import "scripts/level/player/equipment/components/followsPlayer"
+import "scripts/level/player/equipment/components/doesDamage"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -12,9 +13,6 @@ function Beam:init(player, data)
 
     self.beamCooldown = data.cooldown
 
-    HasCooldown(self.beamCooldown, self.fireBeam, self)
-    FollowsPlayer(self, player)
-
     self.lineLength = 90
     self.lineWidth = 5
 
@@ -25,6 +23,11 @@ function Beam:init(player, data)
     self.beamDamage = data.damage
 
     self:add()
+
+    -- Components
+    HasCooldown(self.beamCooldown, self.fireBeam, self)
+    FollowsPlayer(self, player)
+    self.damageComponent = DoesDamage(player, self.beamDamage)
 end
 
 function Beam:fireBeam()
@@ -63,10 +66,5 @@ function Beam:fireBeam()
     end
 
     local hitObjects = gfx.sprite.querySpritesAlongLine(self.player.x, self.player.y, self.player.x + targetXOffset, self.player.y + targetYOffset)
-    for i=1, #hitObjects do
-        local curObject = hitObjects[i]
-        if curObject:getTag() == self.enemyTag then
-            curObject:damage(self.beamDamage)
-        end
-    end
+    self.damageComponent:dealDamage(hitObjects)
 end
