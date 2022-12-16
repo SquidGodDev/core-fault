@@ -22,7 +22,7 @@ function GameManager:init()
     self.curLevel = 1
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
-    self.equipment = {equipment.beam, equipment.shockProd}
+    self.equipment = {equipment.beam, equipment.shockProd, equipment.peaShooter}
     StartScene(self)
 end
 

@@ -1,5 +1,6 @@
 import "scripts/level/player/equipment/beam"
 import "scripts/level/player/equipment/shockProd"
+import "scripts/level/player/equipment/peaShooter"
 
 equipment = {
     shockProd = {
@@ -21,5 +22,16 @@ equipment = {
         cooldown = 1000,
         imagePath = "",
         constructor = Beam
+    },
+    peaShooter = {
+        name = "Pea Shooter",
+        description = "Fires bullets in the direction the player is facing",
+        level = 1,
+        maxLevel = 5,
+        damage = 1,
+        cooldown = 300,
+        velocity = 6,
+        imagePath = "",
+        constructor = PeaShooter
     }
 }

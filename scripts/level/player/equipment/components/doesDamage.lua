@@ -27,3 +27,15 @@ function DoesDamage:dealDamage(hitEntities)
         end
     end
 end
+
+function DoesDamage:dealDamageSingle(hitEntity)
+    local crit = random() <= self.CritChance
+    local damageAmount = self.damage + self.BonusDamage
+    if crit then
+        damageAmount *= 1 + self.CritDamage
+    end
+
+    if hitEntity:getTag() == self.enemyTag then
+        hitEntity:damage(damageAmount)
+    end
+end

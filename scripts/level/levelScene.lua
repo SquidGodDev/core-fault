@@ -1,4 +1,3 @@
-import "scripts/libraries/LDtk"
 import "scripts/level/player/player"
 import "scripts/level/enemies/testEnemy"
 
@@ -7,7 +6,9 @@ local gfx <const> = playdate.graphics
 
 COLLISION_GROUPS = {
     PLAYER = 1,
-    ENEMY = 2
+    ENEMY = 2,
+    PROJECTILE = 3,
+    WALL = 4
 }
 
 Z_INDEXES = {
@@ -57,8 +58,8 @@ function LevelScene:setupEnemySpawner()
     self.enemyCount = 0
     self.maxEnemies = 35
     self.enemiesDefeated = 0
-    self.enemiesToDefeat = self.curLevel * 5 + 5
-    local spawnTimer = pd.timer.new(1000, function()
+    self.enemiesToDefeat = self.curLevel * 5 + 5 + 100
+    local spawnTimer = pd.timer.new(100, function()
         if self.enemyCount >= self.maxEnemies or self.enemyCount >= self.enemiesToDefeat then
             return
         end
@@ -81,6 +82,8 @@ end
 function LevelScene:createTilemapSprite(name, x, y)
     local tilemapImage = gfx.image.new("images/levels/testLevel/"..name)
     local tilemapSprite = gfx.sprite.new(tilemapImage)
+    tilemapSprite:setGroups(COLLISION_GROUPS.WALL)
+    tilemapSprite:setTag(TAGS.WALL)
     tilemapSprite:setCollideRect(0, 0, tilemapSprite:getSize())
     tilemapSprite:setCenter(0, 0)
     tilemapSprite:moveTo(x, y)

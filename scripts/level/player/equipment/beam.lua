@@ -5,6 +5,12 @@ import "scripts/level/player/equipment/components/doesDamage"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local getCrankPosition <const> = pd.getCrankPosition
+
+local rad <const> = math.rad
+local cos <const> = math.cos
+local sin <const> = math.sin
+
 class('Beam').extends(gfx.sprite)
 
 function Beam:init(player, data)
@@ -32,10 +38,10 @@ end
 
 function Beam:fireBeam()
     local x, y = self.player.x, self.player.y
-    local crankPos = pd.getCrankPosition() - 90
-    local angleInRad = math.rad(crankPos)
-    local angleCos = math.cos(angleInRad)
-    local angleSine = math.sin(angleInRad)
+    local crankPos = getCrankPosition() - 90
+    local angleInRad = rad(crankPos)
+    local angleCos = cos(angleInRad)
+    local angleSine = sin(angleInRad)
 
     local targetXOffset = angleCos * self.lineLength
     local targetYOffset = angleSine * self.lineLength

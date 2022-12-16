@@ -67,6 +67,7 @@ function Player:init(x, y, gameManager)
 
     -- Hitbox/Collisions
     self:setGroups(COLLISION_GROUPS.PLAYER)
+    self:setCollidesWithGroups(COLLISION_GROUPS.WALL)
     self:setCollideRect(0, 0, self:getSize())
     self.collisionResponse = "slide"
     self:setTag(TAGS.PLAYER)
