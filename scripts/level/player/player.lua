@@ -1,6 +1,4 @@
 import "scripts/libraries/AnimatedSprite"
-import "scripts/level/player/weapons/beam"
-import "scripts/level/player/weapons/shockProd"
 import "scripts/level/player/healthbar"
 
 local pd <const> = playdate
@@ -35,6 +33,19 @@ class('Player').extends(gfx.sprite)
 
 function Player:init(x, y, gameManager)
     self.gameManager = gameManager
+
+    -- Player Stats
+    self.MaxVelocity = 2
+    self.MaxHealth = 100
+    self.HealthRegen = 0
+    self.CritChance = 0.1
+    self.CritDamage = 1.5
+    self.AttackSpeed = 1
+    self.BonusDamage = 0
+
+    self:initializeUpgrades()
+    self:initializeEquipment()
+
     local playerSpriteSheet = gfx.imagetable.new("images/player/player")
 
     self.animationLoop = gfx.animation.loop.new(200, playerSpriteSheet, true)
@@ -48,12 +59,10 @@ function Player:init(x, y, gameManager)
     self.velocity = 0
     self.xVelocity = 0
     self.yVelocity = 0
-    self.MaxVelocity = 2
 
     self:moveTo(x, y)
 
-    local maxHealth = 100
-    self.healthbar = Healthbar(maxHealth, self)
+    self.healthbar = Healthbar(self.MaxHealth, self)
     self.flashTime = 100
 
     -- Hitbox/Collisions
@@ -74,10 +83,6 @@ function Player:init(x, y, gameManager)
     -- Screen Shake
     self.shakeTimer = nil
     self.shakeAmount = 4
-
-
-    Beam(self)
-    ShockProd(self)
 end
 
 function Player:update()
@@ -108,6 +113,24 @@ function Player:update()
     setDrawOffset(smoothedX, smoothedY)
 
     self:setImage(self.animationLoop:image())
+end
+
+function Player:initializeUpgrades()
+    local upgrades = self.gameManager.upgrades
+    for i=1, #upgrades do
+        local upgradeData = upgrades[i]
+        local upgradeConstructor = upgradeData.constructor
+        upgradeConstructor(self, upgradeData)
+    end
+end
+
+function Player:initializeEquipment()
+    local equipment = self.gameManager.equipment
+    for i=1, #equipment do
+        local equipmentData = equipment[i]
+        local equipmentConstructor = equipmentData.constructor
+        equipmentConstructor(self, equipmentData)
+    end
 end
 
 function Player:damage(amount)

@@ -1,5 +1,5 @@
-import "scripts/level/player/weapons/components/hasCooldown"
-import "scripts/level/player/weapons/components/followsPlayer"
+import "scripts/level/player/equipment/components/hasCooldown"
+import "scripts/level/player/equipment/components/followsPlayer"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -8,22 +8,22 @@ local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
 class('ShockProd').extends(gfx.sprite)
 
-function ShockProd:init(player)
+function ShockProd:init(player, data)
     self.player = player
-    self.cooldown = 500
+    self.cooldown = data.cooldown
     self.facingRight = true
     FollowsPlayer(self, player)
     HasCooldown(self.cooldown, self.fireShock, self)
 
-    self.damage = 2
+    self.damage = data.damage
     self.enemyTag = TAGS.ENEMY
     self.hitboxHeight = 32
     self.hitboxwidth = 64
 
-    local imagetable = gfx.imagetable.new("images/player/weapons/shockProd")
+    local imagetable = gfx.imagetable.new("images/player/equipment/shockProd")
     self.animationLoop = gfx.animation.loop.new(50, imagetable, false)
     self:setCenter(0, 0)
-    self:setZIndex(Z_INDEXES.WEAPON)
+    self:setZIndex(Z_INDEXES.EQUIPMENT)
 
     self:add()
 end

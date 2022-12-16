@@ -13,7 +13,7 @@ COLLISION_GROUPS = {
 Z_INDEXES = {
     UI = 200,
     PLAYER = 100,
-    WEAPON = 90
+    EQUIPMENT = 90
 }
 
 TAGS = {

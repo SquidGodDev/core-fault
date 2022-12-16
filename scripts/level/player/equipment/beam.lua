@@ -1,16 +1,16 @@
-import "scripts/level/player/weapons/components/hasCooldown"
-import "scripts/level/player/weapons/components/followsPlayer"
+import "scripts/level/player/equipment/components/hasCooldown"
+import "scripts/level/player/equipment/components/followsPlayer"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 class('Beam').extends(gfx.sprite)
 
-function Beam:init(player)
+function Beam:init(player, data)
     self.player = player
-    self:setZIndex(Z_INDEXES.WEAPON)
+    self:setZIndex(Z_INDEXES.EQUIPMENT)
 
-    self.beamCooldown = 1000
+    self.beamCooldown = data.cooldown
 
     HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
@@ -22,7 +22,7 @@ function Beam:init(player)
 
     self.enemyTag = TAGS.ENEMY
 
-    self.beamDamage = 2
+    self.beamDamage = data.damage
 
     self:add()
 end
