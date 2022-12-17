@@ -11,6 +11,10 @@ function DoesAOEDamage:init(player, damage, radius)
     self.damageComponent = DoesDamage(player, damage)
 end
 
+function DoesAOEDamage:addBonusDamage(amount)
+    self.damageComponent:addBonusDamage(amount)
+end
+
 function DoesAOEDamage:dealAOEDamage(x, y)
     local collisions = gfx.sprite.querySpritesInRect(x - self.radius, y - self.radius, self.diameter, self.diameter)
     self.damageComponent:dealDamage(collisions)

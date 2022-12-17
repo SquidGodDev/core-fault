@@ -43,6 +43,9 @@ function Player:init(x, y, gameManager)
     self.AttackSpeed = 1
     self.BonusDamage = 0
 
+    self.healthbar = Healthbar(self.MaxHealth, self)
+    self.flashTime = 100
+
     self:initializeUpgrades()
     self:initializeEquipment()
 
@@ -61,9 +64,6 @@ function Player:init(x, y, gameManager)
     self.yVelocity = 0
 
     self:moveTo(x, y)
-
-    self.healthbar = Healthbar(self.MaxHealth, self)
-    self.flashTime = 100
 
     -- Hitbox/Collisions
     self:setGroups(COLLISION_GROUPS.PLAYER)

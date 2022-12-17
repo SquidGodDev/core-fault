@@ -25,7 +25,20 @@ function Discharge:init(player, data)
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
     FollowsPlayer(self, player)
 
+    local playerHealthbar = player.healthbar
+    local playerHealth = playerHealthbar:getHealth()
+    local bonusDamageScaling = data.bonusDamageScaling
+
     local attackTimer = pd.timer.new(data.cooldown, function()
+        local curHealth = playerHealthbar:getHealth()
+        local lostHealth = playerHealth - curHealth
+        if lostHealth < 0 then
+            lostHealth = 0
+        end
+        local bonusDamage = lostHealth * bonusDamageScaling
+        playerHealth = curHealth
+
+        self.aoeDamageComponent:addBonusDamage(bonusDamage)
         self.aoeDamageComponent:dealAOEDamage(self.x, self.y)
         self:setVisible(true)
         pd.timer.new(flashTime, function()

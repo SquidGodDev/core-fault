@@ -31,6 +31,14 @@ function Healthbar:update()
     self.barSprite:moveTo(drawX, drawY)
 end
 
+function Healthbar:getHealth()
+    return self.health
+end
+
+function Healthbar:getMaxHealth()
+    return self.maxHealth
+end
+
 function Healthbar:damage(amount)
     self.health -= amount
     if self.health <= 0 then

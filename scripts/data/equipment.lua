@@ -50,11 +50,12 @@ equipment = {
     },
     discharge = {
         name = "Discharge",
-        description = "Periodically deals damage in an area around the player",
+        description = "Discharges damage in an area around the player based on a percentage of damage taken recently",
         level = 1,
         maxLevel = 5,
-        damage = 3,
-        cooldown = 1000,
+        damage = 2,
+        bonusDamageScaling = 0.5,
+        cooldown = 2000,
         radius = 50,
         imagePath = "",
         constructor = Discharge

@@ -11,6 +11,11 @@ function DoesDamage:init(player, damage)
     self.CritChance = player.CritChance
     self.CritDamage = player.CritDamage
     self.BonusDamage = player.BonusDamage
+    self.BaseBonusDamage = self.BonusDamage
+end
+
+function DoesDamage:addBonusDamage(amount)
+    self.BonusDamage += amount
 end
 
 function DoesDamage:dealDamage(hitEntities)
@@ -26,6 +31,8 @@ function DoesDamage:dealDamage(hitEntities)
             curObject:damage(damageAmount)
         end
     end
+
+    self.BonusDamage = self.BaseBonusDamage
 end
 
 function DoesDamage:dealDamageSingle(hitEntity)
@@ -38,4 +45,6 @@ function DoesDamage:dealDamageSingle(hitEntity)
     if hitEntity:getTag() == self.enemyTag then
         hitEntity:damage(damageAmount)
     end
+
+    self.BonusDamage = self.BaseBonusDamage
 end
