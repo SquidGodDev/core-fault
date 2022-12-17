@@ -3,6 +3,7 @@ import "scripts/level/player/equipment/shockProd"
 import "scripts/level/player/equipment/peaShooter"
 import "scripts/level/player/equipment/StaticField"
 import "scripts/level/player/equipment/Discharge"
+import "scripts/level/player/equipment/SubterranianRocket"
 
 equipment = {
     shockProd = {
@@ -57,5 +58,26 @@ equipment = {
         radius = 50,
         imagePath = "",
         constructor = Discharge
+    },
+    subterranianRocket = {
+        name = "Subterranian Rocket",
+        description = "Periodically causes an explosion at a distance in front of the player",
+        level = 1,
+        maxLevel = 5,
+        damage = 4,
+        cooldown = 1000,
+        radius = 20,
+        distance = 100,
+        imagePath = "",
+        constructor = SubterranianRocket
+    },
+    pocketDrill = {
+        name = "Pocket Drill",
+        description = "Passively drills and produces ore periodically",
+        level = 1,
+        maxLevel = 5,
+        cooldown = 3000,
+        imagePath = "",
+        constructor = PocketDrill
     }
 }
