@@ -1,4 +1,5 @@
 import "scripts/level/player/equipment/components/doesAOEDamage"
+import "scripts/level/player/equipment/components/equipment"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -9,9 +10,11 @@ local rad <const> = math.rad
 local cos <const> = math.cos
 local sin <const> = math.sin
 
-class('SubterranianRocket').extends(gfx.sprite)
+class('SubterranianRocket').extends(Equipment)
 
 function SubterranianRocket:init(player, data)
+    data = SubterranianRocket.super.init(self, player, data)
+
     local radius = data.radius
     local diameter = radius * 2
     local explosionImage = gfx.image.new(diameter, diameter)
@@ -21,8 +24,6 @@ function SubterranianRocket:init(player, data)
         gfx.fillCircleInRect(0, 0, diameter, diameter)
     gfx.popContext()
     self:setImage(explosionImage)
-    self:setZIndex(Z_INDEXES.EQUIPMENT)
-    self:add()
 
     local flashTime = 200
     self:setVisible(false)

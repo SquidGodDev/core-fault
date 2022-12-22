@@ -1,3 +1,5 @@
+import "scripts/level/player/equipment/components/equipment"
+
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 

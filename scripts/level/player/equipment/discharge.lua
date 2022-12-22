@@ -1,14 +1,22 @@
 import "scripts/level/player/equipment/components/followsPlayer"
 import "scripts/level/player/equipment/components/doesAOEDamage"
+import "scripts/level/player/equipment/components/equipment"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-class('Discharge').extends(gfx.sprite)
+class('Discharge').extends(Equipment)
 
 function Discharge:init(player, data)
+    data = Discharge.super.init(self, player, data)
+
     local radius = data.radius
+    local cooldown = data.cooldown
+    local damage = data.damage
+    local bonusDamageScaling = data.bonusDamageScaling
+
     local diameter = radius * 2
+
     local dischargeImage = gfx.image.new(diameter, diameter)
     gfx.pushContext(dischargeImage)
         gfx.setColor(gfx.kColorWhite)
@@ -16,20 +24,17 @@ function Discharge:init(player, data)
         gfx.fillCircleInRect(0, 0, diameter, diameter)
     gfx.popContext()
     self:setImage(dischargeImage)
-    self:setZIndex(Z_INDEXES.EQUIPMENT)
-    self:add()
 
     local flashTime = 200
     self:setVisible(false)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
+    self.aoeDamageComponent = DoesAOEDamage(player, damage, radius)
     FollowsPlayer(self, player)
 
     local playerHealthbar = player.healthbar
     local playerHealth = playerHealthbar:getHealth()
-    local bonusDamageScaling = data.bonusDamageScaling
 
-    local attackTimer = pd.timer.new(data.cooldown, function()
+    local attackTimer = pd.timer.new(cooldown, function()
         local curHealth = playerHealthbar:getHealth()
         local lostHealth = playerHealth - curHealth
         if lostHealth < 0 then

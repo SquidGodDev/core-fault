@@ -6,8 +6,8 @@ import "scripts/game/startScene"
 import "scripts/game/gameOverScene"
 import "scripts/game/upgradeScene"
 
-import "scripts/data/upgrades"
-import "scripts/data/equipment"
+import "scripts/data/upgradeData"
+import "scripts/data/equipmentData"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics

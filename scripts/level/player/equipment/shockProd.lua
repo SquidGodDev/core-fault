@@ -1,16 +1,18 @@
 import "scripts/level/player/equipment/components/hasCooldown"
 import "scripts/level/player/equipment/components/followsPlayer"
 import "scripts/level/player/equipment/components/doesDamage"
+import "scripts/level/player/equipment/components/equipment"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
-class('ShockProd').extends(gfx.sprite)
+class('ShockProd').extends(Equipment)
 
 function ShockProd:init(player, data)
-    self.player = player
+    data = ShockProd.super.init(self, player, data)
+
     self.cooldown = data.cooldown
     self.facingRight = true
 
@@ -22,9 +24,6 @@ function ShockProd:init(player, data)
     local imagetable = gfx.imagetable.new("images/player/equipment/shockProd")
     self.animationLoop = gfx.animation.loop.new(50, imagetable, false)
     self:setCenter(0, 0)
-    self:setZIndex(Z_INDEXES.EQUIPMENT)
-
-    self:add()
 
     -- Components
     FollowsPlayer(self, player)

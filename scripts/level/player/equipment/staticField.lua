@@ -1,12 +1,15 @@
 import "scripts/level/player/equipment/components/followsPlayer"
 import "scripts/level/player/equipment/components/doesAOEDamage"
+import "scripts/level/player/equipment/components/equipment"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-class('StaticField').extends(gfx.sprite)
+class('StaticField').extends(Equipment)
 
 function StaticField:init(player, data)
+    data = StaticField.super.init(self, player, data)
+
     local radius = data.radius
     local diameter = radius * 2
     local staticFieldImage = gfx.image.new(diameter, diameter)
@@ -17,8 +20,6 @@ function StaticField:init(player, data)
         gfx.drawCircleInRect(0, 0, diameter, diameter)
     gfx.popContext()
     self:setImage(staticFieldImage)
-    self:setZIndex(Z_INDEXES.EQUIPMENT)
-    self:add()
 
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
     FollowsPlayer(self, player)

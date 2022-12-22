@@ -1,6 +1,7 @@
 import "scripts/level/player/equipment/components/hasCooldown"
 import "scripts/level/player/equipment/components/followsPlayer"
 import "scripts/level/player/equipment/components/doesDamage"
+import "scripts/level/player/equipment/components/equipment"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -11,11 +12,10 @@ local rad <const> = math.rad
 local cos <const> = math.cos
 local sin <const> = math.sin
 
-class('Beam').extends(gfx.sprite)
+class('Beam').extends(Equipment)
 
 function Beam:init(player, data)
-    self.player = player
-    self:setZIndex(Z_INDEXES.EQUIPMENT)
+    data = Beam.super.init(self, player, data)
 
     self.beamCooldown = data.cooldown
 
@@ -27,8 +27,6 @@ function Beam:init(player, data)
     self.enemyTag = TAGS.ENEMY
 
     self.beamDamage = data.damage
-
-    self:add()
 
     -- Components
     HasCooldown(self.beamCooldown, self.fireBeam, self)
