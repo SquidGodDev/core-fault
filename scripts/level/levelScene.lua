@@ -1,5 +1,7 @@
 import "scripts/level/player/player"
-import "scripts/level/enemies/testEnemy"
+import "scripts/level/enemies/slime"
+import "scripts/level/enemies/fly"
+import "scripts/level/enemies/crab"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -52,6 +54,7 @@ function LevelScene:setupLevelLayout()
 end
 
 function LevelScene:setupEnemySpawner()
+    local enemiesList = {Slime, Fly, Crab}
     local levelWidth, levelHeight = 800, 800
 
     local spawnBorderBuffer = 20
@@ -66,7 +69,8 @@ function LevelScene:setupEnemySpawner()
         self.enemyCount += 1
         local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
         local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
-        TestEnemy(spawnX, spawnY, self)
+        local RandEnemy = enemiesList[math.random(#enemiesList)]
+        RandEnemy(spawnX, spawnY, self)
     end)
     spawnTimer.repeats = true
 end
