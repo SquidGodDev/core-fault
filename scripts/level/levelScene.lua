@@ -2,6 +2,7 @@ import "scripts/level/player/player"
 import "scripts/level/enemies/slime"
 import "scripts/level/enemies/fly"
 import "scripts/level/enemies/crab"
+import "scripts/level/mapGeneration/mapGenerator"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -36,21 +37,10 @@ function LevelScene:init(gameManager, curLevel)
 end
 
 function LevelScene:setupLevelLayout()
-    gfx.setBackgroundColor(gfx.kColorBlack)
-    local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
-    gfx.sprite.setBackgroundDrawingCallback(
-        function()
-            blackImage:draw(0, 0)
-        end
-    )
-    gfx.sprite.setAlwaysRedraw(false)
+    self.mapGenerator = MapGenerator()
 
-    self:createTilemapSprite("verticalWall", 0, 0)
-    self:createTilemapSprite("verticalWall", 800, 0)
-    self:createTilemapSprite("horizontalWall", 32, 0)
-    self:createTilemapSprite("horizontalWall", 32, 800)
-
-    self.player = Player(200, 120, self.gameManager)
+    local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
+    self.player = Player(spawnX, spawnY, self.gameManager)
 end
 
 function LevelScene:setupEnemySpawner()
@@ -67,9 +57,10 @@ function LevelScene:setupEnemySpawner()
             return
         end
         self.enemyCount += 1
-        local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
-        local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
+        -- local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
+        -- local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
         local RandEnemy = enemiesList[math.random(#enemiesList)]
+        local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
         RandEnemy(spawnX, spawnY, self)
     end)
     spawnTimer.repeats = true
@@ -81,15 +72,4 @@ function LevelScene:enemyDied()
     if self.enemiesToDefeat <= 0 then
         self.gameManager:levelDefeated()
     end
-end
-
-function LevelScene:createTilemapSprite(name, x, y)
-    local tilemapImage = gfx.image.new("images/levels/testLevel/"..name)
-    local tilemapSprite = gfx.sprite.new(tilemapImage)
-    tilemapSprite:setGroups(COLLISION_GROUPS.WALL)
-    tilemapSprite:setTag(TAGS.WALL)
-    tilemapSprite:setCollideRect(0, 0, tilemapSprite:getSize())
-    tilemapSprite:setCenter(0, 0)
-    tilemapSprite:moveTo(x, y)
-    tilemapSprite:add()
 end

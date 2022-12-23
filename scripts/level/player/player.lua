@@ -25,10 +25,6 @@ end
 local getDrawOffset <const> = gfx.getDrawOffset
 local setDrawOffset <const> = gfx.setDrawOffset
 
--- Screen Shake
-local setDisplayOffset <const> = pd.display.setOffset
-local random <const> = math.random
-
 class('Player').extends(gfx.sprite)
 
 function Player:init(x, y, gameManager)
@@ -64,6 +60,7 @@ function Player:init(x, y, gameManager)
     self.yVelocity = 0
 
     self:moveTo(x, y)
+    setDrawOffset(-(x - 200), -(y - 120))
 
     -- Hitbox/Collisions
     self:setGroups(COLLISION_GROUPS.PLAYER)
@@ -80,10 +77,6 @@ function Player:init(x, y, gameManager)
     self.hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
 
     self.enemyTag = TAGS.ENEMY
-
-    -- Screen Shake
-    self.shakeTimer = nil
-    self.shakeAmount = 4
 end
 
 function Player:update()
@@ -168,22 +161,4 @@ end
 
 function Player:lerp(a, b, t)
     return a * (1-t) + b * t
-end
-
-function Player:screenShake()
-    if self.shakeTimer then
-        self.shakeTimer:remove()
-    end
-    self.shakeTimer = pd.timer.new(700, self.shakeAmount, 0)
-    self.shakeTimer.timerEndedCallback = function()
-        setDisplayOffset(0, 0)
-        self.shakeTimer = nil
-    end
-    self.shakeTimer.updateCallback = function(timer)
-        local shakeAmount = timer.value
-        local shakeAngle = random()*360;
-        shakeX = floor(calculatedCosine[floor(shakeAngle)]*shakeAmount);
-        shakeY = floor(calculatedSine[floor(shakeAngle)]*shakeAmount);
-        setDisplayOffset(shakeX, shakeY)
-    end
 end
