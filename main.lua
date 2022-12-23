@@ -3,6 +3,7 @@ import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/animation"
+import "CoreLibs/crank"
 import "CoreLibs/utilities/sampler"
 import "scripts/libraries/SceneManager"
 

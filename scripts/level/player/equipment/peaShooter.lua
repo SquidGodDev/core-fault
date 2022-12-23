@@ -8,7 +8,7 @@ local gfx <const> = playdate.graphics
 class('PeaShooter').extends(Equipment)
 
 function PeaShooter:init(player, data)
-    data = Equipment.super.init(self, player, data)
+    data = PeaShooter.super.init(self, player, data)
 
     local cooldown = data.cooldown
     local velocity = data.velocity

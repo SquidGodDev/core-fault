@@ -32,6 +32,17 @@ function FiresProjectile:fireProjectile()
     self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent)
 end
 
+function FiresProjectile:fireProjectileAtAngle(angle)
+    local x, y = self.player.x, self.player.y
+    local angleInRad = rad(angle)
+    local angleCos = cos(angleInRad)
+    local angleSine = sin(angleInRad)
+
+    local xVelocity = angleCos * self.velocity
+    local yVelocity = angleSine * self.velocity
+    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent)
+end
+
 class('Projectile').extends(gfx.sprite)
 
 function Projectile:init(x, y, xVelocity, yVelocity, damageComponent)
