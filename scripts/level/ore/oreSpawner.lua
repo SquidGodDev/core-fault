@@ -30,5 +30,4 @@ end
 function OreSpawner:oreMined()
     self.currentOreCount -= 1
     self.gameManager.minedOre += 1
-    print(self.gameManager.minedOre)
 end

@@ -14,6 +14,7 @@ function MapGenerator:init()
     self.baseX = 32
     self.baseY = 32
     self.blockSize = self.blockImage:getSize()
+    self.borderBuffer = 10
 
     self.validCoordinates = {}
     for i=1,3 do
@@ -44,10 +45,10 @@ end
 
 function MapGenerator:getRandomEmptyPosition()
     local validPosition = self.validCoordinates[math.random(#self.validCoordinates)]
-    local minX = self.baseX + self.blockSize*(validPosition.x - 1)
-    local maxX = minX + self.blockSize
-    local minY = self.baseY + self.blockSize*(validPosition.y - 1)
-    local maxY = minY + self.blockSize
+    local minX = self.baseX + self.blockSize*(validPosition.x - 1) + self.borderBuffer
+    local maxX = minX + self.blockSize - self.borderBuffer
+    local minY = self.baseY + self.blockSize*(validPosition.y - 1) + self.borderBuffer
+    local maxY = minY + self.blockSize - self.borderBuffer
     return math.random(minX, maxX), math.random(minY, maxY)
 end
 

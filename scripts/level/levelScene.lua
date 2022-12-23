@@ -53,9 +53,6 @@ end
 
 function LevelScene:setupEnemySpawner()
     local enemiesList = {Slime, Fly, Crab}
-    local levelWidth, levelHeight = 800, 800
-
-    local spawnBorderBuffer = 20
     self.enemyCount = 0
     self.maxEnemies = 35
     self.enemiesDefeated = 0
@@ -65,8 +62,6 @@ function LevelScene:setupEnemySpawner()
             return
         end
         self.enemyCount += 1
-        -- local spawnX = math.random(spawnBorderBuffer, levelWidth - spawnBorderBuffer)
-        -- local spawnY = math.random(spawnBorderBuffer, levelHeight - spawnBorderBuffer)
         local RandEnemy = enemiesList[math.random(#enemiesList)]
         local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
         RandEnemy(spawnX, spawnY, self)
