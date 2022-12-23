@@ -20,9 +20,10 @@ class('GameManager').extends()
 function GameManager:init()
     self.sceneManager = SCENE_MANAGER
     self.curLevel = 1
+    self.minedOre = 0
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
-    self.equipment = {equipment.discharge}
+    self.equipment = {equipment.discharge, equipment.beam, equipment.shockProd}
     StartScene(self)
 end
 

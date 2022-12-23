@@ -10,7 +10,7 @@ local kImageFlippedX <const> = gfx.kImageFlippedX
 
 class('Enemy').extends(gfx.sprite)
 
-function Enemy:init(x, y, level, spritesheetPath)
+function Enemy:init(x, y, levelManager, spritesheetPath)
     local spritesheet = gfx.imagetable.new(spritesheetPath)
     self.animationLoop = gfx.animation.loop.new(200, spritesheet, true)
     self:setImage(self.animationLoop:image())
@@ -22,7 +22,7 @@ function Enemy:init(x, y, level, spritesheetPath)
     self.health = 4
     self.maxVelocity = 1
 
-    self.level = level
+    self.levelManager = levelManager
 
     self:setGroups(COLLISION_GROUPS.ENEMY)
     self:setCollideRect(0, 0, self:getSize())
@@ -38,7 +38,7 @@ function Enemy:init(x, y, level, spritesheetPath)
     self.xVelocity = 0
     self.yVelocity = 0
 
-    self.player = self.level.player
+    self.player = self.levelManager.player
 
     self:moveTo(x, y)
 
@@ -91,7 +91,7 @@ function Enemy:damage(amount)
     end
     self.health -= amount
     if self.health <= 0 then
-        self.level:enemyDied()
+        self.levelManager:enemyDied()
         self:remove()
     end
 

@@ -6,6 +6,7 @@ import "CoreLibs/animation"
 import "CoreLibs/utilities/sampler"
 import "scripts/libraries/SceneManager"
 
+import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
 import "scripts/title/titleScene"
 

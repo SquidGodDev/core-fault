@@ -7,6 +7,7 @@ class('DoesDamage').extends()
 
 function DoesDamage:init(player, damage)
     self.enemyTag = TAGS.ENEMY
+    self.oreTag = TAGS.ORE
     self.damage = damage
     self.CritChance = player.CritChance
     self.CritDamage = player.CritDamage
@@ -27,7 +28,8 @@ function DoesDamage:dealDamage(hitEntities)
 
     for i=1, #hitEntities do
         local curObject = hitEntities[i]
-        if curObject:getTag() == self.enemyTag then
+        local hitEntityTag = curObject:getTag()
+        if hitEntityTag == self.enemyTag or hitEntityTag == self.oreTag then
             curObject:damage(damageAmount)
         end
     end
@@ -42,7 +44,8 @@ function DoesDamage:dealDamageSingle(hitEntity)
         damageAmount *= 1 + self.CritDamage
     end
 
-    if hitEntity:getTag() == self.enemyTag then
+    local hitEntityTag = hitEntity:getTag()
+    if hitEntityTag == self.enemyTag or hitEntityTag == self.oreTag then
         hitEntity:damage(damageAmount)
     end
 

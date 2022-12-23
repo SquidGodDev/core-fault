@@ -3,6 +3,7 @@ import "scripts/level/enemies/slime"
 import "scripts/level/enemies/fly"
 import "scripts/level/enemies/crab"
 import "scripts/level/mapGeneration/mapGenerator"
+import "scripts/level/ore/oreSpawner"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -11,7 +12,8 @@ COLLISION_GROUPS = {
     PLAYER = 1,
     ENEMY = 2,
     PROJECTILE = 3,
-    WALL = 4
+    WALL = 4,
+    ORE = 5
 }
 
 Z_INDEXES = {
@@ -23,7 +25,8 @@ Z_INDEXES = {
 TAGS = {
     PLAYER = 1,
     ENEMY = 2,
-    WALL = 3
+    WALL = 3,
+    ORE = 4
 }
 
 class('LevelScene').extends(gfx.sprite)
@@ -33,6 +36,7 @@ function LevelScene:init(gameManager, curLevel)
     self.curLevel = curLevel
 
     self:setupLevelLayout()
+    self:setupOreSpawner()
     self:setupEnemySpawner()
 end
 
@@ -41,6 +45,10 @@ function LevelScene:setupLevelLayout()
 
     local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
     self.player = Player(spawnX, spawnY, self.gameManager)
+end
+
+function LevelScene:setupOreSpawner()
+    OreSpawner(self.gameManager, self.mapGenerator)
 end
 
 function LevelScene:setupEnemySpawner()
