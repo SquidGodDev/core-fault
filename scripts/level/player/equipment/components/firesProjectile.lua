@@ -15,6 +15,7 @@ class('FiresProjectile').extends()
 
 function FiresProjectile:init(player, velocity, damage)
     self.player = player
+    self.pierceCount = player.Piercing
     self.velocity = velocity
     self.projectileConstructor = Projectile
     self.damageComponent = DoesDamage(player, damage)
@@ -29,7 +30,7 @@ function FiresProjectile:fireProjectile()
 
     local xVelocity = angleCos * self.velocity
     local yVelocity = angleSine * self.velocity
-    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent)
+    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent, self.pierceCount)
 end
 
 function FiresProjectile:fireProjectileAtAngle(angle)
@@ -40,12 +41,12 @@ function FiresProjectile:fireProjectileAtAngle(angle)
 
     local xVelocity = angleCos * self.velocity
     local yVelocity = angleSine * self.velocity
-    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent)
+    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent, self.pierceCount)
 end
 
 class('Projectile').extends(gfx.sprite)
 
-function Projectile:init(x, y, xVelocity, yVelocity, damageComponent)
+function Projectile:init(x, y, xVelocity, yVelocity, damageComponent, pierceCount)
     self.xVelocity = xVelocity
     self.yVelocity = yVelocity
     self.damageComponent = damageComponent
@@ -66,6 +67,10 @@ function Projectile:init(x, y, xVelocity, yVelocity, damageComponent)
 
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
+
+    self.pierceCount = pierceCount
+
+    self.collisionDict = {}
 end
 
 function Projectile:update()
@@ -80,8 +85,17 @@ function Projectile:update()
         end
 
         if collisionTag ~= self.wallTag then
-            self.damageComponent:dealDamageSingle(collision)
+            local collisionID = collision._sprite
+            if not self.collisionDict[collisionID] then
+                self.collisionDict[collisionID] = true
+                self.damageComponent:dealDamageSingle(collision)
+                self.pierceCount -= 1
+                if self.pierceCount <= 0 then
+                    self:remove()
+                end
+            end
+        else
+            self:remove()
         end
-        self:remove()
     end
 end

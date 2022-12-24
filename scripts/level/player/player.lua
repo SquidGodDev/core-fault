@@ -37,6 +37,8 @@ function Player:init(x, y, gameManager)
     self.CritChance = 0.1
     self.CritDamage = 1.5
     self.AttackSpeed = 1
+    self.Piercing = 0
+
     self.BonusDamage = 0
 
     self.healthbar = Healthbar(self.MaxHealth, self)

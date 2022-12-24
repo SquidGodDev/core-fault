@@ -5,6 +5,7 @@ import "scripts/level/player/upgrades/damage"
 import "scripts/level/player/upgrades/health"
 import "scripts/level/player/upgrades/healthRegen"
 import "scripts/level/player/upgrades/moveSpeed"
+import "scripts/level/player/upgrades/piercing"
 
 -- Use {} in description where value should be inserted
 
@@ -79,4 +80,13 @@ upgrades = {
         imagePath = "",
         constructor = AttackSpeed
     },
+    piercing = {
+        description = "Projectiles pass through {} more enemies",
+        level = 5,
+        maxLevel = 5,
+        value = 1,
+        scaling = 1,
+        imagePath = "",
+        constructor = Piercing
+    }
 }
