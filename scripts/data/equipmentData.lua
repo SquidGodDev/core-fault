@@ -5,6 +5,7 @@ import "scripts/level/player/equipment/StaticField"
 import "scripts/level/player/equipment/Discharge"
 import "scripts/level/player/equipment/SubterranianRocket"
 import "scripts/level/player/equipment/Generator"
+import "scripts/level/player/equipment/RadioWaves"
 
 equipment = {
     shockProd = {
@@ -141,5 +142,23 @@ equipment = {
         },
         imagePath = "",
         constructor = Generator
+    },
+    radioWaves = {
+        name = "Radio Waves",
+        description = "Periodically shoots out a ring of projectiles",
+        level = 1,
+        damage = 1,
+        cooldown = 2000,
+        velocity = 6,
+        projectileCount = 18,
+        levelStats = {
+            {cooldown = -100},
+            {cooldown = -100},
+            {cooldown = -100},
+            {cooldown = -100},
+            {cooldown = -100},
+        },
+        imagePath = "",
+        constructor = RadioWaves
     }
 }

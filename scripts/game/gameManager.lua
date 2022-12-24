@@ -22,8 +22,8 @@ function GameManager:init()
     self.curLevel = 1
     self.minedOre = 0
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
-    self.upgrades = {upgrades.piercing}
-    self.equipment = {equipment.generator}
+    self.upgrades = {}
+    self.equipment = {equipment.radioWaves}
     StartScene(self)
 end
 
