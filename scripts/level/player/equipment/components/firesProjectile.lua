@@ -9,6 +9,14 @@ local rad <const> = math.rad
 local cos <const> = math.cos
 local sin <const> = math.sin
 
+local calculatedCosine <const> = {}
+local calculatedSine <const> = {}
+for i=0,360 do
+    local angleInRadians = math.rad(i)
+    calculatedCosine[i] = math.cos(angleInRadians)
+    calculatedSine[i] = math.sin(angleInRadians)
+end
+
 local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
 
 class('FiresProjectile').extends()
@@ -17,38 +25,56 @@ function FiresProjectile:init(player, velocity, damage)
     self.player = player
     self.pierceCount = player.Piercing
     self.velocity = velocity
-    self.projectileConstructor = Projectile
     self.damageComponent = DoesDamage(player, damage)
+
+    local projectilePoolCount = 30
+    self.projectilePool = {}
+    for i=1,projectilePoolCount do
+        self.projectilePool[i] = Projectile(self, self.damageComponent)
+    end
 end
 
 function FiresProjectile:fireProjectile()
     local x, y = self.player.x, self.player.y
-    local crankPos = getCrankPosition() - 90
-    local angleInRad = rad(crankPos)
-    local angleCos = cos(angleInRad)
-    local angleSine = sin(angleInRad)
+    local crankPos = math.floor(getCrankPosition() - 90)
+    local angleCos = calculatedCosine[crankPos]
+    local angleSine = calculatedSine[crankPos]
 
     local xVelocity = angleCos * self.velocity
     local yVelocity = angleSine * self.velocity
-    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent, self.pierceCount)
+    local projectileInstance = table.remove(self.projectilePool)
+    if projectileInstance then
+        projectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
+    else
+        local newProjectileInstance = Projectile(self, self.damageComponent)
+        newProjectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
+    end
 end
 
 function FiresProjectile:fireProjectileAtAngle(angle)
     local x, y = self.player.x, self.player.y
-    local angleInRad = rad(angle)
-    local angleCos = cos(angleInRad)
-    local angleSine = sin(angleInRad)
+    local angleCos = calculatedCosine[math.floor(angle)]
+    local angleSine = calculatedSine[math.floor(angle)]
 
     local xVelocity = angleCos * self.velocity
     local yVelocity = angleSine * self.velocity
-    self.projectileConstructor(x, y, xVelocity, yVelocity, self.damageComponent, self.pierceCount)
+    local projectileInstance = table.remove(self.projectilePool)
+    if projectileInstance then
+        projectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
+    else
+        local newProjectileInstance = Projectile(self, self.damageComponent)
+        newProjectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
+    end
+end
+
+function FiresProjectile:addToPool(projectileInstance)
+    table.insert(self.projectilePool, projectileInstance)
 end
 
 class('Projectile').extends(gfx.sprite)
 
-function Projectile:init(x, y, xVelocity, yVelocity, damageComponent, pierceCount)
-    self.xVelocity = xVelocity
-    self.yVelocity = yVelocity
+function Projectile:init(projectileManager, damageComponent)
+    self.projectileManager = projectileManager
     self.damageComponent = damageComponent
 
     local projectileDiameter = 5
@@ -59,8 +85,6 @@ function Projectile:init(x, y, xVelocity, yVelocity, damageComponent, pierceCoun
     gfx.popContext()
     self:setImage(projectileImage)
     self:setZIndex(equipmentZIndex)
-    self:moveTo(x, y)
-    self:add()
 
     self.wallTag = TAGS.WALL
     self.playerTag = TAGS.PLAYER
@@ -68,9 +92,19 @@ function Projectile:init(x, y, xVelocity, yVelocity, damageComponent, pierceCoun
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
 
-    self.pierceCount = pierceCount
+    self:setUpdatesEnabled(false)
+    self:setVisible(false)
+    self:add()
+end
 
+function Projectile:activate(x, y, xVelocity, yVelocity, pierceCount)
+    self.xVelocity = xVelocity
+    self.yVelocity = yVelocity
+    self.pierceCount = pierceCount
     self.collisionDict = {}
+    self:moveTo(x, y)
+    self:setUpdatesEnabled(true)
+    self:setVisible(true)
 end
 
 function Projectile:update()
@@ -91,11 +125,15 @@ function Projectile:update()
                 self.damageComponent:dealDamageSingle(collision)
                 self.pierceCount -= 1
                 if self.pierceCount <= 0 then
-                    self:remove()
+                    self:setUpdatesEnabled(false)
+                    self:setVisible(false)
+                    self.projectileManager:addToPool(self)
                 end
             end
         else
-            self:remove()
+            self:setUpdatesEnabled(false)
+            self:setVisible(false)
+            self.projectileManager:addToPool(self)
         end
     end
 end

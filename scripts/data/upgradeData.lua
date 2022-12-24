@@ -82,7 +82,7 @@ upgrades = {
     },
     piercing = {
         description = "Projectiles pass through {} more enemies",
-        level = 5,
+        level = 1,
         maxLevel = 5,
         value = 1,
         scaling = 1,
