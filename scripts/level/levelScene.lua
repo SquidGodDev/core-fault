@@ -54,7 +54,7 @@ end
 function LevelScene:setupEnemySpawner()
     local enemiesList = {Slime, Fly, Crab}
     self.enemyCount = 0
-    self.maxEnemies = 20
+    self.maxEnemies = 40
     self.enemiesDefeated = 0
     self.enemiesToDefeat = self.curLevel * 5 + 5 + 100
     local spawnTimer = pd.timer.new(100, function()

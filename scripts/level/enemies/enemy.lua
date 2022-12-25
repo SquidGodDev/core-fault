@@ -46,7 +46,6 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
     self.directionUpdateInterval = 60
     self.randomMoveUpdateInterval = 30
 
-    self.randomMoveAmount = 3
     self.imageFlip = kImageUnflipped
 
     self.attackOnCooldown = false
@@ -54,24 +53,41 @@ end
 
 function Enemy:update()
     self:setImage(self.animationLoop:image(), self.imageFlip)
-    if self.directionUpdateCount == 0 then
-        if self.xVelocity < 0 and self.imageFlip == kImageUnflipped then
+    local xVelocity, yVelocity = self.xVelocity, self.yVelocity
+    local directionUpdateCount <const> = self.directionUpdateCount
+    if directionUpdateCount == 0 then
+        local player = self.player
+        local xDiff = player.x - self.x
+        local yDiff = player.y - self.y
+        local magnitude = sqrt(xDiff * xDiff + yDiff * yDiff)
+        local scaledMagnitude = self.maxVelocity / magnitude
+        xVelocity = xDiff * scaledMagnitude
+        yVelocity = yDiff * scaledMagnitude
+
+        local curImageFlip <const> = self.imageFlip
+        if xVelocity < 0 and curImageFlip == kImageUnflipped then
             self.imageFlip = kImageFlippedX
-        elseif self.xVelocity > 0 and self.imageFlip == kImageFlippedX then
+        elseif xVelocity > 0 and curImageFlip == kImageFlippedX then
             self.imageFlip = kImageUnflipped
         end
-        local xDiff = self.player.x - self.x
-        local yDiff = self.player.y - self.y
-        local magnitude = sqrt(xDiff^2 + yDiff^2)
-        local scaledMagnitude = self.maxVelocity / magnitude
-        self.xVelocity = xDiff * scaledMagnitude
-        self.yVelocity = yDiff * scaledMagnitude
-    elseif self.directionUpdateCount == self.randomMoveUpdateInterval then
-        self.xVelocity = (random() - 0.5) * self.randomMoveAmount
-        self.yVelocity = (random() - 0.5) * self.randomMoveAmount
+        self.xVelocity = xVelocity
+        self.yVelocity = yVelocity
+    elseif directionUpdateCount == self.randomMoveUpdateInterval then
+        local randomMoveAmount <const> = 3
+        xVelocity = (random() - 0.5) * randomMoveAmount
+        yVelocity = (random() - 0.5) * randomMoveAmount
+
+        local curImageFlip <const> = self.imageFlip
+        if xVelocity < 0 and curImageFlip == kImageUnflipped then
+            self.imageFlip = kImageFlippedX
+        elseif xVelocity > 0 and curImageFlip == kImageFlippedX then
+            self.imageFlip = kImageUnflipped
+        end
+        self.xVelocity = xVelocity
+        self.yVelocity = yVelocity
     end
-    self.directionUpdateCount = (self.directionUpdateCount + 1) % self.directionUpdateInterval
-    self:moveBy(self.xVelocity, self.yVelocity)
+    self.directionUpdateCount = (directionUpdateCount + 1) % self.directionUpdateInterval
+    self:moveBy(xVelocity, yVelocity)
 end
 
 function Enemy:setAttackCooldown()

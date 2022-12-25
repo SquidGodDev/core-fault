@@ -10,8 +10,8 @@ local getCrankPosition <const> = pd.getCrankPosition
 
 local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
-local calculatedCosine = {}
-local calculatedSine = {}
+local calculatedCosine <const> = {}
+local calculatedSine <const> = {}
 for i=0,360 do
     local angleInRadians = math.rad(i - 90)
     calculatedCosine[i] = math.cos(angleInRadians)
@@ -24,6 +24,13 @@ end
 
 local getDrawOffset <const> = gfx.getDrawOffset
 local setDrawOffset <const> = gfx.setDrawOffset
+
+local smoothSpeed <const> = 0.06
+
+local hurtboxWidth
+local hurtboxHeight
+local hurtboxHalfWidth
+local hurtboxHalfHeight
 
 class('Player').extends(gfx.sprite)
 
@@ -73,19 +80,21 @@ function Player:init(x, y, gameManager)
 
     local playerWidth, playerHeight = self:getSize()
     local hurtboxBuffer = 4
-    self.hurtboxWidth = playerWidth - hurtboxBuffer * 2
-    self.hurtboxHeight = playerHeight - hurtboxBuffer * 2
-    self.hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer
-    self.hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
+    hurtboxWidth = playerWidth - hurtboxBuffer * 2
+    hurtboxHeight = playerHeight - hurtboxBuffer * 2
+    hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer
+    hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
 
     self.enemyTag = TAGS.ENEMY
 end
 
 function Player:update()
+    local playerX, playerY = self.x, self.y
+
     -- Check if being damaged by enemies
-    local hurtboxX = self.x - self.hurtboxHalfWidth
-    local hurtboxY = self.y - self.hurtboxHalfHeight
-    local overlappingSprites = querySpritesInRect(hurtboxX, hurtboxY, self.hurtboxWidth, self.hurtboxHeight)
+    local hurtboxX = playerX - hurtboxHalfWidth
+    local hurtboxY = playerY - hurtboxHalfHeight
+    local overlappingSprites = querySpritesInRect(hurtboxX, hurtboxY, hurtboxWidth, hurtboxHeight)
     for i=1, #overlappingSprites do
         local enemy = overlappingSprites[i]
         if enemy:getTag() == self.enemyTag and enemy:canAttack() then
@@ -97,18 +106,18 @@ function Player:update()
     local crankPos = getCrankPosition()
     local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
     local animationStartIndex = 1 + (dirIndex - 1) * 2
-    self.animationLoop.startFrame = animationStartIndex
-    self.animationLoop.endFrame = animationStartIndex + 1
+    local animationLoop <const> = self.animationLoop
+    animationLoop.startFrame = animationStartIndex
+    animationLoop.endFrame = animationStartIndex + 1
     self:updateMovement(crankPos)
 
     local drawOffsetX, drawOffsetY = getDrawOffset()
-    local targetOffsetX, targetOffsetY = -(self.x - 200), -(self.y - 120)
-    local smoothSpeed = 0.06
+    local targetOffsetX, targetOffsetY = -(playerX - 200), -(playerY - 120)
     local smoothedX = lerp(drawOffsetX, targetOffsetX, smoothSpeed)
     local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
     setDrawOffset(smoothedX, smoothedY)
 
-    self:setImage(self.animationLoop:image())
+    self:setImage(animationLoop:image())
 end
 
 function Player:initializeUpgrades()
@@ -152,15 +161,12 @@ function Player:heal(amount)
 end
 
 function Player:updateMovement(crankAngle)
+    local maxVelocity <const> = self.MaxVelocity
     local angleCos = calculatedCosine[floor(crankAngle)]
     local angleSin = calculatedSine[floor(crankAngle)]
-    local maxX = angleCos * self.MaxVelocity
-    local maxY = angleSin * self.MaxVelocity
+    local maxX = angleCos * maxVelocity
+    local maxY = angleSin * maxVelocity
     self.xVelocity = maxX
     self.yVelocity = maxY
-    self:moveWithCollisions(self.x + self.xVelocity, self.y + self.yVelocity)
-end
-
-function Player:lerp(a, b, t)
-    return a * (1-t) + b * t
+    self:moveWithCollisions(self.x + maxX, self.y + maxY)
 end
