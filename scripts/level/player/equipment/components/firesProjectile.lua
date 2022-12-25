@@ -5,10 +5,6 @@ local gfx <const> = playdate.graphics
 
 local getCrankPosition <const> = pd.getCrankPosition
 
-local rad <const> = math.rad
-local cos <const> = math.cos
-local sin <const> = math.sin
-
 local calculatedCosine <const> = {}
 local calculatedSine <const> = {}
 for i=0,360 do
@@ -16,6 +12,8 @@ for i=0,360 do
     calculatedCosine[i] = math.cos(angleInRadians)
     calculatedSine[i] = math.sin(angleInRadians)
 end
+
+local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
 local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
 
@@ -110,19 +108,21 @@ end
 function Projectile:update()
     self:moveBy(self.xVelocity, self.yVelocity)
     local queryX, queryY = self.x - self.radius, self.y - self.radius
-    local collisions = gfx.sprite.querySpritesInRect(queryX, queryY, self.diameter, self.diameter)
-    if #collisions > 0 then
-        local collision = collisions[1]
-        local collisionTag = collision:getTag()
+    local collisionDiameter <const> = self.diameter
+    local collisions = querySpritesInRect(queryX, queryY, collisionDiameter, collisionDiameter)
+    local collidedSprite <const> = collisions[1]
+    if collidedSprite then
+        local collisionTag <const> = collidedSprite:getTag()
         if collisionTag == self.playerTag then
             return
         end
 
         if collisionTag ~= self.wallTag then
-            local collisionID = collision._sprite
-            if not self.collisionDict[collisionID] then
-                self.collisionDict[collisionID] = true
-                self.damageComponent:dealDamageSingle(collision)
+            local collisionID <const> = collidedSprite._sprite
+            local collisionDict <const> = self.collisionDict
+            if not collisionDict[collisionID] then
+                collisionDict[collisionID] = true
+                self.damageComponent:dealDamageSingle(collidedSprite)
                 self.pierceCount -= 1
                 if self.pierceCount <= 0 then
                     self:setUpdatesEnabled(false)
