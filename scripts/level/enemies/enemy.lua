@@ -11,9 +11,12 @@ local kImageFlippedX <const> = gfx.kImageFlippedX
 class('Enemy').extends(gfx.sprite)
 
 function Enemy:init(x, y, levelManager, spritesheetPath)
-    local spritesheet = gfx.imagetable.new(spritesheetPath)
-    self.animationLoop = gfx.animation.loop.new(200, spritesheet, true)
-    self:setImage(self.animationLoop:image())
+    self.spritesheet = gfx.imagetable.new(spritesheetPath)
+    self.animationLoopCount = 1
+    self.animationFrameTime = 6
+    self.animationFrame = 1
+    self.maxAnimationFrame = self.spritesheet:getLength()
+    self:setImage(self.spritesheet:getImage(1))
     self:add()
 
     -- Stats
@@ -52,7 +55,17 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
 end
 
 function Enemy:update()
-    self:setImage(self.animationLoop:image(), self.imageFlip)
+    local curImageFlip <const> = self.imageFlip
+
+    local animationLoopCount = self.animationLoopCount
+    animationLoopCount = animationLoopCount % self.animationFrameTime + 1
+    self.animationLoopCount = animationLoopCount
+    if animationLoopCount == 1 then
+        local animationFrame = self.animationFrame % self.maxAnimationFrame + 1
+        self.animationFrame = animationFrame
+        self:setImage(self.spritesheet:getImage(animationFrame), curImageFlip)
+    end
+
     local xVelocity, yVelocity = self.xVelocity, self.yVelocity
     local directionUpdateCount <const> = self.directionUpdateCount
     if directionUpdateCount == 0 then
@@ -64,7 +77,6 @@ function Enemy:update()
         xVelocity = xDiff * scaledMagnitude
         yVelocity = yDiff * scaledMagnitude
 
-        local curImageFlip <const> = self.imageFlip
         if xVelocity < 0 and curImageFlip == kImageUnflipped then
             self.imageFlip = kImageFlippedX
         elseif xVelocity > 0 and curImageFlip == kImageFlippedX then
@@ -77,7 +89,6 @@ function Enemy:update()
         xVelocity = (random() - 0.5) * randomMoveAmount
         yVelocity = (random() - 0.5) * randomMoveAmount
 
-        local curImageFlip <const> = self.imageFlip
         if xVelocity < 0 and curImageFlip == kImageUnflipped then
             self.imageFlip = kImageFlippedX
         elseif xVelocity > 0 and curImageFlip == kImageFlippedX then
