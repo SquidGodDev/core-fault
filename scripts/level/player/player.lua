@@ -48,11 +48,19 @@ function Player:init(x, y, gameManager)
 
     self.BonusDamage = 0
 
-    self.healthbar = Healthbar(self.MaxHealth, self)
-    self.flashTime = 100
-
     self:initializeUpgrades()
     self:initializeEquipment()
+
+    local healthbar <const> = Healthbar(self.MaxHealth, self)
+    self.healthbar = healthbar
+    self.flashTime = 100
+
+    local healthRegenTickRate = 500
+    local healthRegen <const> = self.HealthRegen
+    local healthRegenTimer = pd.timer.new(healthRegenTickRate, function()
+        healthbar:heal(healthRegen)
+    end)
+    healthRegenTimer.repeats = true
 
     local playerSpriteSheet = gfx.imagetable.new("images/player/player")
 
@@ -131,9 +139,13 @@ end
 
 function Player:initializeEquipment()
     local equipment = self.gameManager.equipment
+    local attackSpeed <const> = self.AttackSpeed
     for i=1, #equipment do
         local equipmentData = equipment[i]
         local equipmentConstructor = equipmentData.constructor
+        if equipmentData.cooldown then
+            equipmentData.cooldown *= attackSpeed
+        end
         equipmentConstructor(self, equipmentData)
     end
 end

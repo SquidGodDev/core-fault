@@ -71,7 +71,7 @@ upgrades = {
         constructor = MoveSpeed
     },
     attackSpeed = {
-        description = "Increases attack speed by {}",
+        description = "Decreases attack cooldowns by {}",
         level = 1,
         maxLevel = 3,
         value = 0.1,
