@@ -8,27 +8,6 @@ import "scripts/level/ore/oreSpawner"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-COLLISION_GROUPS = {
-    PLAYER = 1,
-    ENEMY = 2,
-    PROJECTILE = 3,
-    WALL = 4,
-    ORE = 5
-}
-
-Z_INDEXES = {
-    UI = 200,
-    PLAYER = 100,
-    EQUIPMENT = 90
-}
-
-TAGS = {
-    PLAYER = 1,
-    ENEMY = 2,
-    WALL = 3,
-    ORE = 4
-}
-
 class('LevelScene').extends(gfx.sprite)
 
 function LevelScene:init(gameManager, curLevel)

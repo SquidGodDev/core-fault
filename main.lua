@@ -1,3 +1,24 @@
+COLLISION_GROUPS = {
+    PLAYER = 1,
+    ENEMY = 2,
+    PROJECTILE = 3,
+    WALL = 4,
+    ORE = 5
+}
+
+Z_INDEXES = {
+    UI = 200,
+    PLAYER = 100,
+    EQUIPMENT = 90
+}
+
+TAGS = {
+    PLAYER = 1,
+    ENEMY = 2,
+    WALL = 3,
+    ORE = 4
+}
+
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"

@@ -1,4 +1,5 @@
 import "scripts/level/player/equipment/components/doesDamage"
+import "scripts/level/player/equipment/components/projectile"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -13,10 +14,6 @@ for i=0,360 do
     calculatedSine[i] = math.sin(angleInRadians)
 end
 
-local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
-
-local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
-
 class('FiresProjectile').extends()
 
 function FiresProjectile:init(player, velocity, damage, size)
@@ -25,14 +22,14 @@ function FiresProjectile:init(player, velocity, damage, size)
     self.velocity = velocity
     self.damageComponent = DoesDamage(player, damage)
 
-    local projectileDiameter = 5
+    self.projectileDiameter = 5
     if size then
-        projectileDiameter = size
+        self.projectileDiameter = size
     end
     local projectilePoolCount = 30
     self.projectilePool = {}
     for i=1,projectilePoolCount do
-        self.projectilePool[i] = Projectile(self, self.damageComponent, projectileDiameter)
+        self.projectilePool[i] = Projectile(self, self.damageComponent, self.projectileDiameter)
     end
 end
 
@@ -64,79 +61,11 @@ function FiresProjectile:fireProjectileAtAngle(angle)
     if projectileInstance then
         projectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     else
-        local newProjectileInstance = Projectile(self, self.damageComponent)
+        local newProjectileInstance = Projectile(self, self.damageComponent, self.projectileDiameter)
         newProjectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     end
 end
 
 function FiresProjectile:addToPool(projectileInstance)
     table.insert(self.projectilePool, projectileInstance)
-end
-
-class('Projectile').extends(gfx.sprite)
-
-function Projectile:init(projectileManager, damageComponent, projectileDiameter)
-    self.projectileManager = projectileManager
-    self.damageComponent = damageComponent
-
-    local projectileImage = gfx.image.new(projectileDiameter, projectileDiameter)
-    gfx.pushContext(projectileImage)
-        gfx.setColor(gfx.kColorWhite)
-        gfx.fillCircleInRect(0, 0, projectileDiameter, projectileDiameter)
-    gfx.popContext()
-    self:setImage(projectileImage)
-    self:setZIndex(equipmentZIndex)
-
-    self.wallTag = TAGS.WALL
-    self.playerTag = TAGS.PLAYER
-
-    self.diameter = projectileDiameter
-    self.radius = projectileDiameter / 2
-
-    self:setUpdatesEnabled(false)
-    self:setVisible(false)
-    self:add()
-end
-
-function Projectile:activate(x, y, xVelocity, yVelocity, pierceCount)
-    self.xVelocity = xVelocity
-    self.yVelocity = yVelocity
-    self.pierceCount = pierceCount
-    self.collisionDict = {}
-    self:moveTo(x, y)
-    self:setUpdatesEnabled(true)
-    self:setVisible(true)
-end
-
-function Projectile:update()
-    self:moveBy(self.xVelocity, self.yVelocity)
-    local queryX, queryY = self.x - self.radius, self.y - self.radius
-    local collisionDiameter <const> = self.diameter
-    local collisions = querySpritesInRect(queryX, queryY, collisionDiameter, collisionDiameter)
-    local collidedSprite <const> = collisions[1]
-    if collidedSprite then
-        local collisionTag <const> = collidedSprite:getTag()
-        if collisionTag == self.playerTag then
-            return
-        end
-
-        if collisionTag ~= self.wallTag then
-            local collisionID <const> = collidedSprite._sprite
-            local collisionDict <const> = self.collisionDict
-            if not collisionDict[collisionID] then
-                collisionDict[collisionID] = true
-                self.damageComponent:dealDamageSingle(collidedSprite)
-                self.pierceCount -= 1
-                if self.pierceCount <= 0 then
-                    self:setUpdatesEnabled(false)
-                    self:setVisible(false)
-                    self.projectileManager:addToPool(self)
-                end
-            end
-        else
-            self:setUpdatesEnabled(false)
-            self:setVisible(false)
-            self.projectileManager:addToPool(self)
-        end
-    end
 end
