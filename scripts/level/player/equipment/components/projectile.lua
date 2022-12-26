@@ -6,14 +6,16 @@ local playerTag <const> = TAGS.PLAYER
 local wallTag <const> = TAGS.WALL
 
 local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
+local abs <const> = math.abs
 
 local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
 
 class('Projectile').extends(gfx.sprite)
 
-function Projectile:init(projectileManager, damageComponent, projectileDiameter)
+function Projectile:init(projectileManager, damageComponent, projectileDiameter, player)
     self.projectileManager = projectileManager
     self.damageComponent = damageComponent
+    self.player = player
 
     local projectileImage = gfx.image.new(projectileDiameter, projectileDiameter)
     gfx.pushContext(projectileImage)
@@ -25,6 +27,9 @@ function Projectile:init(projectileManager, damageComponent, projectileDiameter)
 
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
+
+    self.collisionCheckCounter = 0
+    self.collisionCheckInterval = 4
 end
 
 function Projectile:activate(x, y, xVelocity, yVelocity, pierceCount)
@@ -38,6 +43,20 @@ end
 
 function Projectile:update()
     self:moveBy(self.xVelocity, self.yVelocity)
+
+    local collisionCheckCounter = self.collisionCheckCounter
+    collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval
+    self.collisionCheckCounter = collisionCheckCounter
+    if collisionCheckCounter ~= 0 then
+        return
+    end
+
+    local player <const> = self.player
+    if abs(self.x - player.x) > 210 or abs(self.y - player.y) > 130 then
+        self:remove()
+        self.projectileManager:addToPool(self)
+        return
+    end
     local queryX, queryY = self.x - self.radius, self.y - self.radius
     local collisionDiameter <const> = self.diameter
     local collisions = querySpritesInRect(queryX, queryY, collisionDiameter, collisionDiameter)

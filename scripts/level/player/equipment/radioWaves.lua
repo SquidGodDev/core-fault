@@ -16,7 +16,7 @@ function RadioWaves:init(player, data)
 
     local projectileComponent = FiresProjectile(player, velocity, damage)
 
-    local fireAngles = {}
+    local fireAngles = table.create(projectileCount, 0)
     local angleIncrement = 360 / projectileCount
     for i=0,projectileCount-1 do
         table.insert(fireAngles, i*angleIncrement)

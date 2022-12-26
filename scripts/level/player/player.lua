@@ -10,8 +10,8 @@ local getCrankPosition <const> = pd.getCrankPosition
 
 local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 
-local calculatedCosine <const> = {}
-local calculatedSine <const> = {}
+local calculatedCosine <const> = table.create(361, 0)
+local calculatedSine <const> = table.create(361, 0)
 for i=0,360 do
     local angleInRadians = math.rad(i - 90)
     calculatedCosine[i] = math.cos(angleInRadians)

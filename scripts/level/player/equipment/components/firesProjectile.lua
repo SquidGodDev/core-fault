@@ -6,8 +6,8 @@ local gfx <const> = playdate.graphics
 
 local getCrankPosition <const> = pd.getCrankPosition
 
-local calculatedCosine <const> = {}
-local calculatedSine <const> = {}
+local calculatedCosine <const> = table.create(361, 0)
+local calculatedSine <const> = table.create(361, 0)
 for i=0,360 do
     local angleInRadians = math.rad(i)
     calculatedCosine[i] = math.cos(angleInRadians)
@@ -26,10 +26,10 @@ function FiresProjectile:init(player, velocity, damage, size)
     if size then
         self.projectileDiameter = size
     end
-    local projectilePoolCount = 30
-    self.projectilePool = {}
+    local projectilePoolCount <const> = 30
+    self.projectilePool = table.create(projectilePoolCount, 0)
     for i=1,projectilePoolCount do
-        self.projectilePool[i] = Projectile(self, self.damageComponent, self.projectileDiameter)
+        self.projectilePool[i] = Projectile(self, self.damageComponent, self.projectileDiameter, player)
     end
 end
 
@@ -61,7 +61,7 @@ function FiresProjectile:fireProjectileAtAngle(angle)
     if projectileInstance then
         projectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     else
-        local newProjectileInstance = Projectile(self, self.damageComponent, self.projectileDiameter)
+        local newProjectileInstance = Projectile(self, self.damageComponent, self.projectileDiameter, self.player)
         newProjectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     end
 end
