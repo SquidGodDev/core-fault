@@ -19,22 +19,26 @@ local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
 
 class('FiresProjectile').extends()
 
-function FiresProjectile:init(player, velocity, damage)
+function FiresProjectile:init(player, velocity, damage, size)
     self.player = player
     self.pierceCount = player.Piercing
     self.velocity = velocity
     self.damageComponent = DoesDamage(player, damage)
 
+    local projectileDiameter = 5
+    if size then
+        projectileDiameter = size
+    end
     local projectilePoolCount = 30
     self.projectilePool = {}
     for i=1,projectilePoolCount do
-        self.projectilePool[i] = Projectile(self, self.damageComponent)
+        self.projectilePool[i] = Projectile(self, self.damageComponent, projectileDiameter)
     end
 end
 
 function FiresProjectile:fireProjectile()
     local x, y = self.player.x, self.player.y
-    local crankPos = math.floor(getCrankPosition() - 90)
+    local crankPos = math.floor(getCrankPosition() - 90) % 360
     local angleCos = calculatedCosine[crankPos]
     local angleSine = calculatedSine[crankPos]
 
@@ -71,11 +75,10 @@ end
 
 class('Projectile').extends(gfx.sprite)
 
-function Projectile:init(projectileManager, damageComponent)
+function Projectile:init(projectileManager, damageComponent, projectileDiameter)
     self.projectileManager = projectileManager
     self.damageComponent = damageComponent
 
-    local projectileDiameter = 5
     local projectileImage = gfx.image.new(projectileDiameter, projectileDiameter)
     gfx.pushContext(projectileImage)
         gfx.setColor(gfx.kColorWhite)

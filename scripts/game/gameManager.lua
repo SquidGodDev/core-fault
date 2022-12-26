@@ -23,7 +23,7 @@ function GameManager:init()
     self.minedOre = 0
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
-    self.equipment = {equipment.radioWaves}
+    self.equipment = {equipment.plasmaCannon, equipment.generator, equipment.radioWaves}
     StartScene(self)
 end
 

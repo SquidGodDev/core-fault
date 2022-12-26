@@ -1,11 +1,12 @@
 import "scripts/level/player/equipment/beam"
 import "scripts/level/player/equipment/shockProd"
 import "scripts/level/player/equipment/peaShooter"
-import "scripts/level/player/equipment/StaticField"
-import "scripts/level/player/equipment/Discharge"
-import "scripts/level/player/equipment/SubterranianRocket"
-import "scripts/level/player/equipment/Generator"
-import "scripts/level/player/equipment/RadioWaves"
+import "scripts/level/player/equipment/staticField"
+import "scripts/level/player/equipment/discharge"
+import "scripts/level/player/equipment/subterranianRocket"
+import "scripts/level/player/equipment/generator"
+import "scripts/level/player/equipment/radioWaves"
+import "scripts/level/player/equipment/plasmaCannon"
 
 equipment = {
     shockProd = {
@@ -160,5 +161,22 @@ equipment = {
         },
         imagePath = "",
         constructor = RadioWaves
-    }
+    },
+    plasmaCannon = {
+        name = "Plasma Cannon",
+        description = "Fires a large bullet in the direction the player is facing",
+        level = 1,
+        damage = 4,
+        cooldown = 1500,
+        velocity = 3,
+        levelStats = {
+            {damage = 0.25, cooldown = -100},
+            {damage = 0.25, cooldown = -100},
+            {damage = 0.25, cooldown = -100},
+            {damage = 0.25, cooldown = -100},
+            {damage = 0.25, cooldown = -100},
+        },
+        imagePath = "",
+        constructor = PlasmaCannon
+    },
 }
