@@ -14,7 +14,7 @@ function MapGenerator:init()
     self.baseX = 32
     self.baseY = 32
     self.blockSize = self.blockImage:getSize()
-    self.borderBuffer = 10
+    self.borderBuffer = 30
 
     self.validCoordinates = {}
     for i=1,3 do

@@ -11,6 +11,9 @@ local abs <const> = math.abs
 local fillCircleAtPoint <const> = gfx.fillCircleAtPoint
 
 local projectilesArray <const> = PROJECTILES
+local tableInsert <const> = table.insert
+local tableRemove <const> = table.remove
+local tableIndex <const> = table.indexOfElement
 
 class('Projectile').extends()
 
@@ -35,7 +38,7 @@ function Projectile:activate(x, y, xVelocity, yVelocity, pierceCount)
     self.collisionDict = {}
     self.x = x
     self.y = y
-    table.insert(projectilesArray, self)
+    tableInsert(projectilesArray, self)
 end
 
 function Projectile:update()
@@ -55,9 +58,9 @@ function Projectile:update()
 
     local player <const> = self.player
     if abs(x - player.x) > 210 or abs(y - player.y) > 130 then
-        local index = table.indexOfElement(projectilesArray, self)
+        local index = tableIndex(projectilesArray, self)
         if index then
-            table.remove(projectilesArray, index)
+            tableRemove(projectilesArray, index)
         end
         self.projectileManager:addToPool(self)
         return
@@ -80,17 +83,17 @@ function Projectile:update()
                 self.damageComponent:dealDamageSingle(collidedSprite)
                 self.pierceCount -= 1
                 if self.pierceCount <= 0 then
-                    local index = table.indexOfElement(projectilesArray, self)
+                    local index = tableIndex(projectilesArray, self)
                     if index then
-                        table.remove(projectilesArray, index)
+                        tableRemove(projectilesArray, index)
                     end
                     self.projectileManager:addToPool(self)
                 end
             end
         else
-            local index = table.indexOfElement(projectilesArray, self)
+            local index = tableIndex(projectilesArray, self)
             if index then
-                table.remove(projectilesArray, index)
+                tableRemove(projectilesArray, index)
             end
             self.projectileManager:addToPool(self)
         end
