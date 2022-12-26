@@ -4,7 +4,6 @@ import "scripts/level/player/equipment/peaShooter"
 import "scripts/level/player/equipment/staticField"
 import "scripts/level/player/equipment/discharge"
 import "scripts/level/player/equipment/subterranianRocket"
-import "scripts/level/player/equipment/generator"
 import "scripts/level/player/equipment/radioWaves"
 import "scripts/level/player/equipment/plasmaCannon"
 
@@ -125,24 +124,6 @@ equipment = {
         },
         imagePath = "",
         constructor = PocketDrill
-    },
-    generator = {
-        name = "Generator",
-        description = "Every time the crank is rotated 360 degrees, fires out projectiles in all directions",
-        level = 1,
-        damage = 1,
-        cooldown = 300,
-        velocity = 6,
-        projectileCount = 4,
-        levelStats = {
-            {damage = 0.25, projectileCount = 1},
-            {damage = 0.25, projectileCount = 1},
-            {damage = 0.25, projectileCount = 1},
-            {damage = 0.25, projectileCount = 1},
-            {damage = 0.25, projectileCount = 1},
-        },
-        imagePath = "",
-        constructor = Generator
     },
     radioWaves = {
         name = "Radio Waves",
