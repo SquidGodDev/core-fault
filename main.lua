@@ -19,6 +19,9 @@ TAGS = {
     ORE = 4
 }
 
+PROJECTILES = table.create(40, 0)
+local projectiles <const> = PROJECTILES
+
 import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
@@ -46,8 +49,17 @@ local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers
 local drawFPS <const> = pd.drawFPS
 
+gfx.setColor(gfx.kColorWhite)
+
 function pd.update()
     spriteUpdate()
     timerUpdate()
     drawFPS(5, 5)
+
+    for i=1, #projectiles do
+        local projectile <const> = projectiles[i]
+        if projectile then
+            projectile:update()
+        end
+    end
 end

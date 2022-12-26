@@ -8,22 +8,18 @@ local wallTag <const> = TAGS.WALL
 local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 local abs <const> = math.abs
 
-local equipmentZIndex <const> = Z_INDEXES.EQUIPMENT
+local fillCircleAtPoint <const> = gfx.fillCircleAtPoint
 
-class('Projectile').extends(gfx.sprite)
+local projectilesArray <const> = PROJECTILES
+
+class('Projectile').extends()
 
 function Projectile:init(projectileManager, damageComponent, projectileDiameter, player)
     self.projectileManager = projectileManager
     self.damageComponent = damageComponent
     self.player = player
 
-    local projectileImage = gfx.image.new(projectileDiameter, projectileDiameter)
-    gfx.pushContext(projectileImage)
-        gfx.setColor(gfx.kColorWhite)
-        gfx.fillCircleInRect(0, 0, projectileDiameter, projectileDiameter)
-    gfx.popContext()
-    self:setImage(projectileImage)
-    self:setZIndex(equipmentZIndex)
+    self.projectileImage = gfx.image.new(projectileDiameter, projectileDiameter)
 
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
@@ -37,12 +33,18 @@ function Projectile:activate(x, y, xVelocity, yVelocity, pierceCount)
     self.yVelocity = yVelocity
     self.pierceCount = pierceCount
     self.collisionDict = {}
-    self:moveTo(x, y)
-    self:add()
+    self.x = x
+    self.y = y
+    table.insert(projectilesArray, self)
 end
 
 function Projectile:update()
-    self:moveBy(self.xVelocity, self.yVelocity)
+    local x <const> = self.x + self.xVelocity
+    local y <const> = self.y + self.yVelocity
+    self.x = x
+    self.y = y
+
+    fillCircleAtPoint(x, y, self.radius)
 
     local collisionCheckCounter = self.collisionCheckCounter
     collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval
@@ -52,12 +54,15 @@ function Projectile:update()
     end
 
     local player <const> = self.player
-    if abs(self.x - player.x) > 210 or abs(self.y - player.y) > 130 then
-        self:remove()
+    if abs(x - player.x) > 210 or abs(y - player.y) > 130 then
+        local index = table.indexOfElement(projectilesArray, self)
+        if index then
+            table.remove(projectilesArray, index)
+        end
         self.projectileManager:addToPool(self)
         return
     end
-    local queryX, queryY = self.x - self.radius, self.y - self.radius
+    local queryX, queryY = x - self.radius, y - self.radius
     local collisionDiameter <const> = self.diameter
     local collisions = querySpritesInRect(queryX, queryY, collisionDiameter, collisionDiameter)
     local collidedSprite <const> = collisions[1]
@@ -75,12 +80,18 @@ function Projectile:update()
                 self.damageComponent:dealDamageSingle(collidedSprite)
                 self.pierceCount -= 1
                 if self.pierceCount <= 0 then
-                    self:remove()
+                    local index = table.indexOfElement(projectilesArray, self)
+                    if index then
+                        table.remove(projectilesArray, index)
+                    end
                     self.projectileManager:addToPool(self)
                 end
             end
         else
-            self:remove()
+            local index = table.indexOfElement(projectilesArray, self)
+            if index then
+                table.remove(projectilesArray, index)
+            end
             self.projectileManager:addToPool(self)
         end
     end
