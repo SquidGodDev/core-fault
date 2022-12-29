@@ -37,10 +37,10 @@ function MapGenerator:init()
     )
     gfx.sprite.setAlwaysRedraw(false)
 
-    self:createTilemapSprite("verticalWall", 0, 0)
-    self:createTilemapSprite("verticalWall", 800, 0)
-    self:createTilemapSprite("horizontalWall", 32, 0)
-    self:createTilemapSprite("horizontalWall", 32, 800)
+    self:createTilemapSprite("westWall", 0, 0)
+    self:createTilemapSprite("eastWall", 800, 0)
+    self:createTilemapSprite("northWall", 32, 0)
+    self:createTilemapSprite("southWall", 32, 800)
 end
 
 function MapGenerator:getRandomEmptyPosition()
