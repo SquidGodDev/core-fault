@@ -23,11 +23,12 @@ function GameManager:init()
     self.minedOre = 0
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
-    self.equipment = {equipment.plasmaCannon, equipment.radioWaves}
+    self.equipment = {}
     StartScene(self)
 end
 
-function GameManager:startEquipmentSelected()
+function GameManager:startEquipmentSelected(selectedEquipment)
+    table.insert(self.equipment, selectedEquipment)
     self.sceneManager:switchScene(LevelScene, self, self.curLevel)
 end
 

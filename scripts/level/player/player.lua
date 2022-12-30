@@ -48,12 +48,12 @@ function Player:init(x, y, gameManager)
 
     self.BonusDamage = 0
 
-    self:initializeUpgrades()
-    self:initializeEquipment()
-
     local healthbar <const> = Healthbar(self.MaxHealth, self)
     self.healthbar = healthbar
     self.flashTime = 100
+
+    self:initializeUpgrades()
+    self:initializeEquipment()
 
     local healthRegenTickRate = 500
     local healthRegen <const> = self.HealthRegen
