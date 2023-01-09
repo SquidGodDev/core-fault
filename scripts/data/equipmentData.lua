@@ -93,7 +93,7 @@ equipment = {
         constructor = Discharge
     },
     subterranianRocket = {
-        name = "Subterranian Rocket",
+        name = "Subterranean Rocket",
         description = "Periodically causes an explosion at a distance in front of the player",
         level = 1,
         damage = 4,

@@ -10,10 +10,10 @@ local rad <const> = math.rad
 local cos <const> = math.cos
 local sin <const> = math.sin
 
-class('SubterranianRocket').extends(Equipment)
+class('SubterraneanRocket').extends(Equipment)
 
-function SubterranianRocket:init(player, data)
-    data = SubterranianRocket.super.init(self, player, data)
+function SubterraneanRocket:init(player, data)
+    data = SubterraneanRocket.super.init(self, player, data)
 
     local radius = data.radius
     local diameter = radius * 2
