@@ -3,7 +3,7 @@ import "scripts/level/player/equipment/shockProd"
 import "scripts/level/player/equipment/peaShooter"
 import "scripts/level/player/equipment/staticField"
 import "scripts/level/player/equipment/discharge"
-import "scripts/level/player/equipment/subterranianRocket"
+import "scripts/level/player/equipment/subterraneanRocket"
 import "scripts/level/player/equipment/radioWaves"
 import "scripts/level/player/equipment/plasmaCannon"
 
@@ -92,8 +92,8 @@ equipment = {
         imagePath = "",
         constructor = Discharge
     },
-    subterranianRocket = {
-        name = "Subterranian Rocket",
+    subterraneanRocket = {
+        name = "Subterranean Rocket",
         description = "Periodically causes an explosion at a distance in front of the player",
         level = 1,
         damage = 4,
@@ -108,7 +108,7 @@ equipment = {
             {radius = 5},
         },
         imagePath = "",
-        constructor = SubterranianRocket
+        constructor = SubterraneanRocket
     },
     pocketDrill = {
         name = "Pocket Drill",

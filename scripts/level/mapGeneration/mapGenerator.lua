@@ -11,6 +11,7 @@ function MapGenerator:init()
     self.mapPattern = mapPatterns[math.random(#mapPatterns)]
 
     self.blockImage = gfx.image.new("images/levels/block")
+    self.groundImage = gfx.image.new("images/levels/ground1")
     self.baseX = 32
     self.baseY = 32
     self.blockSize = self.blockImage:getSize()
@@ -23,6 +24,7 @@ function MapGenerator:init()
             if spot == 1 then
                 self:createBlockSprite(j, i)
             else
+                self:createGroundSprite(j, i)
                 table.insert(self.validCoordinates, {x=j, y=i})
             end
         end
@@ -73,4 +75,13 @@ function MapGenerator:createBlockSprite(x, y)
     blockSprite:setCenter(0, 0)
     blockSprite:moveTo(blockX, blockY)
     blockSprite:add()
+end
+
+function MapGenerator:createGroundSprite(x, y)
+    local groundX = self.baseX + self.blockSize*(x - 1)
+    local groundY = self.baseX + self.blockSize*(y - 1)
+    local groundSprite = gfx.sprite.new(self.groundImage)
+    groundSprite:setCenter(0, 0)
+    groundSprite:moveTo(groundX, groundY)
+    groundSprite:add()
 end
