@@ -11,6 +11,7 @@ import "scripts/level/player/upgrades/piercing"
 
 upgrades = {
     damage = {
+        name = "Damage",
         description = "Increases all damage by {}",
         level = 1, -- Current level
         maxLevel = 3, -- Maximum upgrade level
@@ -21,6 +22,7 @@ upgrades = {
         constructor = Damage
     },
     health = {
+        name = "Health",
         description = "Increases health by {}",
         level = 1,
         maxLevel = 3,
@@ -31,6 +33,7 @@ upgrades = {
         constructor = Health
     },
     healthRegen = {
+        name = "Health Regen",
         description = "Increases health regen by {}",
         level = 1,
         maxLevel = 3,
@@ -41,6 +44,7 @@ upgrades = {
         constructor = HealthRegen
     },
     critChance = {
+        name = "Crit Chance",
         description = "Increases crit chance by {}",
         level = 1,
         maxLevel = 3,
@@ -51,6 +55,7 @@ upgrades = {
         constructor = CritChance
     },
     critDamage = {
+        name = "Crit Damage",
         description = "Increases crit damage by {}",
         level = 1,
         maxLevel = 3,
@@ -61,6 +66,7 @@ upgrades = {
         constructor = CritDamage
     },
     moveSpeed = {
+        name = "Move Speed",
         description = "Increases move speed by {}",
         level = 1,
         maxLevel = 3,
@@ -71,6 +77,7 @@ upgrades = {
         constructor = MoveSpeed
     },
     attackSpeed = {
+        name = "Attack Speed",
         description = "Decreases attack cooldowns by {}",
         level = 1,
         maxLevel = 3,
@@ -81,6 +88,7 @@ upgrades = {
         constructor = AttackSpeed
     },
     piercing = {
+        name = "Piercing",
         description = "Projectiles pass through {} more enemies",
         level = 1,
         maxLevel = 5,
