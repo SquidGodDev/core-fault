@@ -40,6 +40,10 @@ function SwapPanel:init(newEquipment, curEquipment)
     self.swapSelect1 = gfx.image.new("images/ui/swapMenu/swap-select-1")
     self.swapSelect2 = gfx.image.new("images/ui/swapMenu/swap-select-2")
     self.swapSelect3 = gfx.image.new("images/ui/swapMenu/swap-select-3")
+    self.equipmentImages = {}
+    for i=1,3 do
+        self.equipmentImages[i] = gfx.image.new(self.curEquipment[i].imagePath)
+    end
     self.swapHolderOld = gfx.image.new("images/ui/swapMenu/swap-holder-old")
     self.swapHolderNew = gfx.image.new("images/ui/swapMenu/swap-holder-new")
 
@@ -135,6 +139,9 @@ function SwapPanel:drawUI()
         local slotBaseX, slotBaseY = 8, 4
         local slotGap = 78
 
+        local slotImageBaseX, slotImageBaseY = 20, 19
+        local slotImageGap = 79
+
         local arrowSlotX = 31
         local arrowSlotTopY, arrowSlotBottomY = 70, 157
 
@@ -145,6 +152,8 @@ function SwapPanel:drawUI()
         for i=1,3 do
             local slotY = slotBaseY + (i-1) * slotGap
             self.slotImage:draw(slotBaseX, slotY)
+            local slotImageY = slotImageBaseY + (i-1) * slotImageGap
+            self.equipmentImages[i]:draw(slotImageBaseX, slotImageY)
         end
 
         if self.selectIndex == 1 then

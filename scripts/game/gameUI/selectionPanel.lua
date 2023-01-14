@@ -15,6 +15,10 @@ function SelectionPanel:init(choices, isEquipment)
     self.panelImage = gfx.image.new("images/ui/upgradeMenu/upgrade-panel")
     self.selectionPanelSprite = gfx.sprite.new()
 
+    self.equipmentIcons = {}
+    for i=1,3 do
+        self.equipmentIcons[i] = gfx.image.new(choices[i].imagePath)
+    end
     self.arrowRightImage = gfx.image.new("images/ui/upgradeMenu/upgrade-slot-arrow-right")
     self.arrowLeftImage = gfx.image.new("images/ui/upgradeMenu/upgrade-slot-arrow-left")
     self.selectionArrow = gfx.image.new("images/ui/upgradeMenu/upgrade-selection-arrow")
@@ -102,6 +106,7 @@ function SelectionPanel:drawUI()
         local selectionArrowBaseX, selectionArrowBaseY = 113 - panelX, 147 - panelY
         local arrowSlotLeftX, arrowSlotLeftY = 156 - panelX, 93 - panelY
         local arrowSlotRightX, arrowSlotRightY = 236 - panelX, 93 - panelY
+        local iconBaseX, iconBaseY = 41, 41
         for i=1,3 do
             local slotX = slotBaseX + (i-1) * slotGap
             local selectionArrowX = selectionArrowBaseX + (i-1) * slotGap
@@ -111,6 +116,8 @@ function SelectionPanel:drawUI()
             else
                 self.deselectedSlot:draw(slotX, slotBaseY)
             end
+            local iconX = iconBaseX + (i-1) * slotGap
+            self.equipmentIcons[i]:draw(iconX, iconBaseY)
         end
         if self.selectIndex == 1 then
             self.arrowRightImage:draw(arrowSlotLeftX, arrowSlotLeftY)

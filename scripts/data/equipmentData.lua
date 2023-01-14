@@ -21,7 +21,7 @@ equipment = {
             {damage = 0.25, cooldown = -100},
             {damage = 0.25, cooldown = -100},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconShockProd",
         constructor = ShockProd
     },
     beam = {
@@ -37,7 +37,7 @@ equipment = {
             {damage = 0.25, cooldown = -100},
             {damage = 0.25, cooldown = -100},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconBeam",
         constructor = Beam
     },
     peaShooter = {
@@ -54,7 +54,7 @@ equipment = {
             {damage = 0.25, cooldown = -50},
             {damage = 0.25, cooldown = -50},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconPeaShooter",
         constructor = PeaShooter
     },
     staticField = {
@@ -71,7 +71,7 @@ equipment = {
             {damage = 0.25},
             {radius = 5},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconStaticField",
         constructor = StaticField
     },
     discharge = {
@@ -89,7 +89,7 @@ equipment = {
             {cooldown = -100},
             {radius = 5},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconDischarge",
         constructor = Discharge
     },
     subterraneanRocket = {
@@ -107,7 +107,7 @@ equipment = {
             {damage = 0.25},
             {radius = 5},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconSubterraneanRocket",
         constructor = SubterraneanRocket
     },
     pocketDrill = {
@@ -122,7 +122,7 @@ equipment = {
             {cooldown = -100},
             {cooldown = -100},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconPocketDrill",
         constructor = PocketDrill
     },
     radioWaves = {
@@ -140,7 +140,7 @@ equipment = {
             {cooldown = -200},
             {cooldown = -200},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconRadioWaves",
         constructor = RadioWaves
     },
     plasmaCannon = {
@@ -157,7 +157,7 @@ equipment = {
             {damage = 0.25, cooldown = -100},
             {damage = 0.25, cooldown = -100},
         },
-        imagePath = "",
+        imagePath = "images/ui/equipmentIcons/iconPlasmaCannon",
         constructor = PlasmaCannon
     },
 }
