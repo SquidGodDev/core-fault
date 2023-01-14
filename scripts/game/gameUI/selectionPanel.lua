@@ -12,12 +12,12 @@ function SelectionPanel:init(choices, isEquipment)
 
     -- Panel Drawing
     self.panelFont = gfx.font.new("fonts/alpha_custom")
-    self.upgradePanelImage = gfx.image.new("images/ui/upgradeMenu/upgrade-panel")
-    self.upgradeMenuSprite = gfx.sprite.new()
+    self.panelImage = gfx.image.new("images/ui/upgradeMenu/upgrade-panel")
+    self.selectionPanelSprite = gfx.sprite.new()
 
     self.arrowRightImage = gfx.image.new("images/ui/upgradeMenu/upgrade-slot-arrow-right")
     self.arrowLeftImage = gfx.image.new("images/ui/upgradeMenu/upgrade-slot-arrow-left")
-    self.upgradeSelectionArrow = gfx.image.new("images/ui/upgradeMenu/upgrade-selection-arrow")
+    self.selectionArrow = gfx.image.new("images/ui/upgradeMenu/upgrade-selection-arrow")
     if isEquipment then
         self.selectedSlot = gfx.image.new("images/ui/upgradeMenu/equipment-slot-selected")
         self.deselectedSlot = gfx.image.new("images/ui/upgradeMenu/equipment-slot-deselected")
@@ -27,9 +27,10 @@ function SelectionPanel:init(choices, isEquipment)
     end
     self:drawUI()
 
-    self.upgradeMenuSprite:moveTo(200, 133 + 240)
-    self.upgradeMenuSprite:add()
-    self:animateSprite(self.upgradeMenuSprite, 133, 900, 700, pd.easingFunctions.outBack)
+    self.selectionPanelSpriteY = 133
+    self.selectionPanelSprite:moveTo(200, self.selectionPanelSpriteY + 240)
+    self.selectionPanelSprite:add()
+    self:animateSprite(self.selectionPanelSprite, self.selectionPanelSpriteY, 900, 700, pd.easingFunctions.outBack)
 
     -- Title Drawing
     local titleImage = gfx.image.new("images/ui/upgradeMenu/upgrade-title-holder")
@@ -42,19 +43,21 @@ function SelectionPanel:init(choices, isEquipment)
         titleFont:drawTextAligned("Choose Equipment", drawX, drawY, kTextAlignment.center)
     gfx.popContext()
     self.titleSprite = gfx.sprite.new(titleImage)
+    self.titleSpriteY = 35
     self.titleSprite:setZIndex(10)
-    self.titleSprite:moveTo(200, 35 + 240)
+    self.titleSprite:moveTo(200, self.titleSpriteY + 240)
     self.titleSprite:add()
-    self:animateSprite(self.titleSprite, 35, 900, 500, pd.easingFunctions.outBack)
+    self:animateSprite(self.titleSprite, self.titleSpriteY, 900, 500, pd.easingFunctions.outBack)
 
     -- A Button Drawing
     self.aButtonImage = gfx.image.new("images/ui/upgradeMenu/button-big-a-up")
     self.aButtonImageDown = gfx.image.new("images/ui/upgradeMenu/button-big-a-down")
     self.aButtonSprite = gfx.sprite.new(self.aButtonImage)
+    self.aButtonSpriteY = 208
     self.aButtonSprite:setZIndex(10)
-    self.aButtonSprite:moveTo(326, 208 + 240)
+    self.aButtonSprite:moveTo(326, self.aButtonSpriteY + 240)
     self.aButtonSprite:add()
-    self:animateSprite(self.aButtonSprite, 208, 900, 1000, pd.easingFunctions.outBack)
+    self:animateSprite(self.aButtonSprite, self.aButtonSpriteY, 900, 1000, pd.easingFunctions.outBack)
 
     self:add()
 
@@ -89,8 +92,8 @@ function SelectionPanel:select()
 end
 
 function SelectionPanel:drawUI()
-    local upgradePanelImage = self.upgradePanelImage:copy()
-    gfx.pushContext(upgradePanelImage)
+    local panelImage = self.panelImage:copy()
+    gfx.pushContext(panelImage)
         local selectedItem = self.choices[self.selectIndex]
 
         local panelX, panelY = 60, 38
@@ -104,7 +107,7 @@ function SelectionPanel:drawUI()
             local selectionArrowX = selectionArrowBaseX + (i-1) * slotGap
             if self.selectIndex == i then
                 self.selectedSlot:draw(slotX, slotBaseY)
-                self.upgradeSelectionArrow:draw(selectionArrowX, selectionArrowBaseY)
+                self.selectionArrow:draw(selectionArrowX, selectionArrowBaseY)
             else
                 self.deselectedSlot:draw(slotX, slotBaseY)
             end
@@ -124,12 +127,28 @@ function SelectionPanel:drawUI()
         self.panelFont:drawText("lvl " .. selectedItem.level, levelTextX, levelTextY)
 
         local descriptionX, descriptionY = 75 - panelX, 176 - panelY
-        local descriptionWidth, desciptionHeight = 213, 43
+        local descriptionWidth, descriptionHeight = 213, 43
         local lineSpacing = 2
         gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-        gfx.drawTextInRect(selectedItem.description, descriptionX, descriptionY, descriptionWidth, desciptionHeight, lineSpacing, nil, nil, self.panelFont)
+        local description = selectedItem.description
+        if not self.isEquipment then
+            local amount = (selectedItem.level - 1) * selectedItem.scaling + selectedItem.value
+            local amountText = tostring(amount)
+            if selectedItem.percent then
+                amountText = tostring(amount*100) .. "%%" 
+            end
+            description = description:gsub("{}", amountText)
+        end
+        gfx.drawTextInRect(description, descriptionX, descriptionY, descriptionWidth, descriptionHeight, lineSpacing, nil, nil, self.panelFont)
     gfx.popContext()
-    self.upgradeMenuSprite:setImage(upgradePanelImage)
+    self.selectionPanelSprite:setImage(panelImage)
+end
+
+function SelectionPanel:animateOut()
+    local animateTime = 500
+    self:animateSprite(self.aButtonSprite, self.aButtonSpriteY - 400, animateTime, 100, pd.easingFunctions.inBack)
+    self:animateSprite(self.titleSprite, self.titleSpriteY - 400, animateTime, 300, pd.easingFunctions.inBack)
+    self:animateSprite(self.selectionPanelSprite, self.selectionPanelSpriteY - 400, animateTime, 500, pd.easingFunctions.inBack)
 end
 
 function SelectionPanel:animateSprite(sprite, endY, time, delay, easingFunction)

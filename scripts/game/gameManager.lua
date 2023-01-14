@@ -24,7 +24,8 @@ function GameManager:init()
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
     self.equipment = {}
-    StartScene(self)
+    -- StartScene(self)
+    UpgradeScene(self)
 end
 
 function GameManager:startEquipmentSelected(selectedEquipment)
@@ -38,6 +39,8 @@ end
 
 function GameManager:levelDefeated()
     self.curLevel += 1
+    -- TODO: Pass in upgrades and equipment based on what has already
+    -- been equipped and current level
     self.sceneManager:switchScene(UpgradeScene, self)
 end
 

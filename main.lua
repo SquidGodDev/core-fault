@@ -34,6 +34,7 @@ import "scripts/libraries/SceneManager"
 import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
 import "scripts/title/titleScene"
+import "scripts/game/upgradeScene"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
