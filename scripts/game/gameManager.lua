@@ -24,8 +24,7 @@ function GameManager:init()
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
     self.upgrades = {}
     self.equipment = {}
-    -- StartScene(self)
-    UpgradeScene(self)
+    StartScene(self)
 end
 
 function GameManager:startEquipmentSelected(selectedEquipment)
