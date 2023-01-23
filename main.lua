@@ -35,6 +35,7 @@ import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
 import "scripts/title/titleScene"
 import "scripts/game/upgradeScene"
+import "scripts/game/gameOverScene"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -45,6 +46,7 @@ SCENE_MANAGER = SceneManager()
 
 GameManager()
 -- TitleScene()
+-- GameOverScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers

@@ -22,9 +22,10 @@ function GameManager:init()
     self.curLevel = 1
     self.minedOre = 0
     -- TODO: Pass in upgrades as argument from unlocks purchased with Ore
-    self.upgrades = {}
-    self.equipment = {}
-    StartScene(self)
+    self.upgrades = {upgrades.attackSpeed, upgrades.critChance, upgrades.critDamage}
+    self.equipment = {equipment.beam, equipment.discharge, equipment.plasmaCannon}
+    GameOverScene(self.equipment, self.upgrades, 423000, 6, 324, 12)
+    -- StartScene(self)
 end
 
 function GameManager:startEquipmentSelected(selectedEquipment)
