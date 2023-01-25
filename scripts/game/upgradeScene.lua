@@ -6,6 +6,13 @@ import "scripts/game/gameUI/swapPanel"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local states <const> = {
+    upgradeSelect = 1,
+    equipmentSelect = 2,
+    equipmentSwap = 3,
+    finished = 4
+}
+
 local function ShuffleInPlace(t)
     for i = #t, 2, -1 do
         local j = math.random(i)
@@ -34,50 +41,64 @@ function UpgradeScene:init(gameManager)
 
     self.upgradePanel = SelectionPanel(dummyAvailableUpgrades, false)
 
-    -- TODO: Replace dummy equipment with game equipment and new
-    -- equipment with what's available and level
+    -- TODO: Replace dummy equipment with what's available and level
     local allEquipment = {}
-    local dummyEquipment = {}
     for _, equipment in pairs(equipment) do
         table.insert(allEquipment, equipment)
     end
     ShuffleInPlace(allEquipment)
+    self.dummyAvailableEquipment = {}
     for i=1,3 do
-        dummyEquipment[i] = allEquipment[i]
+        self.dummyAvailableEquipment[i] = allEquipment[i]
     end
-    local dummyNewEquipment = allEquipment[4]
-    self.equipmentPanel = SwapPanel(dummyNewEquipment, dummyEquipment)
 
-    self.selectingUpgrade = true
-    self.selectingEquipment = false
+    self.state = states.upgradeSelect
+
+    self.selectedUpgrade = nil
+    self.selectedNewEquipment = nil
 
     self:add()
 end
 
 function UpgradeScene:update()
-    if self.selectingUpgrade then
+    if self.state == states.upgradeSelect then
         if pd.buttonJustPressed(pd.kButtonLeft) then
             self.upgradePanel:selectLeft()
         elseif pd.buttonJustPressed(pd.kButtonRight) then
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
-            -- TODO: Pass in selected upgrades
-            local selectedUpgrade = self.upgradePanel:select()
-            self.selectingUpgrade = false
-            self.selectingEquipment = true
-            self.equipmentPanel:animateIn()
+            self.selectedUpgrade = self.upgradePanel:select()
+            self.state = states.equipmentSelect
             self.upgradePanel:animateOut()
+            self.equipmentPanel = SelectionPanel(self.dummyAvailableEquipment, true)
         end
-    elseif self.selectingEquipment then
-        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) then
+    elseif self.state == states.equipmentSelect then
+        if pd.buttonJustPressed(pd.kButtonLeft) then
             self.equipmentPanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) then
+        elseif pd.buttonJustPressed(pd.kButtonRight) then
             self.equipmentPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
-            local selectedEquipment, swappedIndex = self.equipmentPanel:select()
-            self.selectingEquipment = false
-            -- TODO: Pass in selected equipment
-            self.gameManager:upgradesSelected()
+            self.selectedNewEquipment = self.equipmentPanel:select()
+            self.equipmentPanel:animateOut()
+            local equipmentTableLength = #self.gameManager.equipment
+            if equipmentTableLength < 3 then
+                self.gameManager:upgradesSelected(self.selectedUpgrade, self.selectedNewEquipment, equipmentTableLength + 1)
+                self.state = states.finished
+            else
+                self.equipmentSwapPanel = SwapPanel(self.selectedNewEquipment, self.gameManager.equipment)
+                self.equipmentSwapPanel:animateIn()
+                self.state = states.equipmentSwap
+            end
+        end
+    elseif self.state == states.equipmentSwap then
+        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) then
+            self.equipmentSwapPanel:selectLeft()
+        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) then
+            self.equipmentSwapPanel:selectRight()
+        elseif pd.buttonJustPressed(pd.kButtonA) then
+            local swappedIndex = self.equipmentSwapPanel:select()
+            self.state = states.finished
+            self.gameManager:upgradesSelected(self.selectedUpgrade, self.selectedNewEquipment, swappedIndex)
         end
     end
 end

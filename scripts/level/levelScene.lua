@@ -4,16 +4,19 @@ import "scripts/level/enemies/fly"
 import "scripts/level/enemies/crab"
 import "scripts/level/mapGeneration/mapGenerator"
 import "scripts/level/ore/oreSpawner"
+import "scripts/level/hud"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 class('LevelScene').extends(gfx.sprite)
 
-function LevelScene:init(gameManager, curLevel)
+function LevelScene:init(gameManager, curLevel, time)
     self.gameManager = gameManager
     self.curLevel = curLevel
 
+    -- TODO: Calculate level experience scaling
+    self.hud = HUD(time, curLevel * 50, self)
     self:setupLevelLayout()
     self:setupOreSpawner()
     self:setupEnemySpawner()
@@ -35,9 +38,8 @@ function LevelScene:setupEnemySpawner()
     self.enemyCount = 0
     self.maxEnemies = 40
     self.enemiesDefeated = 0
-    self.enemiesToDefeat = self.curLevel * 5 + 5 + 100
     local spawnTimer = pd.timer.new(100, function()
-        if self.enemyCount >= self.maxEnemies or self.enemyCount >= self.enemiesToDefeat then
+        if self.enemyCount >= self.maxEnemies then
             return
         end
         self.enemyCount += 1
@@ -48,10 +50,12 @@ function LevelScene:setupEnemySpawner()
     spawnTimer.repeats = true
 end
 
-function LevelScene:enemyDied()
+function LevelScene:enemyDied(experience)
     self.enemyCount -= 1
-    self.enemiesToDefeat -= 1
-    if self.enemiesToDefeat <= 0 then
-        self.gameManager:levelDefeated()
-    end
+    self.enemiesDefeated += 1
+    self.hud:addExperience(experience)
+end
+
+function LevelScene:levelDefeated(time)
+    self.gameManager:levelDefeated(time, self.enemiesDefeated)
 end

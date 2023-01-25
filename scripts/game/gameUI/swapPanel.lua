@@ -41,7 +41,7 @@ function SwapPanel:init(newEquipment, curEquipment)
     self.swapSelect2 = gfx.image.new("images/ui/swapMenu/swap-select-2")
     self.swapSelect3 = gfx.image.new("images/ui/swapMenu/swap-select-3")
     self.equipmentImages = {}
-    for i=1,3 do
+    for i=1,#self.curEquipment do
         self.equipmentImages[i] = gfx.image.new(self.curEquipment[i].imagePath)
     end
     self.swapHolderOld = gfx.image.new("images/ui/swapMenu/swap-holder-old")
@@ -117,16 +117,12 @@ function SwapPanel:selectLeft()
 end
 
 function SwapPanel:select()
-    if self.selected then
-        return nil
-    end
     self.selected = true
     self.aButtonSprite:setImage(self.aButtonImageDown)
     pd.timer.new(100, function()
         self.aButtonSprite:setImage(self.aButtonImage)
     end)
-    local selectedChoice = self.newEquipment[self.selectIndex]
-    return selectedChoice, self.selectIndex
+    return self.selectIndex
 end
 
 function SwapPanel:drawUI()
@@ -152,8 +148,10 @@ function SwapPanel:drawUI()
         for i=1,3 do
             local slotY = slotBaseY + (i-1) * slotGap
             self.slotImage:draw(slotBaseX, slotY)
-            local slotImageY = slotImageBaseY + (i-1) * slotImageGap
-            self.equipmentImages[i]:draw(slotImageBaseX, slotImageY)
+            if self.equipmentImages[i] then
+                local slotImageY = slotImageBaseY + (i-1) * slotImageGap
+                self.equipmentImages[i]:draw(slotImageBaseX, slotImageY)
+            end
         end
 
         if self.selectIndex == 1 then
@@ -170,26 +168,28 @@ function SwapPanel:drawUI()
 
         self.swapHolderOld:draw(swapHolderX, swapHolderY)
 
-        local oldItemTextX, oldItemTextY = 106, 156
-        self.panelFont:drawText(selectedEquipment.name, oldItemTextX, oldItemTextY)
-        local oldLevelTextX, oldLevelTextY = 333, 156
-        self.panelFont:drawText("lvl " .. selectedEquipment.level, oldLevelTextX, oldLevelTextY)
+        if selectedEquipment then
+            local oldItemTextX, oldItemTextY = 106, 156
+            self.panelFont:drawText(selectedEquipment.name, oldItemTextX, oldItemTextY)
+            local oldLevelTextX, oldLevelTextY = 333, 156
+            self.panelFont:drawText("lvl " .. selectedEquipment.level, oldLevelTextX, oldLevelTextY)
 
-        local oldItemDescriptionX, oldItemDescriptionY = 107, 172
-        local oldDescriptionWidth, oldDescriptionHeight = 213, 43
-        local lineSpacing = 2
-        gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-        gfx.drawTextInRect(
-            selectedEquipment.description,
-            oldItemDescriptionX,
-            oldItemDescriptionY,
-            oldDescriptionWidth,
-            oldDescriptionHeight,
-            lineSpacing,
-            nil,
-            nil,
-            self.panelFont
-        )
+            local oldItemDescriptionX, oldItemDescriptionY = 107, 172
+            local oldDescriptionWidth, oldDescriptionHeight = 213, 43
+            local lineSpacing = 2
+            gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+            gfx.drawTextInRect(
+                selectedEquipment.description,
+                oldItemDescriptionX,
+                oldItemDescriptionY,
+                oldDescriptionWidth,
+                oldDescriptionHeight,
+                lineSpacing,
+                nil,
+                nil,
+                self.panelFont
+            )
+        end
     gfx.popContext()
     self.menuSprite:setImage(panelImage)
 end

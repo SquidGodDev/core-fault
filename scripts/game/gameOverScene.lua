@@ -12,11 +12,11 @@ end
 
 class('GameOverScene').extends(gfx.sprite)
 
-function GameOverScene:init(equipment, upgrades, time, level, enemiesKilled, ore)
+function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, ore)
     self.upgrades = upgrades
     self.selectedUpgrade = math.ceil(#upgrades/2)
 
-    local xpGained = enemiesKilled * 10
+    local xpGained = level * 10
 
     local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
     gfx.sprite.setBackgroundDrawingCallback(function()
@@ -49,7 +49,7 @@ function GameOverScene:init(equipment, upgrades, time, level, enemiesKilled, ore
         self.font:drawText(timeString, iconTextBaseX, iconTextBaseY + 0*iconGap)
         self.font:drawText(level, iconTextBaseX, iconTextBaseY + 1*iconGap)
         self.font:drawText(xpGained, iconTextBaseX, iconTextBaseY + 2*iconGap)
-        self.font:drawText(enemiesKilled, iconTextBaseX, iconTextBaseY + 3*iconGap)
+        self.font:drawText(enemiesDefeated, iconTextBaseX, iconTextBaseY + 3*iconGap)
         self.font:drawText(ore, iconTextBaseX, iconTextBaseY + 4*iconGap)
 
         for i=1,#equipment do

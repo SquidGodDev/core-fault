@@ -25,6 +25,8 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
     self.health = 4
     self.maxVelocity = 1
 
+    self.experience = 10
+
     self.levelManager = levelManager
 
     self:setGroups(COLLISION_GROUPS.ENEMY)
@@ -118,7 +120,7 @@ function Enemy:damage(amount)
     end
     self.health -= amount
     if self.health <= 0 then
-        self.levelManager:enemyDied()
+        self.levelManager:enemyDied(self.experience)
         self:remove()
     end
 

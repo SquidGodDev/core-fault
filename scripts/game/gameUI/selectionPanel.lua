@@ -83,9 +83,6 @@ function SelectionPanel:selectLeft()
 end
 
 function SelectionPanel:select()
-    if self.selected then
-        return nil
-    end
     self.selected = true
     self.aButtonSprite:setImage(self.aButtonImageDown)
     pd.timer.new(100, function()
