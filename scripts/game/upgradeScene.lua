@@ -61,10 +61,11 @@ function UpgradeScene:init(gameManager)
 end
 
 function UpgradeScene:update()
+    local crankTicks = pd.getCrankTicks(3)
     if self.state == states.upgradeSelect then
-        if pd.buttonJustPressed(pd.kButtonLeft) then
+        if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
             self.upgradePanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) then
+        elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             self.selectedUpgrade = self.upgradePanel:select()
@@ -73,9 +74,9 @@ function UpgradeScene:update()
             self.equipmentPanel = SelectionPanel(self.dummyAvailableEquipment, true)
         end
     elseif self.state == states.equipmentSelect then
-        if pd.buttonJustPressed(pd.kButtonLeft) then
+        if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
             self.equipmentPanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) then
+        elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
             self.equipmentPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             self.selectedNewEquipment = self.equipmentPanel:select()
@@ -91,9 +92,9 @@ function UpgradeScene:update()
             end
         end
     elseif self.state == states.equipmentSwap then
-        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) then
+        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
             self.equipmentSwapPanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) then
+        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) or crankTicks == 1 then
             self.equipmentSwapPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             local swappedIndex = self.equipmentSwapPanel:select()

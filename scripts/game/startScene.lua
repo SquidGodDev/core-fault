@@ -35,9 +35,10 @@ function StartScene:init(gameManager)
 end
 
 function StartScene:update()
-    if pd.buttonJustPressed(pd.kButtonLeft) then
+    local crankTicks = pd.getCrankTicks(3)
+    if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
         self.equipmentPanel:selectLeft()
-    elseif pd.buttonJustPressed(pd.kButtonRight) then
+    elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
         self.equipmentPanel:selectRight()
     elseif pd.buttonJustPressed(pd.kButtonA) then
         local selectedEquipment = self.equipmentPanel:select()
