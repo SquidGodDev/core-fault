@@ -34,8 +34,9 @@ local hurtboxHalfHeight
 
 class('Player').extends(gfx.sprite)
 
-function Player:init(x, y, gameManager)
+function Player:init(x, y, gameManager, levelScene)
     self.gameManager = gameManager
+    self.levelScene = levelScene
 
     -- Player Stats
     self.MaxVelocity = 2
@@ -157,7 +158,7 @@ function Player:damage(amount)
 
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
-        self.gameManager:runEnded()
+        self.levelScene:playerDied()
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)

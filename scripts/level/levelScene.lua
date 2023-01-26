@@ -26,7 +26,7 @@ function LevelScene:setupLevelLayout()
     self.mapGenerator = MapGenerator()
 
     local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
-    self.player = Player(spawnX, spawnY, self.gameManager)
+    self.player = Player(spawnX, spawnY, self.gameManager, self)
 end
 
 function LevelScene:setupOreSpawner()
@@ -38,16 +38,20 @@ function LevelScene:setupEnemySpawner()
     self.enemyCount = 0
     self.maxEnemies = 40
     self.enemiesDefeated = 0
-    local spawnTimer = pd.timer.new(100, function()
-        if self.enemyCount >= self.maxEnemies then
-            return
-        end
-        self.enemyCount += 1
-        local RandEnemy = enemiesList[math.random(#enemiesList)]
-        local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
-        RandEnemy(spawnX, spawnY, self)
+
+    local levelStartDelay = 1000
+    pd.timer.performAfterDelay(levelStartDelay, function()
+        local spawnTimer = pd.timer.new(100, function()
+            if self.enemyCount >= self.maxEnemies then
+                return
+            end
+            self.enemyCount += 1
+            local RandEnemy = enemiesList[math.random(#enemiesList)]
+            local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
+            RandEnemy(spawnX, spawnY, self)
+        end)
+        spawnTimer.repeats = true
     end)
-    spawnTimer.repeats = true
 end
 
 function LevelScene:enemyDied(experience)
@@ -57,5 +61,23 @@ function LevelScene:enemyDied(experience)
 end
 
 function LevelScene:levelDefeated(time)
+    local allSprites = gfx.sprite.getAllSprites()
+    for i=1,#allSprites do
+        local curSprite = allSprites[i]
+        if curSprite:isa(Enemy) or curSprite:isa(Player) then
+            curSprite:setUpdatesEnabled(false)
+        end
+    end
     self.gameManager:levelDefeated(time, self.enemiesDefeated)
+end
+
+function LevelScene:playerDied()
+    local allSprites = gfx.sprite.getAllSprites()
+    for i=1,#allSprites do
+        local curSprite = allSprites[i]
+        if curSprite:isa(Enemy) or curSprite:isa(Player) then
+            curSprite:setUpdatesEnabled(false)
+        end
+    end
+    self.gameManager:playerDied(self.hud:stopTimer(), self.enemiesDefeated)
 end

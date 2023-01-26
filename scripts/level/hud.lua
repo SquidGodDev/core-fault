@@ -31,6 +31,20 @@ function HUD:init(time, maxExperience, levelScene)
     self.fillSprite:setIgnoresDrawOffset(true)
     self.fillSprite:add()
 
+    self.fillSpriteWidth = self.fillSprite:getSize()
+
+    self.drawAnimator = pd.timer.new(500)
+    self.drawAnimator.discardOnCompletion = false
+    self.drawAnimator.easingFunction = pd.easingFunctions.outCubic
+    self.drawAnimator:pause()
+    self.clipHeight = 240
+    self.drawAnimator.updateCallback = function(timer)
+        self.clipHeight = timer.value
+    end
+    self.drawAnimator.timerEndedCallback = function(timer)
+        self.clipHeight = timer.endValue
+    end
+
     self.timeSprite = gfx.sprite.new()
     self.timeSprite:setCenter(0, 0)
     self.timeSprite:moveTo(15, 10)
@@ -56,6 +70,10 @@ function HUD:init(time, maxExperience, levelScene)
     end
 end
 
+function HUD:update()
+    self.fillSprite:setClipRect(0, 0, self.fillSpriteWidth, self.clipHeight)
+end
+
 function HUD:addExperience(amount)
     self.experience += amount
     if self.experience >= self.maxExperience then
@@ -63,6 +81,14 @@ function HUD:addExperience(amount)
         self.clock:pause()
         self.levelScene:levelDefeated(self.clock.timeLeft)
     end
-    local fillSpriteWidth = self.fillSprite:getSize()
-    self.fillSprite:setClipRect(0, 0, fillSpriteWidth, ((self.maxExperience - self.experience)/self.maxExperience) * 240)
+    local newClipHeight = ((self.maxExperience - self.experience)/self.maxExperience) * 240
+    self.drawAnimator:reset()
+    self.drawAnimator.startValue = self.clipHeight
+    self.drawAnimator.endValue = newClipHeight
+    self.drawAnimator:start()
+end
+
+function HUD:stopTimer()
+    self.clock:pause()
+    return self.clock.timeLeft
 end

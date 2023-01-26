@@ -2,10 +2,12 @@
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local fadedImageTable <const> = gfx.imagetable.new("images/ui/faded/faded")
+
 class('SceneManager').extends()
 
 function SceneManager:init()
-    self.transitionTime = 700
+    self.transitionTime = 1200
     self.transitioning = false
 end
 
@@ -35,11 +37,11 @@ function SceneManager:cleanupScene()
 end
 
 function SceneManager:startTransition()
-    local transitionTimer = self:wipeTransition(0, 400)
+    local transitionTimer = self:fadeTransition(0, 1)
 
     transitionTimer.timerEndedCallback = function()
         self:loadNewScene()
-        transitionTimer = self:wipeTransition(400, 0)
+        transitionTimer = self:fadeTransition(1, 0)
         transitionTimer.timerEndedCallback = function()
             self.transitioning = false
             self.transitionSprite:remove()
@@ -51,19 +53,29 @@ function SceneManager:startTransition()
     end
 end
 
-function SceneManager:wipeTransition(startValue, endValue)
+function SceneManager:fadeTransition(startValue, endValue)
     local transitionSprite = self:createTransitionSprite()
-    transitionSprite:setClipRect(0, 0, startValue, 240)
+    transitionSprite:setImage(self:getFadedImage(startValue))
 
     local transitionTimer = pd.timer.new(self.transitionTime, startValue, endValue, pd.easingFunctions.inOutCubic)
     transitionTimer.updateCallback = function(timer)
-        if startValue == 400 then
-            transitionSprite:setClipRect(400 - timer.value, 0, timer.value, 240)
-        else
-            transitionSprite:setClipRect(0, 0, timer.value, 240)
+        transitionSprite:setImage(self:getFadedImage(timer.value))
+        local mask = gfx.image.new(400, 240)
+        gfx.pushContext(mask)
+            gfx.fillCircleAtPoint(200, 120, timer.value * 240)
+        gfx.popContext()
+        transitionSprite:setStencilImage(mask)
+    end
+    transitionTimer.timerEndedCallback = function()
+        if endValue == 0 then
+            transitionSprite:remove()
         end
     end
     return transitionTimer
+end
+
+function SceneManager:getFadedImage(alpha)
+    return fadedImageTable:getImage(math.ceil(alpha * 100) + 1)
 end
 
 function SceneManager:createTransitionSprite()

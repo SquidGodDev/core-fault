@@ -9,7 +9,7 @@ import "scripts/game/upgradeScene"
 import "scripts/data/upgradeData"
 import "scripts/data/equipmentData"
 
-local totalGameTime <const> = 60000
+local totalGameTime <const> = 600000
 
 local upgrades <const> = upgrades
 local equipment <const> = equipment
@@ -52,4 +52,9 @@ function GameManager:levelDefeated(time, enemiesDefeated)
     self.time = time
     self.curLevel += 1
     self.sceneManager:switchScene(UpgradeScene, self)
+end
+
+function GameManager:playerDied(time, enemiesDefeated)
+    self.enemiesDefeated += enemiesDefeated
+    self.sceneManager:switchScene(GameOverScene, self.equipment, self.upgrades, totalGameTime - time, self.curLevel, self.enemiesDefeated, self.minedOre)
 end
