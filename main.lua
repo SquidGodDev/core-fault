@@ -28,25 +28,28 @@ import "CoreLibs/sprites"
 import "CoreLibs/timer"
 import "CoreLibs/animation"
 import "CoreLibs/crank"
+import "CoreLibs/ui"
 import "CoreLibs/utilities/sampler"
 import "scripts/libraries/SceneManager"
 
 import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
 import "scripts/title/titleScene"
+import "scripts/title/unlockScene"
 import "scripts/game/upgradeScene"
 import "scripts/game/gameOverScene"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local alphaCustomFont = gfx.font.new("fonts/alpha_custom")
+gfx.setFont(alphaCustomFont)
 math.randomseed(pd.getSecondsSinceEpoch())
 
 SCENE_MANAGER = SceneManager()
 
-GameManager()
--- TitleScene()
--- GameOverScene()
+-- GameManager()
+UnlockScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers
@@ -57,7 +60,7 @@ gfx.setColor(gfx.kColorWhite)
 function pd.update()
     spriteUpdate()
     timerUpdate()
-    drawFPS(5, 5)
+    -- drawFPS(5, 5)
 
     for i=1, #projectiles do
         local projectile <const> = projectiles[i]

@@ -1,18 +1,18 @@
 
 local pd <const> = playdate
 
-TOTAL_ORE = 0
+TOTAL_CORES = 800
 
 function loadGameData()
     local gameData = pd.datastore.read()
     if gameData then
-        TOTAL_ORE = gameData.totalOre
+        TOTAL_CORES = gameData.totalCores
     end
 end
 
 function saveGameData()
     local gameData = {
-        totalOre = TOTAL_ORE
+        totalCores = TOTAL_CORES
     }
     pd.datastore.write(gameData)
 end
@@ -25,4 +25,4 @@ function pd.gameWillSleep()
     saveGameData()
 end
 
-loadGameData()
+-- loadGameData()
