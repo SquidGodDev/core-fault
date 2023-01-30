@@ -2,4 +2,5 @@ name=Core Fault
 author=SquidGod + davemakes
 description=
 bundleID=com.squidave.corefault
+imagePath=launcherImages
 version=0.1
