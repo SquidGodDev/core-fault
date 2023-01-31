@@ -47,7 +47,7 @@ function HUD:init(time, maxExperience, levelScene)
 
     self.timeSprite = gfx.sprite.new()
     self.timeSprite:setCenter(0, 0)
-    self.timeSprite:moveTo(15, 10)
+    self.timeSprite:moveTo(15, 8)
     self.timeSprite:setZIndex(Z_INDEXES.UI)
     self.timeSprite:setIgnoresDrawOffset(true)
     self.timeSprite:add()
