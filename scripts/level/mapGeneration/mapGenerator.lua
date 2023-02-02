@@ -48,9 +48,9 @@ end
 function MapGenerator:getRandomEmptyPosition()
     local validPosition = self.validCoordinates[math.random(#self.validCoordinates)]
     local minX = self.baseX + self.blockSize*(validPosition.x - 1) + self.borderBuffer
-    local maxX = minX + self.blockSize - self.borderBuffer
+    local maxX = self.baseX + self.blockSize*(validPosition.x) - self.borderBuffer
     local minY = self.baseY + self.blockSize*(validPosition.y - 1) + self.borderBuffer
-    local maxY = minY + self.blockSize - self.borderBuffer
+    local maxY = self.baseY + self.blockSize*(validPosition.y) - self.borderBuffer
     return math.random(minX, maxX), math.random(minY, maxY)
 end
 
