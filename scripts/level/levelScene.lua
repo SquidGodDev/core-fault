@@ -2,6 +2,9 @@ import "scripts/level/player/player"
 import "scripts/level/enemies/slime"
 import "scripts/level/enemies/fly"
 import "scripts/level/enemies/crab"
+import "scripts/level/enemies/slimeMedium"
+import "scripts/level/enemies/flyMedium"
+import "scripts/level/enemies/crabMedium"
 import "scripts/level/mapGeneration/mapGenerator"
 import "scripts/level/ore/oreSpawner"
 import "scripts/level/hud"
@@ -34,9 +37,9 @@ function LevelScene:setupOreSpawner()
 end
 
 function LevelScene:setupEnemySpawner()
-    local enemiesList = {Slime, Fly, Crab}
+    local enemiesList = {Slime, Fly, Crab, SlimeMedium, FlyMedium, CrabMedium}
     self.enemyCount = 0
-    self.maxEnemies = 40
+    self.maxEnemies = 30
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000
