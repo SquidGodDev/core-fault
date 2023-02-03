@@ -6,6 +6,7 @@ import "scripts/level/player/equipment/discharge"
 import "scripts/level/player/equipment/subterraneanRocket"
 import "scripts/level/player/equipment/radioWaves"
 import "scripts/level/player/equipment/plasmaCannon"
+import "scripts/level/player/equipment/pocketDrill"
 
 equipment = {
     shockProd = {

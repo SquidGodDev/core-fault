@@ -36,7 +36,7 @@ function LevelScene:setupLevelLayout()
 end
 
 function LevelScene:setupOreSpawner()
-    OreSpawner(self.gameManager, self.mapGenerator)
+    self.oreSpawner = OreSpawner(self.gameManager, self.mapGenerator)
 end
 
 function LevelScene:setupEnemySpawner()
