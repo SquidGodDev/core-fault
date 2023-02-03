@@ -11,4 +11,6 @@ function Slime:init(x, y, level, spriteSheetPath)
     self.attackDamage = 2
     self.health = 4
     self.maxVelocity = 1
+
+    self.experience = 2
 end

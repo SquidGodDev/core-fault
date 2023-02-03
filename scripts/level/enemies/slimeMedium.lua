@@ -8,4 +8,6 @@ function SlimeMedium:init(x, y, level)
     self.attackDamage = 4
     self.health = 6
     self.maxVelocity = 1
+
+    self.experience = 6
 end

@@ -15,6 +15,8 @@ function Fly:init(x, y, level, spriteSheetPath, cooldown)
     self.health = 4
     self.maxVelocity = 1
 
+    self.experience = 4
+
     self.projectileDamage = 1
     self.projectileDiameter = 5
     if not cooldown then

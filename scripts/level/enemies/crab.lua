@@ -11,4 +11,6 @@ function Crab:init(x, y, level, spriteSheetPath)
     self.attackDamage = 4
     self.health = 6
     self.maxVelocity = 0.6
+
+    self.experience = 3
 end

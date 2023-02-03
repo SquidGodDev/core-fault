@@ -5,12 +5,15 @@ import "scripts/level/enemies/crab"
 import "scripts/level/enemies/slimeMedium"
 import "scripts/level/enemies/flyMedium"
 import "scripts/level/enemies/crabMedium"
+import "scripts/level/enemies/spawnProbabilities"
 import "scripts/level/mapGeneration/mapGenerator"
 import "scripts/level/ore/oreSpawner"
 import "scripts/level/hud"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
+
+local spawnProbabilities <const> = SpawnProbabilities
 
 class('LevelScene').extends(gfx.sprite)
 
@@ -37,9 +40,13 @@ function LevelScene:setupOreSpawner()
 end
 
 function LevelScene:setupEnemySpawner()
-    local enemiesList = {Slime, Fly, Crab, SlimeMedium, FlyMedium, CrabMedium}
+    self.spawnProbabilities = spawnProbabilities[self.curLevel]
+    if not self.spawnProbabilities then
+        self.spawnProbabilities = spawnProbabilities[#spawnProbabilities]
+    end
+
     self.enemyCount = 0
-    self.maxEnemies = 30
+    self.maxEnemies = 10 + self.curLevel * 4
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000
@@ -49,12 +56,23 @@ function LevelScene:setupEnemySpawner()
                 return
             end
             self.enemyCount += 1
-            local RandEnemy = enemiesList[math.random(#enemiesList)]
+            local RandEnemy = self:getRandomEnemy()
             local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
             RandEnemy(spawnX, spawnY, self)
         end)
         spawnTimer.repeats = true
     end)
+end
+
+function LevelScene:getRandomEnemy()
+    local probablitySum = 0
+    local randNum = math.random()
+    for _, probabilityObject in ipairs(self.spawnProbabilities) do
+        probablitySum += probabilityObject[1]
+        if randNum <= probablitySum then
+            return probabilityObject[2]
+        end
+    end
 end
 
 function LevelScene:enemyDied(experience)

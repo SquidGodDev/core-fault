@@ -8,4 +8,6 @@ function CrabMedium:init(x, y, level)
     self.attackDamage = 6
     self.health = 10
     self.maxVelocity = 0.6
+
+    self.experience = 7
 end

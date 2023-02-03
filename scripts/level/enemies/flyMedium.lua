@@ -10,6 +10,8 @@ function FlyMedium:init(x, y, level)
     self.health = 6
     self.maxVelocity = 1
 
+    self.experience = 8
+
     self.projectileDamage = 2
     self.projectileDiameter = 8
     self.projectileSpeed = 3
