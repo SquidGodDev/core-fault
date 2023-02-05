@@ -93,6 +93,10 @@ function Player:init(x, y, gameManager, levelScene)
     hurtboxHeight = playerHeight - hurtboxBuffer * 2
     hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer
     hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
+    self.hurtboxWidth = hurtboxWidth
+    self.hurtboxHeight = hurtboxHeight
+    self.hurtboxHalfWidth = hurtboxHalfWidth
+    self.hurtboxHalfHeight = hurtboxHalfHeight
 
     self.enemyTag = TAGS.ENEMY
 end

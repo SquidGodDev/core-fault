@@ -120,8 +120,7 @@ function Enemy:damage(amount)
     end
     self.health -= amount
     if self.health <= 0 then
-        self.levelManager:enemyDied(self.experience)
-        self:remove()
+        self:die()
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)
@@ -130,4 +129,9 @@ function Enemy:damage(amount)
         self:setImageDrawMode(gfx.kDrawModeCopy)
         self.invincible = false
     end)
+end
+
+function Enemy:die()
+    self.levelManager:enemyDied(self.experience)
+    self:remove()
 end

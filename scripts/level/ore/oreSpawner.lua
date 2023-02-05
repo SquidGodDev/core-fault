@@ -27,6 +27,10 @@ function OreSpawner:init(gameManager, mapGenerator)
     spawnTimer.repeats = true
 end
 
+function OreSpawner:spawnOre(x, y)
+    Ore(x, y, self)
+end
+
 function OreSpawner:oreMined()
     self.currentOreCount -= 1
     self.gameManager.minedOre += 1

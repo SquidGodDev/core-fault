@@ -19,8 +19,10 @@ function StartScene:init(gameManager)
     self.gameManager = gameManager
     self.starterEquipment = {}
     local allEquipment = {}
-    for _, equipment in pairs(equipment) do
-        table.insert(allEquipment, equipment)
+    for equipmentKey, equipment in pairs(equipment) do
+        if equipmentKey ~= "pocketDrill" then
+            table.insert(allEquipment, equipment)
+        end
     end
     ShuffleInPlace(allEquipment)
     for i=1,3 do
