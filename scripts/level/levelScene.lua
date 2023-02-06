@@ -46,7 +46,7 @@ function LevelScene:setupEnemySpawner()
     end
 
     self.enemyCount = 0
-    self.maxEnemies = 10 + self.curLevel * 4
+    self.maxEnemies = math.min(10 + self.curLevel * 2, 20)
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000
@@ -58,6 +58,32 @@ function LevelScene:setupEnemySpawner()
             self.enemyCount += 1
             local RandEnemy = self:getRandomEnemy()
             local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
+            local minX = self.player.x - 232
+            local maxX = self.player.x + 232
+            local minY = self.player.y - 142
+            local maxY = self.player.y + 142
+            local inBounds = (spawnX > minX and spawnX < maxX) and (spawnY > minY and spawnY < maxY)
+            
+            if inBounds then
+                if spawnY > self.player.y then spawnY = maxY else spawnY = minY end
+            else
+                if spawnX > maxX then
+                    spawnX = maxX
+                    spawnY = minY + math.random() * (maxY - minY)
+                elseif spawnX < minX then
+                    spawnX = minX
+                    spawnY = minY + math.random() * (maxY - minY)
+                elseif spawnY < minY then
+                    spawnY = minY
+                    spawnX = minX + math.random() * (maxX - minX)
+                else
+                    spawnY = maxY
+                    spawnX = minX + math.random() * (maxX - minX)
+                end
+            end
+
+            
+
             RandEnemy(spawnX, spawnY, self)
         end)
         spawnTimer.repeats = true
@@ -77,7 +103,9 @@ end
 
 function LevelScene:enemyDied(experience)
     self.enemyCount -= 1
-    self.enemiesDefeated += 1
+    if experience > 0 then
+        self.enemiesDefeated += 1
+    end
     self.hud:addExperience(experience)
 end
 

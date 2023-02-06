@@ -51,12 +51,32 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
     self.directionUpdateInterval = 60
     self.randomMoveUpdateInterval = 30
 
+    self.dieTimerMax = 100
+    self.dieTimer = self.dieTimerMax
+
     self.imageFlip = kImageUnflipped
 
     self.attackOnCooldown = false
 end
 
 function Enemy:update()
+    local spriteWidth, spriteHeight = self:getSize()
+    
+    if self.dieTimer < 0 then
+        self.levelManager:enemyDied(0)
+        self:remove()
+        return
+    end
+    if self.y > self.player.y - (152 + spriteHeight) 
+            and self.y > self.player.y + (152 + spriteHeight)
+            and self.x < self.player.x - (232 + spriteWidth)
+            and self.x > self.player.x + (232 + spriteWidth) then
+
+        self.dieTimer = self.dieTimer - 1
+    else
+        self.dieTimer = self.dieTimerMax
+    end
+
     local curImageFlip <const> = self.imageFlip
 
     local animationLoopCount = self.animationLoopCount
@@ -101,6 +121,7 @@ function Enemy:update()
     end
     self.directionUpdateCount = (directionUpdateCount + 1) % self.directionUpdateInterval
     self:moveBy(xVelocity, yVelocity)
+    self:setZIndex(self.y)
 end
 
 function Enemy:setAttackCooldown()
