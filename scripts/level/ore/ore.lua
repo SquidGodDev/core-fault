@@ -15,6 +15,7 @@ function Ore:init(x, y, oreSpawner)
     self:setGroups(COLLISION_GROUPS.ORE)
     self:setCollideRect(0, 0, self:getSize())
     self:add()
+    self:setZIndex(self.y)
 
     self.health = 5
 

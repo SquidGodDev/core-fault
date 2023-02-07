@@ -130,6 +130,8 @@ function Player:update()
     local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
     setDrawOffset(smoothedX, smoothedY)
 
+    self:setZIndex(self.y)
+
     self:setImage(animationLoop:image())
 end
 
