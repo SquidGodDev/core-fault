@@ -3,4 +3,5 @@ author=SquidGod + davemakes
 description=
 bundleID=com.squidave.corefault
 imagePath=launcherImages
+launchSoundPath=audio/sfx/sfx-startup
 version=0.1
