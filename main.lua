@@ -48,7 +48,8 @@ math.randomseed(pd.getSecondsSinceEpoch())
 
 SCENE_MANAGER = SceneManager()
 
-GameManager()
+-- GameManager()
+TitleScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers
