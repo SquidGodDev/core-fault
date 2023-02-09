@@ -20,8 +20,8 @@ function TitleScene:init()
         tallRobotFont:drawText("REMOTE DROID INTERFACE", 16, 16)
         tallRobotFont:drawText("Deploy", 290, 82)
         tallRobotFont:drawText("Unlock", 290, 118)
-        gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-        gfx.drawText("Connecting", 76, 136)
+        --gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+        --gfx.drawText("Connecting", 76, 136)
     gfx.popContext()
     self.panelSprite = gfx.sprite.new(self.panelImage)
     self.panelSprite:moveTo(200, 120 + 240)
@@ -96,6 +96,7 @@ function TitleScene:update()
             end
         end
         self.arrowSprite:moveTo(self.arrowX, self.arrowY + (self.arrowIndex - 1)*self.arrowGap)
+        self.arrowSprite:setVisible(not crankDocked)
         if pd.buttonJustPressed(pd.kButtonA) and not crankDocked then
             self.inputActive = false
             self:animateOut()
@@ -135,38 +136,70 @@ function TitleScene:createSlidesTimer()
     local slideWidth, slideHeight = menuSlides[1]:getSize()
 
     local slideText = {}
-    slideText[1] = "Orbital link established"
+    slideText[1] = "Connecting..."
+    slideText[2] = "Orbital link established"
     -- TODO: Keep track of death count
-    slideText[2] = "Droid 00001 online"
-    slideText[3] = "Core deposits detected"
-    slideText[4] = "Fauna class: X (hostile)"
-    slideText[5] = "Depth UNKNOWN"
+    slideText[3] = "Droid 00001 online"
+    slideText[4] = "Core deposits detected"
+    slideText[5] = "Fauna class: X (hostile)"
+    slideText[6] = "Depth UNKNOWN"
 
-    local slidesTimer = pd.timer.new(500, function(timer)
+    local slideTextLength = {}
+    for i=1, 6 do
+        slideTextLength[i] = string.len(slideText[i])
+    end
+    
+    local dotCount = 3
+    local typewriter = 1
+
+    local typewriterDuration = 20
+    local dotDuration = 300
+    local pauseDuration = 2000
+    local nextSlide = false
+
+    local slidesTimer = pd.timer.new(typewriterDuration, function(timer)
         gfx.pushContext(self.panelImage)
-            gfx.setColor(gfx.kColorBlack)
-            gfx.fillRect(slideX, slideY, slideWidth, slideHeight)
-            if slidesCount <= 3 then
-                local connectingText = "Connecting"
-                for _=1,slidesCount do
-                    connectingText = connectingText .. "."
-                end
-                gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-                gfx.drawText(connectingText, 76, 136)
-            else
-                timer.delay = 1000
-                local slideIndex = slidesCount - 3
-                local slideImage = menuSlides[slideIndex]
-                slideImage:draw(slideX, slideY)
-                gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
-                gfx.drawText(slideText[slideIndex], textBaseX, textBaseY + (slideIndex - 1)*textGap)
+        gfx.setColor(gfx.kColorBlack)
+        gfx.fillRect(slideX, slideY, slideWidth, slideHeight)
+        if slidesCount == 1 then
+            local connectingText = string.sub(slideText[slidesCount], 1, typewriter)
+            if typewriter >= slideTextLength[1] - dotCount then
+                timer.duration = dotDuration
             end
+            gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+            gfx.drawText(connectingText, 76, 136)
+        else
+            local slideImage = menuSlides[slidesCount - 1]
+            if typewriter <= 10 then
+                slideImage:drawFaded(slideX, slideY, typewriter/10, gfx.image.kDitherTypeBayer2x2)
+            else
+                slideImage:draw(slideX, slideY)
+            end
+            gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
+            local txt = string.sub(slideText[slidesCount], 1, math.min(typewriter, slideTextLength[slidesCount]))
+            gfx.drawText(txt, textBaseX, textBaseY + (slidesCount - 2)*textGap)
+        end
         gfx.popContext()
         self.panelSprite:setImage(self.panelImage)
-        slidesCount += 1
-        if slidesCount == 9 then
+        if nextSlide then
+            timer.duration = typewriterDuration
+            timer:reset()
+            nextSlide = false
+        elseif typewriter > slideTextLength[slidesCount] then
+            timer.duration = pauseDuration
+            timer:reset()
+            if slidesCount == 1 then timer.duration = dotDuration end
+            slidesCount += 1
+            typewriter = 1
+            nextSlide = true
+        else
+            typewriter += 1
+        end
+        --slidesCount += 1
+        if slidesCount == 7 then
             timer:remove()
         end
     end)
     slidesTimer.repeats = true
+    
 end
