@@ -96,6 +96,7 @@ function TitleScene:update()
             end
         end
         self.arrowSprite:moveTo(self.arrowX, self.arrowY + (self.arrowIndex - 1)*self.arrowGap)
+        self.arrowSprite:setVisible(not crankDocked)
         if pd.buttonJustPressed(pd.kButtonA) and not crankDocked then
             self.inputActive = false
             self:animateOut()
