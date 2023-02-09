@@ -76,13 +76,12 @@ function Projectile:update()
         end
 
         if collisionTag ~= wallTag then
-            local collisionID <const> = collidedSprite._sprite
             local collisionDict <const> = self.collisionDict
-            if not collisionDict[collisionID] then
-                collisionDict[collisionID] = true
+            if not collisionDict[collidedSprite] then
+                collisionDict[collidedSprite] = true
                 self.damageComponent:dealDamageSingle(collidedSprite)
                 self.pierceCount -= 1
-                if self.pierceCount <= 0 then
+                if self.pierceCount < 0 then
                     local index = tableIndex(projectilesArray, self)
                     if index then
                         tableRemove(projectilesArray, index)
