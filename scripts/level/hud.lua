@@ -78,8 +78,7 @@ function HUD:addExperience(amount)
     self.experience += amount
     if self.experience >= self.maxExperience then
         self.experience = self.maxExperience
-        self.clock:pause()
-        self.levelScene:levelDefeated(self.clock.timeLeft)
+        self.levelScene:enableDigging()
     end
     local newClipHeight = ((self.maxExperience - self.experience)/self.maxExperience) * 240
     self.drawAnimator:reset()
@@ -90,5 +89,9 @@ end
 
 function HUD:stopTimer()
     self.clock:pause()
+    return self.clock.timeLeft
+end
+
+function HUD:getTimeLeft()
     return self.clock.timeLeft
 end

@@ -34,7 +34,7 @@ function Discharge:init(player, data)
     local playerHealthbar = player.healthbar
     local playerHealth = playerHealthbar:getHealth()
 
-    local attackTimer = pd.timer.new(cooldown, function()
+    self.cooldownTimer = pd.timer.new(cooldown, function()
         local curHealth = playerHealthbar:getHealth()
         local lostHealth = playerHealth - curHealth
         if lostHealth < 0 then
@@ -50,5 +50,5 @@ function Discharge:init(player, data)
             self:setVisible(false)
         end)
     end)
-    attackTimer.repeats = true
+    self.cooldownTimer.repeats = true
 end

@@ -16,10 +16,6 @@ function Healthbar:init(maxHealth, player)
     self.maxDrawWidth = 30
     self.drawWidth = self.maxDrawWidth
 
-    self.barSprite = gfx.sprite.new()
-    self.barSprite:setZIndex(Z_INDEXES.UI)
-    self.barSprite:add()
-
     self.drawOffset = 25
 
     self:updateBarImage()
@@ -28,7 +24,6 @@ end
 function Healthbar:update()
     local drawX, drawY = self.player.x, self.player.y + self.drawOffset
     self:moveTo(drawX, drawY)
-    self.barSprite:moveTo(drawX, drawY)
 end
 
 function Healthbar:getHealth()
@@ -69,15 +64,13 @@ function Healthbar:updateBarImage()
         gfx.drawRect(0, 0, self.maxDrawWidth, self.drawHeight)
         gfx.fillRect(0, 0, self.drawWidth, self.drawHeight)
     gfx.popContext()
-    self.barSprite:setImage(barImage)
+    self:setImage(barImage)
 end
 
 function Healthbar:setFillWhite(flag)
     if flag then
         self:setImageDrawMode(gfx.kDrawModeFillWhite)
-        self.barSprite:setImageDrawMode(gfx.kDrawModeFillWhite)
     else
         self:setImageDrawMode(gfx.kDrawModeCopy)
-        self.barSprite:setImageDrawMode(gfx.kDrawModeCopy)
     end
 end

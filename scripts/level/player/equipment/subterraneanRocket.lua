@@ -32,7 +32,7 @@ function SubterraneanRocket:init(player, data)
 
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
 
-    local attackTimer = pd.timer.new(data.cooldown, function()
+    self.cooldownTimer = pd.timer.new(data.cooldown, function()
         local x, y = player.x, player.y
         local crankPos = getCrankPosition() - 90
         local angleInRad = rad(crankPos)
@@ -47,5 +47,5 @@ function SubterraneanRocket:init(player, data)
             self:setVisible(false)
         end)
     end)
-    attackTimer.repeats = true
+    self.cooldownTimer.repeats = true
 end

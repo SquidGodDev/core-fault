@@ -13,6 +13,7 @@ import "scripts/level/hud"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local projectiles <const> = PROJECTILES
 local spawnProbabilities <const> = SpawnProbabilities
 
 class('LevelScene').extends(gfx.sprite)
@@ -26,6 +27,34 @@ function LevelScene:init(gameManager, curLevel, time)
     self:setupLevelLayout()
     self:setupOreSpawner()
     self:setupEnemySpawner()
+
+    self.canDig = false
+    self.digSpriteY = 162
+    self.digSpriteAnimationTime = 800
+    local digNotificationImageTable = gfx.imagetable.new("images/ui/dig-notification-table-55-77")
+    self.digSpriteAnimation = gfx.animation.loop.new(100, digNotificationImageTable, true)
+    self.digSprite = gfx.sprite.new(digNotificationImageTable[1])
+    self.digSprite:setCenter(0, 0)
+    self.digSprite:moveTo(13, 240)
+    self.digSprite:setIgnoresDrawOffset(true)
+    self.digSprite:setZIndex(Z_INDEXES.UI)
+
+    self.levelAnimatingOut = false
+
+    self.playerDead = false
+
+    self:add()
+end
+
+function LevelScene:update()
+    if self.canDig and not self.playerDead then
+        self.digSprite:setImage(self.digSpriteAnimation:image())
+        if pd.buttonJustPressed(pd.kButtonDown) and not self.levelAnimatingOut then
+            self.levelAnimatingOut = true
+            self.player:levelDefeated()
+            self.hud:stopTimer()
+        end
+    end
 end
 
 function LevelScene:setupLevelLayout()
@@ -63,7 +92,7 @@ function LevelScene:setupEnemySpawner()
             local minY = self.player.y - 142
             local maxY = self.player.y + 142
             local inBounds = (spawnX > minX and spawnX < maxX) and (spawnY > minY and spawnY < maxY)
-            
+
             if inBounds then
                 if spawnY > self.player.y then spawnY = maxY else spawnY = minY end
             else
@@ -81,8 +110,6 @@ function LevelScene:setupEnemySpawner()
                     spawnX = minX + math.random() * (maxX - minX)
                 end
             end
-
-            
 
             RandEnemy(spawnX, spawnY, self)
         end)
@@ -109,24 +136,30 @@ function LevelScene:enemyDied(experience)
     self.hud:addExperience(experience)
 end
 
-function LevelScene:levelDefeated(time)
-    local allSprites = gfx.sprite.getAllSprites()
-    for i=1,#allSprites do
-        local curSprite = allSprites[i]
-        if curSprite:isa(Enemy) or curSprite:isa(Player) then
-            curSprite:setUpdatesEnabled(false)
-        end
+function LevelScene:levelDefeated()
+    local time = self.hud:getTimeLeft()
+    for i=1,#projectiles do
+        projectiles[i] = nil
     end
     self.gameManager:levelDefeated(time, self.enemiesDefeated)
 end
 
-function LevelScene:playerDied()
-    local allSprites = gfx.sprite.getAllSprites()
-    for i=1,#allSprites do
-        local curSprite = allSprites[i]
-        if curSprite:isa(Enemy) or curSprite:isa(Player) then
-            curSprite:setUpdatesEnabled(false)
+function LevelScene:enableDigging()
+    if not self.canDig and not self.playerDead then
+        self.canDig = true
+        self.digSprite:add()
+        local animateInTimer = pd.timer.new(self.digSpriteAnimationTime, self.digSprite.y, self.digSpriteY, pd.easingFunctions.inOutCubic)
+        animateInTimer.updateCallback = function(timer)
+            self.digSprite:moveTo(self.digSprite.x, timer.value)
         end
+    end
+end
+
+function LevelScene:playerDied()
+    self.playerDead = true
+    self.digSprite:remove()
+    for i=1,#projectiles do
+        projectiles[i] = nil
     end
     self.gameManager:playerDied(self.hud:stopTimer(), self.enemiesDefeated)
 end

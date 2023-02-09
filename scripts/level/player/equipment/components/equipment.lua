@@ -23,3 +23,9 @@ function Equipment:init(player, data)
 
     return data
 end
+
+function Equipment:disable()
+    if self.cooldownTimer then
+        self.cooldownTimer:remove()
+    end
+end

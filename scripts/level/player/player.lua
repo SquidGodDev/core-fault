@@ -32,6 +32,13 @@ local hurtboxHeight
 local hurtboxHalfWidth
 local hurtboxHalfHeight
 
+local playerStates <const> = {
+    animatingIn = 1,
+    animatingOut = 2,
+    active = 3,
+    inactive = 4
+}
+
 class('Player').extends(gfx.sprite)
 
 function Player:init(x, y, gameManager, levelScene)
@@ -53,6 +60,8 @@ function Player:init(x, y, gameManager, levelScene)
     self.healthbar = healthbar
     self.flashTime = 100
 
+    self.equipmentObjects = {}
+
     self:initializeUpgrades()
     self:initializeEquipment()
 
@@ -68,7 +77,7 @@ function Player:init(x, y, gameManager, levelScene)
     self.animationLoop = gfx.animation.loop.new(200, playerSpriteSheet, true)
     self.startFrame = 1
     self.endFrame = 2
-    self:setImage(self.animationLoop:image())
+    self:setImage(playerSpriteSheet[10])
     self:add()
 
     self:setZIndex(Z_INDEXES.PLAYER)
@@ -99,10 +108,57 @@ function Player:init(x, y, gameManager, levelScene)
     self.hurtboxHalfHeight = hurtboxHalfHeight
 
     self.enemyTag = TAGS.ENEMY
+
+    self.playerState = playerStates.animatingIn
+
+    local animateInTime = 1300
+    local animateInTimer = pd.timer.new(animateInTime, y - 170, y, pd.easingFunctions.inOutQuad)
+    animateInTimer.updateCallback = function(timer)
+        self:moveTo(x, timer.value)
+    end
+    animateInTimer.timerEndedCallback = function()
+        self.playerState = playerStates.active
+    end
 end
 
 function Player:update()
+    if self.playerState == playerStates.inactive then
+        return
+    end
+
+    if self.playerState == playerStates.animatingOut then
+        self:setImage(self.animateOutAnimationLoop:image())
+        if not self.animateOutAnimationLoop:isValid() then
+            self.playerState = playerStates.inactive
+            self.levelScene:levelDefeated()
+        end
+        return
+    end
+
     local playerX, playerY = self.x, self.y
+
+    local crankPos = getCrankPosition()
+    local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
+    local animationStartIndex = 1 + (dirIndex - 1) * 2
+    local animationLoop <const> = self.animationLoop
+    animationLoop.startFrame = animationStartIndex
+    animationLoop.endFrame = animationStartIndex + 1
+
+    self:setZIndex(self.y)
+
+    self:setImage(animationLoop:image())
+
+    if self.playerState == playerStates.animatingIn then
+        return
+    end
+
+    self:updateMovement(crankPos)
+
+    local drawOffsetX, drawOffsetY = getDrawOffset()
+    local targetOffsetX, targetOffsetY = -(playerX - 200), -(playerY - 120)
+    local smoothedX = lerp(drawOffsetX, targetOffsetX, smoothSpeed)
+    local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
+    setDrawOffset(smoothedX, smoothedY)
 
     -- Check if being damaged by enemies
     local hurtboxX = playerX - hurtboxHalfWidth
@@ -115,24 +171,6 @@ function Player:update()
             enemy:setAttackCooldown()
         end
     end
-
-    local crankPos = getCrankPosition()
-    local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
-    local animationStartIndex = 1 + (dirIndex - 1) * 2
-    local animationLoop <const> = self.animationLoop
-    animationLoop.startFrame = animationStartIndex
-    animationLoop.endFrame = animationStartIndex + 1
-    self:updateMovement(crankPos)
-
-    local drawOffsetX, drawOffsetY = getDrawOffset()
-    local targetOffsetX, targetOffsetY = -(playerX - 200), -(playerY - 120)
-    local smoothedX = lerp(drawOffsetX, targetOffsetX, smoothSpeed)
-    local smoothedY = lerp(drawOffsetY, targetOffsetY, smoothSpeed)
-    setDrawOffset(smoothedX, smoothedY)
-
-    self:setZIndex(self.y)
-
-    self:setImage(animationLoop:image())
 end
 
 function Player:initializeUpgrades()
@@ -153,7 +191,25 @@ function Player:initializeEquipment()
         if equipmentData.cooldown then
             equipmentData.cooldown *= attackSpeed
         end
-        equipmentConstructor(self, equipmentData)
+        table.insert(self.equipmentObjects, equipmentConstructor(self, equipmentData))
+    end
+end
+
+function Player:levelDefeated()
+    if self.playerState == playerStates.animatingOut then
+        return
+    end
+    self:removeActivePlayerElements()
+    local digImageTable = gfx.imagetable.new("images/player/player-dig-table-34-34")
+    self.animateOutAnimationLoop = gfx.animation.loop.new(100, digImageTable, false)
+    self.playerState = playerStates.animatingOut
+end
+
+function Player:removeActivePlayerElements()
+    self.healthbar:remove()
+    for i=1,#self.equipmentObjects do
+        local equipment = self.equipmentObjects[i]
+        equipment:disable()
     end
 end
 
@@ -165,6 +221,9 @@ function Player:damage(amount)
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
         self.levelScene:playerDied()
+        -- TODO: Player death animation
+        self:removeActivePlayerElements()
+        self.playerState = playerStates.inactive
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)

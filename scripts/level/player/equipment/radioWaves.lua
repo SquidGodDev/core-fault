@@ -22,11 +22,11 @@ function RadioWaves:init(player, data)
         table.insert(fireAngles, i*angleIncrement)
     end
 
-    local fireTimer = pd.timer.new(cooldown, function()
+    self.cooldownTimer = pd.timer.new(cooldown, function()
         for i=1,#fireAngles do
             local angle = fireAngles[i]
             projectileComponent:fireProjectileAtAngle(angle)
         end
     end)
-    fireTimer.repeats = true
+    self.cooldownTimer.repeats = true
 end

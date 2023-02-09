@@ -82,7 +82,7 @@ function SceneManager:createTransitionSprite()
     local filledRect = gfx.image.new(400, 240, gfx.kColorWhite)
     local transitionSprite = gfx.sprite.new(filledRect)
     transitionSprite:moveTo(200, 120)
-    transitionSprite:setZIndex(10000)
+    transitionSprite:setZIndex(32767)
     transitionSprite:setIgnoresDrawOffset(true)
     transitionSprite:add()
     self.transitionSprite = transitionSprite

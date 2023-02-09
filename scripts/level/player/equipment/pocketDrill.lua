@@ -11,7 +11,7 @@ function PocketDrill:init(player, data)
 
     local cooldown = data.cooldown
 
-    local spawnTimer = pd.timer.new(cooldown, function()
+    self.cooldownTimer = pd.timer.new(cooldown, function()
         local oreSpawner = player.levelScene.oreSpawner
         local playerX = math.floor(player.x)
         local playerY = math.floor(player.y)
@@ -19,5 +19,5 @@ function PocketDrill:init(player, data)
         local randY = math.random(playerY - 10, playerY + 10)
         oreSpawner:spawnOre(randX, randY)
     end)
-    spawnTimer.repeats = true
+    self.cooldownTimer.repeats = true
 end

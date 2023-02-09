@@ -29,7 +29,7 @@ function Beam:init(player, data)
     self.beamDamage = data.damage
 
     -- Components
-    HasCooldown(self.beamCooldown, self.fireBeam, self)
+    self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
     self.damageComponent = DoesDamage(player, self.beamDamage)
 end

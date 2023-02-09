@@ -16,8 +16,8 @@ function PeaShooter:init(player, data)
 
     local projectileComponent = FiresProjectile(player, velocity, damage)
 
-    local fireTimer = pd.timer.new(cooldown, function()
+    self.cooldownTimer = pd.timer.new(cooldown, function()
         projectileComponent:fireProjectile()
     end)
-    fireTimer.repeats = true
+    self.cooldownTimer.repeats = true
 end

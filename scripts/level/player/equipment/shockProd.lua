@@ -27,7 +27,7 @@ function ShockProd:init(player, data)
 
     -- Components
     FollowsPlayer(self, player)
-    HasCooldown(self.cooldown, self.fireShock, self)
+    self.cooldownTimer = HasCooldown(self.cooldown, self.fireShock, self)
     self.damageComponent = DoesDamage(player, self.damage)
 end
 
