@@ -24,6 +24,7 @@ function EnemyProjectile:init(x, y, xVelocity, yVelocity, damage, projectileDiam
 
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
+    self.borderSize = 2
 
     self.collisionCheckCounter = 0
     self.collisionCheckInterval = 4
@@ -46,7 +47,12 @@ function EnemyProjectile:update()
     self.x = x
     self.y = y
 
-    fillCircleAtPoint(x, y, self.radius)
+    gfx.pushContext()
+        gfx.setColor(gfx.kColorWhite)
+        fillCircleAtPoint(x, y, self.radius + self.borderSize)
+        gfx.setColor(gfx.kColorBlack)
+        fillCircleAtPoint(x, y, self.radius)
+    gfx.popContext()
 
     local collisionCheckCounter = self.collisionCheckCounter
     collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval
