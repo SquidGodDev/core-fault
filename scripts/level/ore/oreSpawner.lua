@@ -5,26 +5,23 @@ local gfx <const> = playdate.graphics
 
 class('OreSpawner').extends(gfx.sprite)
 
-function OreSpawner:init(gameManager, mapGenerator)
+function OreSpawner:init(gameManager, mapGenerator, level)
     self.gameManager = gameManager
 
-    self.spawnTime = 3000
+    local levelOreCount = 5 + level * 2
 
-    self.currentOreCount = 0
-    self.maxOre = 5
+    for _=1,levelOreCount do
+        local spawnX, spawnY = mapGenerator:getRandomEmptyPosition()
+        Ore(spawnX, spawnY, self)
+    end
 
-    self.totalOreCount = 0
-    self.maxLevelOre = 50
-
-    local spawnTimer = pd.timer.new(self.spawnTime, function()
-        if self.totalOreCount < self.maxLevelOre and self.currentOreCount < self.maxOre then
-            self.currentOreCount += 1
-            self.totalOreCount += 1
-            local spawnX, spawnY = mapGenerator:getRandomEmptyPosition()
-            Ore(spawnX, spawnY, self)
-        end
-    end)
-    spawnTimer.repeats = true
+    self.coresSprite = gfx.sprite.new()
+    self.coresSprite:setCenter(0, 0)
+    self.coresSprite:moveTo(85, 8)
+    self.coresSprite:setZIndex(Z_INDEXES.UI)
+    self.coresSprite:setIgnoresDrawOffset(true)
+    self.coresSprite:add()
+    self:drawOreCount(0)
 end
 
 function OreSpawner:spawnOre(x, y)
@@ -32,6 +29,14 @@ function OreSpawner:spawnOre(x, y)
 end
 
 function OreSpawner:oreMined()
-    self.currentOreCount -= 1
     self.gameManager.minedOre += 1
+    self:drawOreCount(self.gameManager.minedOre)
+end
+
+function OreSpawner:drawOreCount(count)
+    local countImage = gfx.image.new(40, 8)
+    gfx.pushContext(countImage)
+        gfx.drawText(count, 0, 0)
+    gfx.pushContext()
+    self.coresSprite:setImage(countImage)
 end
