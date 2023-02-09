@@ -49,9 +49,9 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
 
     self.directionUpdateCount = 0
     self.directionUpdateInterval = 60
-    self.randomMoveUpdateInterval = 30
+    self.randomMoveUpdateInterval = 40
 
-    self.dieTimerMax = 100
+    self.dieTimerMax = 20
     self.dieTimer = self.dieTimerMax
 
     self.imageFlip = kImageUnflipped
@@ -67,11 +67,10 @@ function Enemy:update()
         self:remove()
         return
     end
-    if self.y > self.player.y - (152 + spriteHeight) 
-            and self.y > self.player.y + (152 + spriteHeight)
-            and self.x < self.player.x - (232 + spriteWidth)
-            and self.x > self.player.x + (232 + spriteWidth) then
-
+    if self.y < self.player.y - (120 + spriteHeight) 
+            or self.y > self.player.y + (120 + spriteHeight)
+            or self.x < self.player.x - (200 + spriteWidth) 
+            or self.x > self.player.x + (200 + spriteWidth) then
         self.dieTimer = self.dieTimer - 1
     else
         self.dieTimer = self.dieTimerMax
@@ -106,6 +105,7 @@ function Enemy:update()
         end
         self.xVelocity = xVelocity
         self.yVelocity = yVelocity
+        self.randomMoveUpdateInterval = math.random(30, 50)
     elseif directionUpdateCount == self.randomMoveUpdateInterval then
         local randomMoveAmount <const> = 3
         xVelocity = (random() - 0.5) * randomMoveAmount

@@ -46,22 +46,24 @@ function LevelScene:setupEnemySpawner()
     end
 
     self.enemyCount = 0
-    self.maxEnemies = math.min(10 + self.curLevel * 2, 20)
+    self.maxEnemies = math.min(2 + self.curLevel * 4, 20)
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000
     pd.timer.performAfterDelay(levelStartDelay, function()
-        local spawnTimer = pd.timer.new(100, function()
+        local spawnTimer = pd.timer.new(math.max(100, 900 - self.curLevel * 100), function()
             if self.enemyCount >= self.maxEnemies then
                 return
             end
             self.enemyCount += 1
             local RandEnemy = self:getRandomEnemy()
-            local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
-            local minX = self.player.x - 232
-            local maxX = self.player.x + 232
-            local minY = self.player.y - 142
-            local maxY = self.player.y + 142
+            --local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
+            local spawnX = self.player.x + self.player.xVelocity * 100 + math.random(-200, 200)
+            local spawnY = self.player.y + self.player.yVelocity * 100 + math.random(-120, 120)
+            local minX = self.player.x - 242
+            local maxX = self.player.x + 242
+            local minY = self.player.y - 152
+            local maxY = self.player.y + 152
             local inBounds = (spawnX > minX and spawnX < maxX) and (spawnY > minY and spawnY < maxY)
             
             if inBounds then
