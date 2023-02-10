@@ -23,7 +23,7 @@ function LevelScene:init(gameManager, curLevel, time)
     self.curLevel = curLevel
 
     -- TODO: Calculate level experience scaling
-    self.hud = HUD(15000, curLevel * 50, self)
+    self.hud = HUD(time, curLevel * 50, self)
     self:setupLevelLayout()
     self:setupOreSpawner()
     self:setupEnemySpawner()
