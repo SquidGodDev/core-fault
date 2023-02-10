@@ -53,6 +53,28 @@ function HUD:init(time, maxExperience, levelScene)
     self.timeSprite:add()
     local timeWidth, timeHeight = 40, 7
 
+    local warningSpriteImageTable = gfx.imagetable.new("images/ui/power-warning-table-389-38")
+    local warningSpriteAnimationLoop
+    local warningSprite = gfx.sprite.new()
+    warningSprite:setZIndex(Z_INDEXES.UI)
+    warningSprite:setIgnoresDrawOffset(true)
+    warningSprite:setCenter(0, 0)
+    warningSprite:moveTo(11, 240)
+    warningSprite:setVisible(false)
+    warningSprite:add()
+
+    local warningX, warningY = 200, 223
+    local deadBatteryImage = gfx.image.new("images/ui/no-battery-icon")
+    local warningIconSprite = gfx.sprite.new(deadBatteryImage)
+    warningIconSprite:setZIndex(Z_INDEXES.UI)
+    warningIconSprite:setIgnoresDrawOffset(true)
+    warningIconSprite:moveTo(warningX, warningY)
+    warningIconSprite:add()
+    warningIconSprite:setVisible(false)
+    self.drawWarningText = false
+    self.warningTextFont = gfx.font.new("fonts/tall_robot")
+
+
     self.time = time
     self.clockFont = gfx.font.new("fonts/alpha_custom")
     self.clock = pd.timer.new(time)
@@ -64,6 +86,39 @@ function HUD:init(time, maxExperience, levelScene)
             self.clockFont:drawTextAligned(timeString, timeWidth/2, 0, kTextAlignment.center)
         gfx.popContext()
         self.timeSprite:setImage(timeImage)
+
+        if timer.timeLeft < 12500 then
+            if not warningSprite:isVisible() then
+                warningSprite:setVisible(true)
+                warningSpriteAnimationLoop = gfx.animation.loop.new(100, warningSpriteImageTable, true)
+                local warningAnimateInTimer = pd.timer.new(500, warningSprite.y, 240 - 38, pd.easingFunctions.inOutCubic)
+                warningAnimateInTimer.updateCallback = function(animateTimer)
+                    warningSprite:moveTo(warningSprite.x, animateTimer.value)
+                end
+                warningAnimateInTimer.timerEndedCallback = function()
+                    warningIconSprite:setVisible(true)
+                    pd.timer.performAfterDelay(500, function()
+                        warningIconSprite:setVisible(false)
+                        pd.timer.performAfterDelay(500, function()
+                            warningIconSprite:setVisible(true)
+                            pd.timer.performAfterDelay(500, function()
+                                warningIconSprite:setVisible(false)
+                                pd.timer.performAfterDelay(500, function()
+                                    self.drawWarningText = true
+                                end)
+                            end)
+                        end)
+                    end)
+                end
+            end
+            if self.drawWarningText then
+                warningIconSprite:setVisible(true)
+                local secondsText = gfx.imageWithText(string.format("%02d", math.floor(timer.timeLeft / 1000) % 60), 32, 24, gfx.kColorClear, nil, nil, kTextAlignment.center, self.warningTextFont)
+                warningIconSprite:setImage(secondsText)
+                warningIconSprite:setImageDrawMode(gfx.kDrawModeFillWhite)
+            end
+            warningSprite:setImage(warningSpriteAnimationLoop:image())
+        end
     end
     self.clock.timerEndedCallback = function()
         self.levelScene:levelDefeated(0)
