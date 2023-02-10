@@ -22,8 +22,10 @@ end
 
 class('UpgradeScene').extends(gfx.sprite)
 
-function UpgradeScene:init(gameManager)
+function UpgradeScene:init(gameManager, curLevel)
     self.gameManager = gameManager
+
+    StreakBackground()
 
     -- TODO: Replace dummy available upgrades with randomized upgrades
     -- based on what's available and level
@@ -37,22 +39,24 @@ function UpgradeScene:init(gameManager)
         dummyAvailableUpgrades[i] = allUpgrades[i]
     end
 
-    StreakBackground()
-
-    self.upgradePanel = SelectionPanel(dummyAvailableUpgrades, false)
-
     -- TODO: Replace dummy equipment with what's available and level
     local allEquipment = {}
+    local dummyAvailableEquipment = {}
     for _, equipment in pairs(equipment) do
         table.insert(allEquipment, equipment)
     end
     ShuffleInPlace(allEquipment)
-    self.dummyAvailableEquipment = {}
     for i=1,3 do
-        self.dummyAvailableEquipment[i] = allEquipment[i]
+        dummyAvailableEquipment[i] = allEquipment[i]
     end
 
-    self.state = states.upgradeSelect
+    if curLevel % 2 == 0 then
+        self.state = states.upgradeSelect
+        self.upgradePanel = SelectionPanel(dummyAvailableUpgrades, false)
+    else
+        self.state = states.equipmentSelect
+        self.equipmentPanel = SelectionPanel(dummyAvailableEquipment, true)
+    end
 
     self.selectedUpgrade = nil
     self.selectedNewEquipment = nil
@@ -69,9 +73,9 @@ function UpgradeScene:update()
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             self.selectedUpgrade = self.upgradePanel:select()
-            self.state = states.equipmentSelect
             self.upgradePanel:animateOut()
-            self.equipmentPanel = SelectionPanel(self.dummyAvailableEquipment, true)
+            self.gameManager:upgradesSelected(self.selectedUpgrade, nil, nil)
+            self.state = states.finished
         end
     elseif self.state == states.equipmentSelect then
         if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
@@ -83,7 +87,7 @@ function UpgradeScene:update()
             self.equipmentPanel:animateOut()
             local equipmentTableLength = #self.gameManager.equipment
             if equipmentTableLength < 3 then
-                self.gameManager:upgradesSelected(self.selectedUpgrade, self.selectedNewEquipment, equipmentTableLength + 1)
+                self.gameManager:upgradesSelected(nil, self.selectedNewEquipment, equipmentTableLength + 1)
                 self.state = states.finished
             else
                 self.equipmentSwapPanel = SwapPanel(self.selectedNewEquipment, self.gameManager.equipment)
@@ -99,7 +103,7 @@ function UpgradeScene:update()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             local swappedIndex = self.equipmentSwapPanel:select()
             self.state = states.finished
-            self.gameManager:upgradesSelected(self.selectedUpgrade, self.selectedNewEquipment, swappedIndex)
+            self.gameManager:upgradesSelected(nil, self.selectedNewEquipment, swappedIndex)
         end
     end
 end

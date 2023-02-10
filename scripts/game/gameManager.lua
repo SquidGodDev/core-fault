@@ -51,7 +51,7 @@ function GameManager:levelDefeated(time, enemiesDefeated)
     end
     self.time = time
     self.curLevel += 1
-    self.sceneManager:switchScene(UpgradeScene, self)
+    self.sceneManager:switchScene(UpgradeScene, self, self.curLevel)
 end
 
 function GameManager:playerDied(time, enemiesDefeated)

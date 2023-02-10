@@ -46,7 +46,7 @@ equipment = {
         description = "Fires bullets in the direction the player is facing",
         level = 1,
         damage = 1,
-        cooldown = 600,
+        cooldown = 400,
         velocity = 6,
         levelStats = {
             {damage = 0.25, cooldown = -50},
