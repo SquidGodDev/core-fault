@@ -1,12 +1,27 @@
+import "scripts/data/unlockData"
+
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local unlocks <const> = unlocks
+
+local getEquipmentUnlockLevel = function(equipment)
+    local equipmentName = equipment.name
+    for i=1,#unlocks do
+        local unlockData = unlocks[i]
+        if unlockData.name == equipmentName then
+            return unlockData.level
+        end
+    end
+end
+
 class('SelectionPanel').extends(gfx.sprite)
 
-function SelectionPanel:init(choices, isEquipment, maxEquipment)
+function SelectionPanel:init(choices, isEquipment, equipmentLevel, addUnlockLevel)
     self.choices = choices
     self.isEquipment = isEquipment
-    self.maxEquipment = maxEquipment
+    self.equipmentLevel = equipmentLevel
+    self.addUnlockLevel = addUnlockLevel
 
     -- Selection data
     self.selectIndex = 2
@@ -98,7 +113,12 @@ function SelectionPanel:drawUI()
     gfx.pushContext(panelImage)
         local selectedItem = self.choices[self.selectIndex]
         local itemLevel = selectedItem.level
-        if not self.isEquipment or self.maxEquipment then
+        if self.isEquipment then
+            itemLevel = self.equipmentLevel
+            if self.addUnlockLevel then
+                itemLevel += getEquipmentUnlockLevel(selectedItem)
+            end
+        else
             itemLevel += 1
         end
 

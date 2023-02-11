@@ -20,6 +20,15 @@ local function shuffleInPlace(t)
     end
 end
 
+local function findInTable(table, name)
+    for i=1, #table do
+        if table[i].name == name then
+            return true
+        end
+    end
+    return false
+end
+
 class('UpgradeScene').extends(gfx.sprite)
 
 function UpgradeScene:init(gameManager, curLevel)
@@ -43,7 +52,9 @@ function UpgradeScene:init(gameManager, curLevel)
     local allEquipment = {}
     local availableEquipment = {}
     for _, equipment in pairs(equipment) do
-        table.insert(allEquipment, equipment)
+        if not findInTable(self.gameManager.equipment, equipment) then
+            table.insert(allEquipment, equipment)
+        end
     end
     shuffleInPlace(allEquipment)
     for i=1,3 do
@@ -55,7 +66,11 @@ function UpgradeScene:init(gameManager, curLevel)
         self.upgradePanel = SelectionPanel(availableUpgrades, false)
     else
         self.state = states.equipmentSelect
-        self.equipmentPanel = SelectionPanel(availableEquipment, true, #gameManager.equipment == 3)
+        local equipmentLevel = 1
+        if curLevel >= 6 then
+            equipmentLevel = (curLevel - 4)/2
+        end
+        self.equipmentPanel = SelectionPanel(availableEquipment, true, equipmentLevel, curLevel >= 6)
     end
 
     self.selectedUpgrade = nil

@@ -31,7 +31,7 @@ function StartScene:init(gameManager)
 
     StreakBackground()
 
-    self.equipmentPanel = SelectionPanel(self.starterEquipment, true)
+    self.equipmentPanel = SelectionPanel(self.starterEquipment, true, 1, false)
 
     self:add()
 end
