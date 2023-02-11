@@ -3,9 +3,10 @@ local gfx <const> = playdate.graphics
 
 class('SelectionPanel').extends(gfx.sprite)
 
-function SelectionPanel:init(choices, isEquipment)
+function SelectionPanel:init(choices, isEquipment, maxEquipment)
     self.choices = choices
     self.isEquipment = isEquipment
+    self.maxEquipment = maxEquipment
 
     -- Selection data
     self.selectIndex = 2
@@ -96,6 +97,10 @@ function SelectionPanel:drawUI()
     local panelImage = self.panelImage:copy()
     gfx.pushContext(panelImage)
         local selectedItem = self.choices[self.selectIndex]
+        local itemLevel = selectedItem.level
+        if not self.isEquipment or self.maxEquipment then
+            itemLevel += 1
+        end
 
         local panelX, panelY = 60, 38
         local slotBaseX, slotBaseY = 88 - panelX, 62 - panelY
@@ -131,7 +136,7 @@ function SelectionPanel:drawUI()
         local itemTextX, itemTextY = 74 - panelX, 158 - panelY
         self.panelFont:drawText(selectedItem.name, itemTextX, itemTextY)
         local levelTextX, levelTextY = 293 - panelX, 158 - panelY
-        self.panelFont:drawText("lvl " .. selectedItem.level, levelTextX, levelTextY)
+        self.panelFont:drawText("lvl " .. itemLevel, levelTextX, levelTextY)
 
         local descriptionX, descriptionY = 75 - panelX, 176 - panelY
         local descriptionWidth, descriptionHeight = 213, 43
@@ -139,7 +144,7 @@ function SelectionPanel:drawUI()
         gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
         local description = selectedItem.description
         if not self.isEquipment then
-            local amount = (selectedItem.level - 1) * selectedItem.scaling + selectedItem.value
+            local amount = (itemLevel - 1) * selectedItem.scaling + selectedItem.value
             local amountText = tostring(amount)
             if selectedItem.percent then
                 amountText = tostring(amount*100) .. "%%" 

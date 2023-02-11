@@ -3,37 +3,43 @@ unlocks = {
     {
         name = "staticField",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 100
     },
     {
         name = "discharge",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 150
     },
     {
         name = "subterraneanRocket",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 200
     },
     {
         name = "pocketDrill",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 250
     },
     {
         name = "radioWaves",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 300
     },
     {
         name = "plasmaCannon",
         isEquipment = true,
-        unlocked = false,
+        level = 0,
+        maxLevel = 3,
         cost = 350
     },
     {

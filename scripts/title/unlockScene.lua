@@ -2,6 +2,7 @@
 import "scripts/data/unlockData"
 import "scripts/data/equipmentData"
 import "scripts/data/upgradeData"
+import "scripts/title/titleScene"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
@@ -22,31 +23,19 @@ local downArrow <const> = gfx.image.new("images/ui/swapMenu/swap-arrow-down")
 local itemIcons <const> = gfx.imagetable.new("images/ui/unlockMenu/unlock-item-icon-table-18-18")
 local getItemIcon <const> = function(index)
     local unlock = unlocks[index]
-    if unlock.isEquipment then
-        if unlock.unlocked then
-            return itemIcons:getImage(5)
+    if unlock.level == unlock.maxLevel then
+        return itemIcons:getImage(5)
+    elseif unlock.level >= 1 then
+        if TOTAL_CORES >= unlock.cost then
+            return itemIcons:getImage(4)
         else
-            if TOTAL_CORES >= unlock.cost then
-                return itemIcons:getImage(2)
-            else
-                return itemIcons:getImage(1)
-            end
+            return itemIcons:getImage(3)
         end
     else
-        if unlock.level == unlock.maxLevel then
-            return itemIcons:getImage(5)
-        elseif unlock.level >= 1 then
-            if TOTAL_CORES >= unlock.cost then
-                return itemIcons:getImage(4)
-            else
-                return itemIcons:getImage(3)
-            end
+        if TOTAL_CORES >= unlock.cost then
+            return itemIcons:getImage(2)
         else
-            if TOTAL_CORES >= unlock.cost then
-                return itemIcons:getImage(2)
-            else
-                return itemIcons:getImage(1)
-            end
+            return itemIcons:getImage(1)
         end
     end
 end
@@ -69,11 +58,8 @@ local getUnlockData <const> = function(unlock)
         local equipmentData = equipment[unlock.name]
         local name = equipmentData.name
         local description = equipmentData.description
-        local maxLevel = 1
-        local level = 0
-        if unlock.unlocked then
-            level = 1
-        end
+        local maxLevel = unlock.maxLevel
+        local level = unlock.level
         return name, description, level, maxLevel, cost
     else
         local upgradeData = upgrades[unlock.name]
@@ -166,7 +152,7 @@ function UnlockScene:init()
                 gfx.drawText(name, x + 66, y + 19)
                 gfx.drawText(level .. "/" .. maxLevel, x + 293, y + 19)
                 if level == maxLevel then
-                    description = "**Purchased!**"
+                    description = "**MAX LEVEL**"
                 else
                     unlockCostHolder:draw(x + 211, y+ 77)
                     coreImage:draw(x + 235, y+ 83)
@@ -227,15 +213,33 @@ function UnlockScene:animateIn()
     self:createAnimator(self.coresSprite, -30, false, 700, 1100)
 end
 
-function UnlockScene:createAnimator(sprite, offset, horizontal, time, delay)
+function UnlockScene:animateOut()
+    self:createAnimator(self.coresSprite, -30, false, 700, 0, true)
+    self:createAnimator(self.unlockSelectorSprite, -200, false, 1000, 50, true)
+    self:createAnimator(self.unlockListSprite, 360, true, 1000, 400, true)
+    self:createAnimator(self.scrollbarListSprite, 200, false, 800, 500, true)
+    self:createAnimator(self.scrollbarSprite, -27, true, 300, 1100, true)
+end
+
+function UnlockScene:createAnimator(sprite, offset, horizontal, time, delay, out)
     local startVal, endVal
     if horizontal then
-        startVal = sprite.x + offset
-        endVal = sprite.x
+        if out then
+            startVal = sprite.x
+            endVal = sprite.x + offset
+        else
+            startVal = sprite.x + offset
+            endVal = sprite.x
+        end
         sprite:moveTo(startVal, sprite.y)
     else
-        startVal = sprite.y + offset
-        endVal = sprite.y
+        if out then
+            startVal = sprite.y
+            endVal = sprite.y + offset
+        else
+            startVal = sprite.y + offset
+            endVal = sprite.y
+        end
         sprite:moveTo(sprite.x, startVal)
     end
     pd.timer.performAfterDelay(delay, function()
@@ -264,11 +268,7 @@ function UnlockScene:update()
             local _, _, level, maxLevel, cost = getUnlockData(selectedUnlock)
             if level < maxLevel and TOTAL_CORES >= cost then
                 TOTAL_CORES -= cost
-                if selectedUnlock.isEquipment then
-                    selectedUnlock.unlocked = true
-                else
-                    selectedUnlock.level += 1
-                end
+                selectedUnlock.level += 1
                 self.unlockList.aPressed = true
                 self.unlockList.buttonActive = true
                 self.updateDisplay = true
@@ -282,7 +282,11 @@ function UnlockScene:update()
                 end)
             end
         end
+    elseif pd.buttonJustPressed(pd.kButtonB) then
+        self:animateOut()
+        SCENE_MANAGER:switchScene(TitleScene)
     end
+
     if pd.buttonJustPressed(pd.kButtonUp) then
         local selectedRow = self.scrollbarList:getSelectedRow()
         if selectedRow > self.scrollbarPadding + 1 then
