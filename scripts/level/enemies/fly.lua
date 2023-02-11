@@ -42,6 +42,6 @@ function Fly:init(x, y, level, spriteSheetPath, cooldown)
 end
 
 function Fly:die()
-    Fly.super.die(self)
     self.projectileTimer:remove()
+    Fly.super.die(self)
 end

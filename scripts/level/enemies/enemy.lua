@@ -61,10 +61,9 @@ end
 
 function Enemy:update()
     local spriteWidth, spriteHeight = self:getSize()
-    
+
     if self.dieTimer < 0 then
-        self.levelManager:enemyDied(0)
-        self:remove()
+        self:die(true)
         return
     end
     if self.y < self.player.y - (120 + spriteHeight) 
@@ -152,7 +151,11 @@ function Enemy:damage(amount)
     end)
 end
 
-function Enemy:die()
-    self.levelManager:enemyDied(self.experience)
+function Enemy:die(noExperience)
+    if noExperience then
+        self.levelManager:enemyDied(0)
+    else
+        self.levelManager:enemyDied(self.experience)
+    end
     self:remove()
 end
