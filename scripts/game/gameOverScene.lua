@@ -100,6 +100,7 @@ function GameOverScene:update()
     end
 
     if pd.buttonJustPressed(pd.kButtonA) then
+        MUSIC_PLAYER:switchSong("gameplay")
         SCENE_MANAGER:switchScene(TitleScene)
     end
 end

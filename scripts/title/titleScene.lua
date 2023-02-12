@@ -128,6 +128,7 @@ function TitleScene:animateOut()
     end
     animateTimer.timerEndedCallback = function()
         if self.arrowIndex == 1 then
+            MUSIC_PLAYER:switchSong("gameplay")
             SCENE_MANAGER:switchScene(GameManager)
         else
             SCENE_MANAGER:switchScene(UnlockScene)

@@ -33,6 +33,7 @@ import "CoreLibs/utilities/sampler"
 import "scripts/libraries/SceneManager"
 
 import "scripts/audio/sfxPlayer"
+import "scripts/audio/musicPlayer"
 
 import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
@@ -49,6 +50,7 @@ gfx.setFont(alphaCustomFont)
 math.randomseed(pd.getSecondsSinceEpoch())
 
 SCENE_MANAGER = SceneManager()
+MUSIC_PLAYER = MusicPlayer("title")
 
 -- GameManager()
 TitleScene()
