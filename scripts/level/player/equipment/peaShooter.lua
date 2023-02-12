@@ -16,10 +16,10 @@ function PeaShooter:init(player, data)
 
     local projectileComponent = FiresProjectile(player, velocity, damage)
 
-    self.sfxPlayer = SfxPlayer("sfx-peaShooter")
+    self.sfxPlayer = SfxPlayer("sfx-pea-shooter")
 
     self.cooldownTimer = pd.timer.new(cooldown, function()
-        projectileComponent:fireProjectile()
+        projectileComponent:fireProjectile(180)
         self.sfxPlayer:play()
     end)
     self.cooldownTimer.repeats = true

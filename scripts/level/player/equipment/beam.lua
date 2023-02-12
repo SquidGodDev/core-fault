@@ -6,7 +6,8 @@ import "scripts/level/player/equipment/components/equipment"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-local getCrankPosition <const> = pd.getCrankPosition
+local beamDirection = 0
+local angleSpeed = 45
 
 local rad <const> = math.rad
 local cos <const> = math.cos
@@ -38,8 +39,8 @@ end
 
 function Beam:fireBeam()
     local x, y = self.player.x, self.player.y
-    local crankPos = getCrankPosition() - 90
-    local angleInRad = rad(crankPos)
+    beamDirection = (beamDirection + angleSpeed) % 360
+    local angleInRad = rad(-beamDirection)
     local angleCos = cos(angleInRad)
     local angleSine = sin(angleInRad)
 

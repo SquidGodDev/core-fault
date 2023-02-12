@@ -27,7 +27,7 @@ equipment = {
     },
     beam = {
         name = "Beam",
-        description = "Periodically fires a damaging beam in the direction the player is facing",
+        description = "Periodically fires a damaging beam around the player",
         level = 1,
         damage = 2,
         cooldown = 2000,
@@ -43,7 +43,7 @@ equipment = {
     },
     peaShooter = {
         name = "Pea Shooter",
-        description = "Fires bullets in the direction the player is facing",
+        description = "Fires small bullets from behind",
         level = 1,
         damage = 1,
         cooldown = 400,
@@ -95,7 +95,7 @@ equipment = {
     },
     subterraneanRocket = {
         name = "Subterranean Rocket",
-        description = "Periodically causes an explosion at a distance in front of the player",
+        description = "Periodically causes an explosion at a distance circling the player",
         level = 1,
         damage = 3,
         cooldown = 1000,
