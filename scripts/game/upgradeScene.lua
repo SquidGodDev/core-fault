@@ -20,9 +20,9 @@ local function shuffleInPlace(t)
     end
 end
 
-local function findInTable(table, name)
+local function findInTable(table, object)
     for i=1, #table do
-        if table[i].name == name then
+        if table[i].name == object.name then
             return true
         end
     end
@@ -48,7 +48,6 @@ function UpgradeScene:init(gameManager, curLevel)
         availableUpgrades[i] = allUpgrades[i]
     end
 
-    -- TODO: Replace dummy equipment with what's available and level
     local allEquipment = {}
     local availableEquipment = {}
     for _, equipment in pairs(equipment) do
@@ -67,14 +66,15 @@ function UpgradeScene:init(gameManager, curLevel)
     else
         self.state = states.equipmentSelect
         local equipmentLevel = 1
-        if curLevel >= 6 then
-            equipmentLevel = (curLevel - 4)/2
+        if curLevel >= 7 then
+            equipmentLevel = math.floor((curLevel - 3)/2)
         end
-        self.equipmentPanel = SelectionPanel(availableEquipment, true, equipmentLevel, curLevel >= 6)
+        self.equipmentPanel = SelectionPanel(availableEquipment, true, equipmentLevel, curLevel >= 7)
     end
 
     self.selectedUpgrade = nil
     self.selectedNewEquipment = nil
+    self.selectedNewEquipmentLevel = nil
 
     self:add()
 end
@@ -99,14 +99,14 @@ function UpgradeScene:update()
         elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
             self.equipmentPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
-            self.selectedNewEquipment = self.equipmentPanel:select()
+            self.selectedNewEquipment, self.selectedNewEquipmentLevel = self.equipmentPanel:select()
             self.equipmentPanel:animateOut()
             local equipmentTableLength = #self.gameManager.equipment
             if equipmentTableLength < 3 then
                 self.gameManager:upgradesSelected(nil, self.selectedNewEquipment, equipmentTableLength + 1)
                 self.state = states.finished
             else
-                self.equipmentSwapPanel = SwapPanel(self.selectedNewEquipment, self.gameManager.equipment)
+                self.equipmentSwapPanel = SwapPanel(self.selectedNewEquipment, self.gameManager.equipment, self.selectedNewEquipmentLevel)
                 self.equipmentSwapPanel:animateIn()
                 self.state = states.equipmentSwap
             end

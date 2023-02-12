@@ -55,6 +55,13 @@ function LevelScene:update()
             self.hud:stopTimer()
         end
     end
+
+    -- LEVEL SKIP
+    -- if pd.buttonIsPressed(pd.kButtonB) then
+    --     self.levelAnimatingOut = true
+    --     self.player:levelDefeated()
+    --     self.hud:stopTimer()
+    -- end
 end
 
 function LevelScene:setupLevelLayout()

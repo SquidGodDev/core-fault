@@ -1,6 +1,27 @@
 
 unlocks = {
     {
+        name = "shockProd",
+        isEquipment = true,
+        level = 0,
+        maxLevel = 3,
+        cost = 100
+    },
+    {
+        name = "beam",
+        isEquipment = true,
+        level = 0,
+        maxLevel = 3,
+        cost = 150
+    },
+    {
+        name = "peaShooter",
+        isEquipment = true,
+        level = 0,
+        maxLevel = 3,
+        cost = 200
+    },
+    {
         name = "staticField",
         isEquipment = true,
         level = 0,

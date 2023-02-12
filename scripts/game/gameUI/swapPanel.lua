@@ -3,9 +3,10 @@ local gfx <const> = playdate.graphics
 
 class('SwapPanel').extends(gfx.sprite)
 
-function SwapPanel:init(newEquipment, curEquipment)
+function SwapPanel:init(newEquipment, curEquipment, newEquipmentLevel)
     self.newEquipment = newEquipment
     self.curEquipment = curEquipment
+    self.newEquipmentLevel = newEquipmentLevel
 
     -- Selection data
     self.selectIndex = 2
@@ -55,7 +56,7 @@ function SwapPanel:init(newEquipment, curEquipment)
         local newItemTextX, newItemTextY = 14, 27
         self.panelFont:drawText(self.newEquipment.name, newItemTextX, newItemTextY)
         local newLevelTextX, newLevelTextY = 241, 27
-        self.panelFont:drawText("lvl " .. self.newEquipment.level, newLevelTextX, newLevelTextY)
+        self.panelFont:drawText("lvl " .. self.newEquipmentLevel, newLevelTextX, newLevelTextY)
 
         local newItemDescriptionX, newItemDescriptionY = 15, 43
         local newDescriptionWidth, newDescriptionHeight = 213, 43

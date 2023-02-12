@@ -1,15 +1,27 @@
 import "scripts/data/unlockData"
+import "scripts/data/equipmentData"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 local unlocks <const> = unlocks
+local equipment <const> = equipment
+local equipmentDisplayNameToKey <const> = {}
+for equipmentKey, equipmentData in pairs(equipment) do
+    local equipmentDisplayName = equipmentData.name
+    equipmentDisplayNameToKey[equipmentDisplayName] = equipmentKey
+end
 
-local getEquipmentUnlockLevel = function(equipment)
-    local equipmentName = equipment.name
+local getEquipmentUnlockLevel = function(equipmentObj)
+    local equipmentDisplayName = equipmentObj.name
+    local equipmentKey = equipmentDisplayNameToKey[equipmentDisplayName]
     for i=1,#unlocks do
         local unlockData = unlocks[i]
-        if unlockData.name == equipmentName then
+        print("Unlock Name")
+        print(unlockData.name)
+        print("Equipment Key")
+        print(equipmentKey)
+        if unlockData.name == equipmentKey then
             return unlockData.level
         end
     end
@@ -105,22 +117,27 @@ function SelectionPanel:select()
         self.aButtonSprite:setImage(self.aButtonImage)
     end)
     local selectedChoice = self.choices[self.selectIndex]
-    return selectedChoice
+    return selectedChoice, self:getItemLevel(selectedChoice)
+end
+
+function SelectionPanel:getItemLevel(item)
+    local itemLevel = item.level
+    if self.isEquipment then
+        itemLevel = self.equipmentLevel
+        if self.addUnlockLevel then
+            return itemLevel + getEquipmentUnlockLevel(item)
+        end
+        return itemLevel
+    else
+        return itemLevel + 1
+    end
 end
 
 function SelectionPanel:drawUI()
     local panelImage = self.panelImage:copy()
     gfx.pushContext(panelImage)
         local selectedItem = self.choices[self.selectIndex]
-        local itemLevel = selectedItem.level
-        if self.isEquipment then
-            itemLevel = self.equipmentLevel
-            if self.addUnlockLevel then
-                itemLevel += getEquipmentUnlockLevel(selectedItem)
-            end
-        else
-            itemLevel += 1
-        end
+        local itemLevel = self:getItemLevel(selectedItem)
 
         local panelX, panelY = 60, 38
         local slotBaseX, slotBaseY = 88 - panelX, 62 - panelY
