@@ -32,7 +32,10 @@ function SubterraneanRocket:init(player, data)
 
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
 
+    self.sfxPlayer = SfxPlayer("sfx-sub-rocket")
+
     self.cooldownTimer = pd.timer.new(data.cooldown, function()
+        self.sfxPlayer:play()
         local x, y = player.x, player.y
         local crankPos = getCrankPosition() - 90
         local angleInRad = rad(crankPos)

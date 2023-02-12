@@ -57,6 +57,9 @@ function Enemy:init(x, y, levelManager, spritesheetPath)
     self.imageFlip = kImageUnflipped
 
     self.attackOnCooldown = false
+
+    self.dieSound = SfxPlayer("sfx-enemy-death")
+    self.damageSound = SfxPlayer("sfx-enemy-damage")
 end
 
 function Enemy:update()
@@ -138,6 +141,7 @@ function Enemy:damage(amount)
     if self.invincible then
         return
     end
+    self.damageSound:play()
     self.health -= amount
     if self.health <= 0 then
         self:die()
@@ -155,6 +159,7 @@ function Enemy:die(noExperience)
     if noExperience then
         self.levelManager:enemyDied(0)
     else
+        self.dieSound:play()
         self.levelManager:enemyDied(self.experience)
     end
     self:remove()

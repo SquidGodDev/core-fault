@@ -77,16 +77,22 @@ function UpgradeScene:init(gameManager, curLevel)
     self.selectedNewEquipmentLevel = nil
 
     self:add()
+
+    self.menuMoveSound = SfxPlayer("sfx-menu-move")
+    self.menuSelectSound = SfxPlayer("sfx-menu-select")
 end
 
 function UpgradeScene:update()
     local crankTicks = pd.getCrankTicks(3)
     if self.state == states.upgradeSelect then
         if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+            self.menuMoveSound:play()
             self.upgradePanel:selectLeft()
         elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+            self.menuMoveSound:play()
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
+            self.menuSelectSound:play()
             self.selectedUpgrade = self.upgradePanel:select()
             self.upgradePanel:animateOut()
             self.selectedUpgrade.level += 1
@@ -95,10 +101,13 @@ function UpgradeScene:update()
         end
     elseif self.state == states.equipmentSelect then
         if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+            self.menuMoveSound:play()
             self.equipmentPanel:selectLeft()
         elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+            self.menuMoveSound:play()
             self.equipmentPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
+            self.menuSelectSound:play()
             self.selectedNewEquipment, self.selectedNewEquipmentLevel = self.equipmentPanel:select()
             self.equipmentPanel:animateOut()
             local equipmentTableLength = #self.gameManager.equipment
@@ -113,10 +122,13 @@ function UpgradeScene:update()
         end
     elseif self.state == states.equipmentSwap then
         if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
+            self.menuMoveSound:play()
             self.equipmentSwapPanel:selectLeft()
         elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) or crankTicks == 1 then
+            self.menuMoveSound:play()
             self.equipmentSwapPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
+            self.menuSelectSound:play()
             local swappedIndex = self.equipmentSwapPanel:select()
             self.state = states.finished
             self.selectedNewEquipment.level += 1

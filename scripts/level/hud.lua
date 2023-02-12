@@ -87,6 +87,7 @@ function HUD:init(time, maxExperience, levelScene)
         gfx.popContext()
         self.timeSprite:setImage(timeImage)
 
+        self.timeWarningSound = SfxPlayer("time-warning")
         if timer.timeLeft < 12500 then
             if not warningSprite:isVisible() then
                 warningSprite:setVisible(true)
@@ -96,6 +97,7 @@ function HUD:init(time, maxExperience, levelScene)
                     warningSprite:moveTo(warningSprite.x, animateTimer.value)
                 end
                 warningAnimateInTimer.timerEndedCallback = function()
+                    self.timeWarningSound:play()
                     warningIconSprite:setVisible(true)
                     pd.timer.performAfterDelay(500, function()
                         warningIconSprite:setVisible(false)
@@ -120,7 +122,10 @@ function HUD:init(time, maxExperience, levelScene)
             warningSprite:setImage(warningSpriteAnimationLoop:image())
         end
     end
+
+    self.powerDownSound = SfxPlayer("sfx-player-power-down")
     self.clock.timerEndedCallback = function()
+        self.powerDownSound:play()
         self.levelScene:levelDefeated(0)
     end
 end

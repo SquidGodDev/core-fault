@@ -66,6 +66,9 @@ function TitleScene:init()
     self.inputActive = false
 
     self.crankDocked = false
+
+    self.menuMoveSound = SfxPlayer("sfx-menu-move")
+    self.menuSelectSound = SfxPlayer("sfx-menu-select")
 end
 
 function TitleScene:update()
@@ -89,15 +92,18 @@ function TitleScene:update()
         if pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
             if self.arrowIndex > 1 then
                 self.arrowIndex = 1
+                self.menuMoveSound:play()
             end
         elseif pd.buttonJustPressed(pd.kButtonDown) or crankTicks == 1 then
             if self.arrowIndex < 2 then
                 self.arrowIndex = 2
+                self.menuMoveSound:play()
             end
         end
         self.arrowSprite:moveTo(self.arrowX, self.arrowY + (self.arrowIndex - 1)*self.arrowGap)
         self.arrowSprite:setVisible(not crankDocked)
         if pd.buttonJustPressed(pd.kButtonA) and not crankDocked then
+            self.menuSelectSound:play()
             self.inputActive = false
             self:animateOut()
             self.aButtonSprite:setImage(self.aButtonDownImage)
@@ -148,7 +154,7 @@ function TitleScene:createSlidesTimer()
     for i=1, 6 do
         slideTextLength[i] = string.len(slideText[i])
     end
-    
+
     local dotCount = 3
     local typewriter = 1
 
@@ -201,5 +207,5 @@ function TitleScene:createSlidesTimer()
         end
     end)
     slidesTimer.repeats = true
-    
+
 end

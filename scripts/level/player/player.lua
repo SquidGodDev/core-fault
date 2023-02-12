@@ -119,6 +119,10 @@ function Player:init(x, y, gameManager, levelScene)
     animateInTimer.timerEndedCallback = function()
         self.playerState = playerStates.active
     end
+
+    self.damageSound = SfxPlayer("sfx-player-damage")
+    self.deathSound = SfxPlayer("sfx-player-death")
+    self.digSound = SfxPlayer("sfx-player-dig")
 end
 
 function Player:update()
@@ -199,6 +203,7 @@ function Player:levelDefeated()
     if self.playerState == playerStates.animatingOut then
         return
     end
+    self.digSound:play()
     self:removeActivePlayerElements()
     local digImageTable = gfx.imagetable.new("images/player/player-dig-table-34-34")
     self.animateOutAnimationLoop = gfx.animation.loop.new(100, digImageTable, false)
@@ -218,8 +223,10 @@ function Player:damage(amount)
         return
     end
 
+    self.damageSound:play()
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
+        self.deathSound:play()
         self.levelScene:playerDied()
         -- TODO: Player death animation
         self:removeActivePlayerElements()

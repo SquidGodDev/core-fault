@@ -11,7 +11,10 @@ function PocketDrill:init(player, data)
 
     local cooldown = data.cooldown
 
+    self.sfxPlayer = SfxPlayer("sfx-pocket-drill")
+
     self.cooldownTimer = pd.timer.new(cooldown, function()
+        self.sfxPlayer:play()
         local oreSpawner = player.levelScene.oreSpawner
         local playerX = math.floor(player.x)
         local playerY = math.floor(player.y)

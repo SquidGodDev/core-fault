@@ -22,7 +22,10 @@ function RadioWaves:init(player, data)
         table.insert(fireAngles, i*angleIncrement)
     end
 
+    self.sfxPlayer = SfxPlayer("sfx-radio-waves")
+
     self.cooldownTimer = pd.timer.new(cooldown, function()
+        self.sfxPlayer:play()
         for i=1,#fireAngles do
             local angle = fireAngles[i]
             projectileComponent:fireProjectileAtAngle(angle)

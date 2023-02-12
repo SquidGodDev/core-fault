@@ -24,8 +24,11 @@ function StaticField:init(player, data)
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
     FollowsPlayer(self, player)
 
+    self.sfxPlayer = SfxPlayer("sfx-static-field")
+
     self.cooldownTimer = pd.timer.new(data.cooldown, function()
         self.aoeDamageComponent:dealAOEDamage(self.x, self.y)
+        self.sfxPlayer:play()
     end)
     self.cooldownTimer.repeats = true
 end

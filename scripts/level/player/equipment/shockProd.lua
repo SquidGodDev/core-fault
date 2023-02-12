@@ -29,6 +29,8 @@ function ShockProd:init(player, data)
     FollowsPlayer(self, player)
     self.cooldownTimer = HasCooldown(self.cooldown, self.fireShock, self)
     self.damageComponent = DoesDamage(player, self.damage)
+
+    self.sfxPlayer = SfxPlayer("sfx-shock-prod")
 end
 
 function ShockProd:update()
@@ -40,6 +42,8 @@ function ShockProd:update()
 end
 
 function ShockProd:fireShock()
+    self.sfxPlayer:play()
+
     self.facingRight = not self.facingRight
     self.animationLoop.paused = false
     self.animationLoop.frame = 1

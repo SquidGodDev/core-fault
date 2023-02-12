@@ -34,7 +34,11 @@ function Discharge:init(player, data)
     local playerHealthbar = player.healthbar
     local playerHealth = playerHealthbar:getHealth()
 
+    self.sfxPlayer = SfxPlayer("sfx-discharge")
+
     self.cooldownTimer = pd.timer.new(cooldown, function()
+        self.sfxPlayer:play()
+
         local curHealth = playerHealthbar:getHealth()
         local lostHealth = playerHealth - curHealth
         if lostHealth < 0 then

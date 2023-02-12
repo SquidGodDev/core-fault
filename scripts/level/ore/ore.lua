@@ -20,13 +20,19 @@ function Ore:init(x, y, oreSpawner)
     self.health = 5
 
     self.flashTime = 100
+
+    self.coreCollectSound = SfxPlayer("sfx-core-collect")
+    self.coreDamageSound = SfxPlayer("sfx-core-damage")
 end
 
 function Ore:damage(amount)
     self.health -= amount
     if self.health <= 0 then
+        self.coreCollectSound:play()
         self.oreSpawner:oreMined()
         self:remove()
+    else
+        self.coreDamageSound:play()
     end
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)

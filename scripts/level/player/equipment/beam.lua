@@ -32,6 +32,8 @@ function Beam:init(player, data)
     self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
     self.damageComponent = DoesDamage(player, self.beamDamage)
+
+    self.sfxPlayer = SfxPlayer("sfx-beam")
 end
 
 function Beam:fireBeam()
@@ -71,4 +73,6 @@ function Beam:fireBeam()
 
     local hitObjects = gfx.sprite.querySpritesAlongLine(self.player.x, self.player.y, self.player.x + targetXOffset, self.player.y + targetYOffset)
     self.damageComponent:dealDamage(hitObjects)
+
+    self.sfxPlayer:play()
 end

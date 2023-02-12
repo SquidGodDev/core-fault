@@ -36,6 +36,9 @@ function StartScene:init(gameManager)
     self:add()
 
     self.selected = false
+
+    self.menuMoveSound = SfxPlayer("sfx-menu-move")
+    self.menuSelectSound = SfxPlayer("sfx-menu-select")
 end
 
 function StartScene:update()
@@ -44,13 +47,16 @@ function StartScene:update()
     end
     local crankTicks = pd.getCrankTicks(3)
     if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+        self.menuMoveSound:play()
         self.equipmentPanel:selectLeft()
     elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+        self.menuMoveSound:play()
         self.equipmentPanel:selectRight()
     elseif pd.buttonJustPressed(pd.kButtonA) then
         self.selected = true
         local selectedEquipment = self.equipmentPanel:select()
         if selectedEquipment then
+            self.menuSelectSound:play()
             self.gameManager:startEquipmentSelected(selectedEquipment)
         end
     end

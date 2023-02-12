@@ -203,6 +203,10 @@ function UnlockScene:init()
     self:add()
 
     self:animateIn()
+
+    self.menuMoveSound = SfxPlayer("sfx-menu-move")
+    self.menuSelectSound = SfxPlayer("sfx-menu-select")
+    self.menuBackSound = SfxPlayer("sfx-menu-back")
 end
 
 function UnlockScene:animateIn()
@@ -267,6 +271,7 @@ function UnlockScene:update()
         if selectedUnlock then
             local _, _, level, maxLevel, cost = getUnlockData(selectedUnlock)
             if level < maxLevel and TOTAL_CORES >= cost then
+                self.menuSelectSound:play()
                 TOTAL_CORES -= cost
                 selectedUnlock.level += 1
                 self.unlockList.aPressed = true
@@ -285,17 +290,20 @@ function UnlockScene:update()
     elseif pd.buttonJustPressed(pd.kButtonB) then
         self:animateOut()
         SCENE_MANAGER:switchScene(TitleScene)
+        self.menuBackSound:play()
     end
 
     if pd.buttonJustPressed(pd.kButtonUp) then
         local selectedRow = self.scrollbarList:getSelectedRow()
         if selectedRow > self.scrollbarPadding + 1 then
+            self.menuMoveSound:play()
             self.scrollbarList:selectPreviousRow(false)
             self.unlockList:selectPreviousRow(false)
         end
     elseif pd.buttonJustPressed(pd.kButtonDown) then
         local selectedRow = self.scrollbarList:getSelectedRow()
         if selectedRow < self.scrollbarPadding + #unlocks then
+            self.menuMoveSound:play()
             self.scrollbarList:selectNextRow(false)
             self.unlockList:selectNextRow(false)
         end

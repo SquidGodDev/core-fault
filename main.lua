@@ -32,6 +32,8 @@ import "CoreLibs/ui"
 import "CoreLibs/utilities/sampler"
 import "scripts/libraries/SceneManager"
 
+import "scripts/audio/sfxPlayer"
+
 import "scripts/data/storedDataManager"
 import "scripts/game/gameManager"
 import "scripts/title/titleScene"
