@@ -4,7 +4,9 @@ import "scripts/level/player/equipment/components/equipment"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
-local getCrankPosition <const> = pd.getCrankPosition
+--local getCrankPosition <const> = pd.getCrankPosition
+local shootAngle = 0
+local angleSpeed <const> = 20
 
 local rad <const> = math.rad
 local cos <const> = math.cos
@@ -37,8 +39,9 @@ function SubterraneanRocket:init(player, data)
     self.cooldownTimer = pd.timer.new(data.cooldown, function()
         self.sfxPlayer:play()
         local x, y = player.x, player.y
-        local crankPos = getCrankPosition() - 90
-        local angleInRad = rad(crankPos)
+        --local crankPos = getCrankPosition() - 90
+        shootAngle = (shootAngle + angleSpeed) % 360
+        local angleInRad = rad(shootAngle)
         local angleCos = cos(angleInRad)
         local angleSine = sin(angleInRad)
         local explosionX = x + angleCos * explosionDistance
