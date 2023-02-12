@@ -69,6 +69,8 @@ function TitleScene:init()
 
     self.menuMoveSound = SfxPlayer("sfx-menu-move")
     self.menuSelectSound = SfxPlayer("sfx-menu-select")
+
+    self.typingSound = SfxPlayer("sfx-menu-move")
 end
 
 function TitleScene:update()
@@ -199,6 +201,7 @@ function TitleScene:createSlidesTimer()
             typewriter = 1
             nextSlide = true
         else
+            self.typingSound:play()
             typewriter += 1
         end
         --slidesCount += 1
