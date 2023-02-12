@@ -26,6 +26,7 @@ function Projectile:init(projectileManager, damageComponent, projectileDiameter,
 
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
+    self.border = 2
 
     self.collisionCheckCounter = 0
     self.collisionCheckInterval = 4
@@ -47,6 +48,9 @@ function Projectile:update()
     self.x = x
     self.y = y
 
+    gfx.setColor(gfx.kColorBlack)
+    fillCircleAtPoint(x, y, self.radius + self.border)
+    gfx.setColor(gfx.kColorWhite)
     fillCircleAtPoint(x, y, self.radius)
 
     local collisionCheckCounter = self.collisionCheckCounter
