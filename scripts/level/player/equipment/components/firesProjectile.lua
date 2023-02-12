@@ -33,9 +33,10 @@ function FiresProjectile:init(player, velocity, damage, size)
     end
 end
 
-function FiresProjectile:fireProjectile()
+function FiresProjectile:fireProjectile(angleAdjustment)
+    local adjustment = angleAdjustment or 0
     local x, y = self.player.x, self.player.y
-    local crankPos = math.floor(getCrankPosition() - 90) % 360
+    local crankPos = math.floor(getCrankPosition() - 90 + adjustment) % 360
     local angleCos = calculatedCosine[crankPos]
     local angleSine = calculatedSine[crankPos]
 
