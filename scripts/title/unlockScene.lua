@@ -293,14 +293,16 @@ function UnlockScene:update()
         self.menuBackSound:play()
     end
 
-    if pd.buttonJustPressed(pd.kButtonUp) then
+    local crankTicks = pd.getCrankTicks(8)
+
+    if pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
         local selectedRow = self.scrollbarList:getSelectedRow()
         if selectedRow > self.scrollbarPadding + 1 then
             self.menuMoveSound:play()
             self.scrollbarList:selectPreviousRow(false)
             self.unlockList:selectPreviousRow(false)
         end
-    elseif pd.buttonJustPressed(pd.kButtonDown) then
+    elseif pd.buttonJustPressed(pd.kButtonDown) or crankTicks == 1 then
         local selectedRow = self.scrollbarList:getSelectedRow()
         if selectedRow < self.scrollbarPadding + #unlocks then
             self.menuMoveSound:play()
