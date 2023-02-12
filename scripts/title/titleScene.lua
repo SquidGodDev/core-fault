@@ -70,7 +70,7 @@ function TitleScene:init()
     self.menuMoveSound = SfxPlayer("sfx-menu-move")
     self.menuSelectSound = SfxPlayer("sfx-menu-select")
 
-    self.typingSound = SfxPlayer("sfx-menu-move")
+    self.typingSound = SfxPlayer("sfx-typing")
 end
 
 function TitleScene:update()

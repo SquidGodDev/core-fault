@@ -173,6 +173,12 @@ soundFiles = {
         },
         level = 1.0
     },
+    ["sfx-typing"] = {
+        files = {
+            sp("sfx-typing")
+        },
+        level = 1.0
+    },
     ["time-warning"] = {
         files = {
             sp("time-warning")
