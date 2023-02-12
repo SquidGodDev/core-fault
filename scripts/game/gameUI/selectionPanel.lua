@@ -127,6 +127,10 @@ function SelectionPanel:getItemLevel(item)
         if self.addUnlockLevel then
             return itemLevel + getEquipmentUnlockLevel(item)
         end
+        local maxLevel = #item.levelStats + 1
+        if itemLevel > maxLevel then
+            itemLevel = maxLevel
+        end
         return itemLevel
     else
         return itemLevel + 1
