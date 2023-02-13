@@ -44,6 +44,7 @@ class('Player').extends(gfx.sprite)
 function Player:init(x, y, gameManager, levelScene)
     self.gameManager = gameManager
     self.levelScene = levelScene
+    self.musicPlayer = MUSIC_PLAYER
 
     -- Player Stats
     self.MaxVelocity = 2
@@ -223,6 +224,7 @@ function Player:damage(amount)
         return
     end
 
+    self.musicPlayer:duck(700)
     self.damageSound:play()
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
