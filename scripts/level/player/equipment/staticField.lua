@@ -20,6 +20,11 @@ function StaticField:init(player, data)
         gfx.drawCircleInRect(0, 0, diameter, diameter)
     gfx.popContext()
     self:setImage(staticFieldImage)
+    local staticFieldImageTable = gfx.imagetable.new("images/player/equipment/staticField-table-80-80")
+    self.staticFieldSprite = gfx.sprite.new(staticFieldImageTable[1])
+    self.staticFieldAnimationLoop = gfx.animation.loop.new(50, staticFieldImageTable, true)
+    self.staticFieldSprite:add()
+    self.staticFieldSprite:setZIndex(Z_INDEXES.EQUIPMENT)
 
     self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
     FollowsPlayer(self, player)
@@ -28,7 +33,16 @@ function StaticField:init(player, data)
 
     self.cooldownTimer = pd.timer.new(data.cooldown, function()
         self.aoeDamageComponent:dealAOEDamage(self.x, self.y)
-        self.sfxPlayer:play()
     end)
     self.cooldownTimer.repeats = true
+
+    self.soundTimer = pd.timer.new(500, function()
+        self.sfxPlayer:play()
+    end)
+    self.soundTimer.repeats = true
+end
+
+function StaticField:update()
+    self.staticFieldSprite:moveTo(self.x, self.y)
+    self.staticFieldSprite:setImage(self.staticFieldAnimationLoop:image())
 end
