@@ -34,6 +34,7 @@ function SceneManager:cleanupScene()
     gfx.sprite.removeAll()
     self:removeAllTimers()
     gfx.setDrawOffset(0, 0)
+    pd.display.setOffset(0, 0)
 end
 
 function SceneManager:startTransition()

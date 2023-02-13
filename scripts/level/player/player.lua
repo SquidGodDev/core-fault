@@ -124,6 +124,28 @@ function Player:init(x, y, gameManager, levelScene)
     self.damageSound = SfxPlayer("sfx-player-damage")
     self.deathSound = SfxPlayer("sfx-player-death")
     self.digSound = SfxPlayer("sfx-player-dig")
+
+    self.shakeTimer = pd.timer.new(500, 5, 0)
+    self.shakeTimer:pause()
+    self.shakeTimer.timerEndedCallback = function(timer)
+        pd.display.setOffset(0, 0)
+        timer:reset()
+        timer:pause()
+    end
+    self.shakeTimer.updateCallback = function(timer)
+        local shakeAmount = timer.value
+        local shakeAngle = math.random()*math.pi*2;
+        shakeX = math.floor(math.cos(shakeAngle)*shakeAmount);
+        shakeY = math.floor(math.sin(shakeAngle)*shakeAmount);
+        pd.display.setOffset(shakeX, shakeY)
+    end
+    self.shakeTimer.discardOnCompletion = false
+end
+
+function Player:screenShake()
+    if self.shakeTimer.paused then
+        self.shakeTimer:start()
+    end
 end
 
 function Player:update()
@@ -224,6 +246,7 @@ function Player:damage(amount)
         return
     end
 
+    self:screenShake()
     self.musicPlayer:duck(700)
     self.damageSound:play()
     self.healthbar:damage(amount)
