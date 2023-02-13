@@ -89,11 +89,18 @@ function SelectionPanel:init(choices, isEquipment, equipmentLevel, addUnlockLeve
     self.aButtonSprite:setZIndex(10)
     self.aButtonSprite:moveTo(326, self.aButtonSpriteY + 240)
     self.aButtonSprite:add()
-    self:animateSprite(self.aButtonSprite, self.aButtonSpriteY, 900, 1000, pd.easingFunctions.outBack)
-
+    local finalTimer = self:animateSprite(self.aButtonSprite, self.aButtonSpriteY, 900, 1000, pd.easingFunctions.outBack)
+    finalTimer.timerEndedCallback = function()
+        self.active = true
+    end
     self:add()
 
     self.selected = false
+    self.active = false
+end
+
+function SelectionPanel:isActive()
+    return self.active
 end
 
 function SelectionPanel:selectRight()

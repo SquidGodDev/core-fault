@@ -42,7 +42,7 @@ function StartScene:init(gameManager)
 end
 
 function StartScene:update()
-    if self.selected then
+    if self.selected or not self.equipmentPanel:isActive() then
         return
     end
     local crankTicks = pd.getCrankTicks(3)

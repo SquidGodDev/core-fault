@@ -60,9 +60,11 @@ function UpgradeScene:init(gameManager, curLevel)
         availableEquipment[i] = allEquipment[i]
     end
 
+    self.curPanel = nil
     if curLevel % 2 == 0 then
         self.state = states.upgradeSelect
         self.upgradePanel = SelectionPanel(availableUpgrades, false)
+        self.curPanel = self.upgradePanel
     else
         self.state = states.equipmentSelect
         local equipmentLevel = 1
@@ -70,6 +72,7 @@ function UpgradeScene:init(gameManager, curLevel)
             equipmentLevel = math.floor((curLevel - 3)/2)
         end
         self.equipmentPanel = SelectionPanel(availableEquipment, true, equipmentLevel, curLevel >= 7)
+        self.curPanel = self.equipmentPanel
     end
 
     self.selectedUpgrade = nil
@@ -83,6 +86,9 @@ function UpgradeScene:init(gameManager, curLevel)
 end
 
 function UpgradeScene:update()
+    if not self.curPanel:isActive() then
+        return
+    end
     local crankTicks = pd.getCrankTicks(3)
     if self.state == states.upgradeSelect then
         if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
