@@ -23,7 +23,7 @@ function Fly:init(x, y, level, spriteSheetPath, cooldown)
     self.projectileDamage = stats.projectileDamage
     self.projectileDiameter = stats.projectileDiameter
     if not cooldown then
-        self.projectileCooldown = stats.attackCooldown
+        self.projectileCooldown = stats.projectileCooldown
     else
         self.projectileCooldown = cooldown
     end
