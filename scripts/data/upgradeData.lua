@@ -94,6 +94,18 @@ upgrades = {
         maxLevel = 5,
         value = 1,
         scaling = 1,
+        percent = false,
+        imagePath = "",
+        constructor = Piercing
+    },
+    restoration = {
+        name = "Restoration",
+        description = "Restore {} health between levels",
+        level = 0,
+        maxLevel = 5,
+        value = 5,
+        scaling = 5,
+        percent = false,
         imagePath = "",
         constructor = Piercing
     }

@@ -118,5 +118,12 @@ unlocks = {
         level = 0,
         maxLevel = 3,
         cost = 100
+    },
+    {
+        name = "restoration",
+        isEquipment = false,
+        level = 0,
+        maxLevel = 3,
+        cost = 100
     }
 }

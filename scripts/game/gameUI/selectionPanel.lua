@@ -17,10 +17,6 @@ local getEquipmentUnlockLevel = function(equipmentObj)
     local equipmentKey = equipmentDisplayNameToKey[equipmentDisplayName]
     for i=1,#unlocks do
         local unlockData = unlocks[i]
-        print("Unlock Name")
-        print(unlockData.name)
-        print("Equipment Key")
-        print(equipmentKey)
         if unlockData.name == equipmentKey then
             return unlockData.level
         end
