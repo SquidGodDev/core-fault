@@ -1,4 +1,7 @@
 import "scripts/level/enemies/enemy"
+import "scripts/data/enemyStats"
+
+local stats <const> = enemyStats["crab"]
 
 class('Crab').extends(Enemy)
 
@@ -7,10 +10,10 @@ function Crab:init(x, y, level, spriteSheetPath)
         spriteSheetPath = "images/enemies/crab-small-table-40-34"
     end
     Crab.super.init(self, x, y, level, spriteSheetPath)
-    self.attackCooldown = 1000
-    self.attackDamage = 4
-    self.health = 6
-    self.maxVelocity = 0.6
+    self.attackCooldown = stats.attackCooldown
+    self.attackDamage = stats.attackDamage
+    self.health = stats.health
+    self.maxVelocity = stats.velocity
 
-    self.experience = 3
+    self.experience = stats.experience
 end

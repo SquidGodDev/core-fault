@@ -1,5 +1,8 @@
 import "scripts/level/enemies/enemy"
 import "scripts/level/enemies/enemyProjectile"
+import "scripts/data/enemyStats"
+
+local stats <const> = enemyStats["fly"]
 
 local pd <const> = playdate
 
@@ -10,21 +13,21 @@ function Fly:init(x, y, level, spriteSheetPath, cooldown)
         spriteSheetPath = "images/enemies/fly-small-table-34-40"
     end
     Fly.super.init(self, x, y, level, spriteSheetPath)
-    self.attackCooldown = 1000
-    self.attackDamage = 1
-    self.health = 4
-    self.maxVelocity = 1
+    self.attackCooldown = stats.attackCooldown
+    self.attackDamage = stats.attackDamage
+    self.health = stats.health
+    self.maxVelocity = stats.velocity
 
-    self.experience = 4
+    self.experience = stats.experience
 
-    self.projectileDamage = 1
-    self.projectileDiameter = 8
+    self.projectileDamage = stats.projectileDamage
+    self.projectileDiameter = stats.projectileDiameter
     if not cooldown then
-        self.projectileCooldown = 6000
+        self.projectileCooldown = stats.attackCooldown
     else
         self.projectileCooldown = cooldown
     end
-    self.projectileSpeed = 2
+    self.projectileSpeed = stats.projectileSpeed
 
     self.player = level.player
 
