@@ -57,7 +57,7 @@ function Player:init(x, y, health, gameManager, levelScene)
     self.CritDamage = playerStats.baseCritDamage
     self.AttackSpeed = 1
     self.Piercing = 0
-    self.Restoration = 50
+    self.Restoration = 0
 
     self.BonusDamage = 0
 
