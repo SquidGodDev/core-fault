@@ -12,6 +12,7 @@ function DoesDamage:init(player, damage)
     self.CritChance = player.CritChance
     self.CritDamage = player.CritDamage
     self.BonusDamage = player.BonusDamage
+    self.PercentDamage = player.PercentDamage
     self.BaseBonusDamage = self.BonusDamage
 end
 
@@ -21,7 +22,7 @@ end
 
 function DoesDamage:dealDamage(hitEntities)
     local crit = random() <= self.CritChance
-    local damageAmount = self.damage + self.BonusDamage
+    local damageAmount = (self.damage * (1 + self.PercentDamage)) + self.BonusDamage
     if crit then
         damageAmount *= 1 + self.CritDamage
     end
