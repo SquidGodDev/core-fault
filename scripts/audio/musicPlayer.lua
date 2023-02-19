@@ -36,6 +36,7 @@ function MusicPlayer:switchSong(song)
     fadeTimer.timerEndedCallback = function()
         self.transitioning = false
         self.currentSong = songFile
+        self.currentSong:setVolume(1)
         songFile:play(0)
     end
 end
