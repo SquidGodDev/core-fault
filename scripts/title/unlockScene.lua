@@ -78,7 +78,8 @@ for i=1,#unlocks do
         local equipmentImagePath = equipment[unlock.name].imagePath
         unlockIcons[i] = gfx.image.new(equipmentImagePath)
     else
-        unlockIcons[i] = disketteImage
+        local equipmentImagePath = upgrades[unlock.name].imagePath
+        unlockIcons[i] = gfx.image.new(equipmentImagePath)
     end
 end
 
