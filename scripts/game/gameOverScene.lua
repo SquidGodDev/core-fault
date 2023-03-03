@@ -5,7 +5,7 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 local timeFormat = function(time)
-    local seconds = string.format("%02d", (time / 1000) % 60)
+    local seconds = string.format("%02d", math.floor(time / 1000) % 60)
     local minutes = string.format("%02d", math.floor(time / (60 * 1000)))
     return minutes .. ":" .. seconds
 end

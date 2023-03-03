@@ -1,4 +1,7 @@
 import "scripts/level/enemies/enemy"
+import "scripts/data/enemyStats"
+
+local stats <const> = enemyStats["slime"]
 
 class('Slime').extends(Enemy)
 
@@ -7,10 +10,10 @@ function Slime:init(x, y, level, spriteSheetPath)
         spriteSheetPath = "images/enemies/slime-small-table-36-34"
     end
     Slime.super.init(self, x, y, level, spriteSheetPath)
-    self.attackCooldown = 1000
-    self.attackDamage = 2
-    self.health = 4
-    self.maxVelocity = 1
+    self.attackCooldown = stats.attackCooldown
+    self.attackDamage = stats.attackDamage
+    self.health = stats.health
+    self.maxVelocity = stats.velocity
 
-    self.experience = 2
+    self.experience = stats.experience
 end

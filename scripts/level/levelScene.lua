@@ -5,7 +5,7 @@ import "scripts/level/enemies/crab"
 import "scripts/level/enemies/slimeMedium"
 import "scripts/level/enemies/flyMedium"
 import "scripts/level/enemies/crabMedium"
-import "scripts/level/enemies/spawnProbabilities"
+import "scripts/data/spawnProbabilities"
 import "scripts/level/mapGeneration/mapGenerator"
 import "scripts/level/ore/oreSpawner"
 import "scripts/level/hud"
@@ -18,9 +18,11 @@ local spawnProbabilities <const> = SpawnProbabilities
 
 class('LevelScene').extends(gfx.sprite)
 
-function LevelScene:init(gameManager, curLevel, time)
+function LevelScene:init(gameManager, curLevel, time, playerHealth)
     self.gameManager = gameManager
     self.curLevel = curLevel
+
+    self.playerHealth = playerHealth
 
     -- TODO: Calculate level experience scaling
     self.hud = HUD(time, curLevel * 50, self)
@@ -68,7 +70,7 @@ function LevelScene:setupLevelLayout()
     self.mapGenerator = MapGenerator()
 
     local spawnX, spawnY = self.mapGenerator:getRandomEmptyPosition()
-    self.player = Player(spawnX, spawnY, self.gameManager, self)
+    self.player = Player(spawnX, spawnY, self.playerHealth, self.gameManager, self)
 end
 
 function LevelScene:setupOreSpawner()
@@ -145,12 +147,12 @@ function LevelScene:enemyDied(experience)
     self.hud:addExperience(experience)
 end
 
-function LevelScene:levelDefeated()
+function LevelScene:levelDefeated(playerHealth)
     local time = self.hud:getTimeLeft()
     for i=1,#projectiles do
         projectiles[i] = nil
     end
-    self.gameManager:levelDefeated(time, self.enemiesDefeated)
+    self.gameManager:levelDefeated(time, self.enemiesDefeated, playerHealth)
 end
 
 function LevelScene:enableDigging()

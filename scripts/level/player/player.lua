@@ -1,9 +1,12 @@
 import "scripts/libraries/AnimatedSprite"
 import "scripts/level/player/healthbar"
+import "scripts/data/playerStats"
 
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 local math <const> = math
+
+local playerStats <const> = playerStats
 
 local floor <const> = math.floor
 local getCrankPosition <const> = pd.getCrankPosition
@@ -41,23 +44,24 @@ local playerStates <const> = {
 
 class('Player').extends(gfx.sprite)
 
-function Player:init(x, y, gameManager, levelScene)
+function Player:init(x, y, health, gameManager, levelScene)
     self.gameManager = gameManager
     self.levelScene = levelScene
     self.musicPlayer = MUSIC_PLAYER
 
     -- Player Stats
-    self.MaxVelocity = 2
-    self.MaxHealth = 100
+    self.MaxVelocity = playerStats.maxVelocity
+    self.MaxHealth = playerStats.maxHealth
     self.HealthRegen = 0
-    self.CritChance = 0.1
-    self.CritDamage = 1.5
+    self.CritChance = playerStats.baseCritChance
+    self.CritDamage = playerStats.baseCritDamage
     self.AttackSpeed = 1
     self.Piercing = 0
-
+    self.Restoration = 0
+    self.PercentDamage = 0
     self.BonusDamage = 0
 
-    local healthbar <const> = Healthbar(self.MaxHealth, self)
+    local healthbar <const> = Healthbar(self.MaxHealth, health, self)
     self.healthbar = healthbar
     self.flashTime = 100
 
@@ -157,7 +161,7 @@ function Player:update()
         self:setImage(self.animateOutAnimationLoop:image())
         if not self.animateOutAnimationLoop:isValid() then
             self.playerState = playerStates.inactive
-            self.levelScene:levelDefeated()
+            self.levelScene:levelDefeated(self.healthbar:getHealth() + self.Restoration)
         end
         return
     end

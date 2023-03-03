@@ -17,10 +17,6 @@ local getEquipmentUnlockLevel = function(equipmentObj)
     local equipmentKey = equipmentDisplayNameToKey[equipmentDisplayName]
     for i=1,#unlocks do
         local unlockData = unlocks[i]
-        print("Unlock Name")
-        print(unlockData.name)
-        print("Equipment Key")
-        print(equipmentKey)
         if unlockData.name == equipmentKey then
             return unlockData.level
         end
@@ -72,7 +68,11 @@ function SelectionPanel:init(choices, isEquipment, equipmentLevel, addUnlockLeve
         local fontHeight = titleFont:getHeight()
         local drawX = titleWidth / 2
         local drawY = (titleHeight - fontHeight) / 2
-        titleFont:drawTextAligned("Choose Equipment", drawX, drawY, kTextAlignment.center)
+        local titleText = "Choose Upgrade"
+        if isEquipment then
+            titleText = "Choose Equipment"
+        end
+        titleFont:drawTextAligned(titleText, drawX, drawY, kTextAlignment.center)
     gfx.popContext()
     self.titleSprite = gfx.sprite.new(titleImage)
     self.titleSpriteY = 35

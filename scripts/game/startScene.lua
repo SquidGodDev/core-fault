@@ -55,6 +55,7 @@ function StartScene:update()
     elseif pd.buttonJustPressed(pd.kButtonA) then
         self.selected = true
         local selectedEquipment = self.equipmentPanel:select()
+        self.equipmentPanel:animateOut()
         if selectedEquipment then
             self.menuSelectSound:play()
             self.gameManager:startEquipmentSelected(selectedEquipment)

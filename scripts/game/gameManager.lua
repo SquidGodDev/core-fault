@@ -8,6 +8,7 @@ import "scripts/game/upgradeScene"
 
 import "scripts/data/upgradeData"
 import "scripts/data/equipmentData"
+import "scripts/data/playerStats"
 
 local totalGameTime <const> = 600000
 
@@ -34,13 +35,14 @@ function GameManager:init()
     self.time = totalGameTime
     self.upgrades = {}
     self.equipment = {}
+    self.playerHealth = playerStats.maxHealth
     self:resetEquipmentAndUpgradeData()
     StartScene(self)
 end
 
 function GameManager:startEquipmentSelected(selectedEquipment)
     table.insert(self.equipment, selectedEquipment)
-    self.sceneManager:switchScene(LevelScene, self, self.curLevel, self.time)
+    self.sceneManager:switchScene(LevelScene, self, self.curLevel, self.time, self.playerHealth)
 end
 
 function GameManager:upgradesSelected(selectedUpgrade, selectedEquipment, swappedIndex)
@@ -55,10 +57,11 @@ function GameManager:upgradesSelected(selectedUpgrade, selectedEquipment, swappe
     if selectedEquipment then
         self.equipment[swappedIndex] = selectedEquipment
     end
-    self.sceneManager:switchScene(LevelScene, self, self.curLevel, self.time)
+    self.sceneManager:switchScene(LevelScene, self, self.curLevel, self.time, self.playerHealth)
 end
 
-function GameManager:levelDefeated(time, enemiesDefeated)
+function GameManager:levelDefeated(time, enemiesDefeated, playerHealth)
+    self.playerHealth = playerHealth
     self.enemiesDefeated += enemiesDefeated
     if time <= 0 then
         self.sceneManager:switchScene(GameOverScene, self.equipment, self.upgrades, totalGameTime - time, self.curLevel, self.enemiesDefeated, self.minedOre)

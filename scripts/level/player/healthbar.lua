@@ -3,10 +3,10 @@ local gfx <const> = playdate.graphics
 
 class('Healthbar').extends(gfx.sprite)
 
-function Healthbar:init(maxHealth, player)
+function Healthbar:init(maxHealth, health, player)
     self.player = player
     self.maxHealth = maxHealth
-    self.health = maxHealth
+    self.health = health
 
     self:setZIndex(Z_INDEXES.UI)
     self:add()

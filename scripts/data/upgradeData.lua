@@ -15,9 +15,9 @@ upgrades = {
         description = "Increases all damage by {}",
         level = 0, -- Current level
         maxLevel = 5, -- Maximum upgrade level
-        value = 2, -- Base value
-        scaling = 1, -- Increase amount per level
-        percent = false, -- If the value should be interpreted as a percentage
+        value = 0.05, -- Base value
+        scaling = 0.05, -- Increase amount per level
+        percent = true, -- If the value should be interpreted as a percentage
         imagePath = "", -- Path to upgrade image
         constructor = Damage
     },
@@ -94,6 +94,18 @@ upgrades = {
         maxLevel = 5,
         value = 1,
         scaling = 1,
+        percent = false,
+        imagePath = "",
+        constructor = Piercing
+    },
+    restoration = {
+        name = "Restoration",
+        description = "Restore {} health between levels",
+        level = 0,
+        maxLevel = 5,
+        value = 5,
+        scaling = 5,
+        percent = false,
         imagePath = "",
         constructor = Piercing
     }

@@ -1,18 +1,21 @@
 import "scripts/level/enemies/fly"
+import "scripts/data/enemyStats"
+
+local stats <const> = enemyStats["flyMedium"]
 
 class('FlyMedium').extends(Fly)
 
 function FlyMedium:init(x, y, level)
-    self.projectileCooldown = 4000
+    self.projectileCooldown = stats.projectileCooldown
     FlyMedium.super.init(self, x, y, level, "images/enemies/fly-medium-table-34-80", self.projectileCooldown)
-    self.attackCooldown = 1000
-    self.attackDamage = 1
-    self.health = 6
-    self.maxVelocity = 1
+    self.attackCooldown = stats.attackCooldown
+    self.attackDamage = stats.attackDamage
+    self.health = stats.health
+    self.maxVelocity = stats.velocity
 
-    self.experience = 8
+    self.experience = stats.experience
 
-    self.projectileDamage = 2
-    self.projectileDiameter = 8
-    self.projectileSpeed = 3
+    self.projectileDamage = stats.projectileDamage
+    self.projectileDiameter = stats.projectileDiameter
+    self.projectileSpeed = stats.projectileSpeed
 end
