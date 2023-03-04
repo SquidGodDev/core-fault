@@ -22,7 +22,7 @@ function StaticField:init(player, data)
     self:setImage(staticFieldImage)
     local staticFieldImageTable = gfx.imagetable.new("images/player/equipment/staticField-table-80-80")
     self.staticFieldSprite = gfx.sprite.new(staticFieldImageTable[1])
-    self.staticFieldAnimationLoop = gfx.animation.loop.new(50, staticFieldImageTable, true)
+    self.staticFieldAnimationLoop = gfx.animation.loop.new(100, staticFieldImageTable, true)
     self.staticFieldSprite:add()
     self.staticFieldSprite:setZIndex(Z_INDEXES.EQUIPMENT)
 

@@ -18,7 +18,7 @@ upgrades = {
         value = 0.05, -- Base value
         scaling = 0.05, -- Increase amount per level
         percent = true, -- If the value should be interpreted as a percentage
-        imagePath = "", -- Path to upgrade image
+        imagePath = "images/ui/upgradeIcons/iconUpgradeDamage", -- Path to upgrade image
         constructor = Damage
     },
     health = {
@@ -29,7 +29,7 @@ upgrades = {
         value = 10,
         scaling = 10,
         percent = false,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeHealth",
         constructor = Health
     },
     healthRegen = {
@@ -40,7 +40,7 @@ upgrades = {
         value = 0.1,
         scaling = 0.2,
         percent = false,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeHealthRegen",
         constructor = HealthRegen
     },
     critChance = {
@@ -51,7 +51,7 @@ upgrades = {
         value = 0.1,
         scaling = 0.1,
         percent = true,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeCritChance",
         constructor = CritChance
     },
     critDamage = {
@@ -62,7 +62,7 @@ upgrades = {
         value = 0.1,
         scaling = 0.1,
         percent = true,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeCritDamage",
         constructor = CritDamage
     },
     moveSpeed = {
@@ -73,7 +73,7 @@ upgrades = {
         value = 0.1,
         scaling = 0.1,
         percent = true,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeMoveSpeed",
         constructor = MoveSpeed
     },
     attackSpeed = {
@@ -84,7 +84,7 @@ upgrades = {
         value = 0.1,
         scaling = 0.1,
         percent = true,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeAttackSpeed",
         constructor = AttackSpeed
     },
     piercing = {
@@ -95,7 +95,7 @@ upgrades = {
         value = 1,
         scaling = 1,
         percent = false,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradePiercing",
         constructor = Piercing
     },
     restoration = {
@@ -106,7 +106,7 @@ upgrades = {
         value = 5,
         scaling = 5,
         percent = false,
-        imagePath = "",
+        imagePath = "images/ui/upgradeIcons/iconUpgradeRestoration",
         constructor = Piercing
     }
 }
