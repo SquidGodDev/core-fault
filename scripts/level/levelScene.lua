@@ -25,7 +25,7 @@ function LevelScene:init(gameManager, curLevel, time, playerHealth)
     self.playerHealth = playerHealth
 
     -- TODO: Calculate level experience scaling
-    self.hud = HUD(time, curLevel * 50, self)
+    self.hud = HUD(time, 6 + curLevel * 6, self)
     self:setupLevelLayout()
     self:setupOreSpawner()
     self:setupEnemySpawner()
@@ -129,8 +129,13 @@ function LevelScene:setupEnemySpawner()
 end
 
 function LevelScene:getRandomEnemy()
+    local probabilityWeightTotal = 0
+    for _, probabilityObject in ipairs(self.spawnProbabilities) do
+        probabilityWeightTotal += probabilityObject[1]
+    end
+    
     local probablitySum = 0
-    local randNum = math.random()
+    local randNum = math.random() * probabilityWeightTotal
     for _, probabilityObject in ipairs(self.spawnProbabilities) do
         probablitySum += probabilityObject[1]
         if randNum <= probablitySum then

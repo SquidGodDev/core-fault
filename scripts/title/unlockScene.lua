@@ -26,13 +26,13 @@ local getItemIcon <const> = function(index)
     if unlock.level == unlock.maxLevel then
         return itemIcons:getImage(5)
     elseif unlock.level >= 1 then
-        if TOTAL_CORES >= unlock.cost then
+        if TOTAL_CORES >= unlock.cost[unlock.level + 1] then
             return itemIcons:getImage(4)
         else
             return itemIcons:getImage(3)
         end
     else
-        if TOTAL_CORES >= unlock.cost then
+        if TOTAL_CORES >= unlock.cost[unlock.level + 1] then
             return itemIcons:getImage(2)
         else
             return itemIcons:getImage(1)
@@ -53,7 +53,7 @@ end
 
 -- Returns Name, Description, Level, Max Level, Cost
 local getUnlockData <const> = function(unlock)
-    local cost = unlock.cost
+    local cost = unlock.cost[unlock.level + 1]
     if unlock.isEquipment then
         local equipmentData = equipment[unlock.name]
         local name = equipmentData.name
