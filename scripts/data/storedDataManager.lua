@@ -1,7 +1,7 @@
 
 local pd <const> = playdate
 
-TOTAL_CORES = 800
+TOTAL_CORES = 0
 
 function loadGameData()
     local gameData = pd.datastore.read()

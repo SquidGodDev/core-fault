@@ -1,4 +1,4 @@
--- Scene after a run that shows how far the player got, different stats, and ore earned
+-- Scene after a run that shows how far the player got, different stats, and cores earned
 import "scripts/title/titleScene"
 
 local pd <const> = playdate
@@ -12,7 +12,8 @@ end
 
 class('GameOverScene').extends(gfx.sprite)
 
-function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, ore)
+function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, cores)
+    TOTAL_CORES += cores
     self.upgrades = upgrades
     self.selectedUpgrade = math.ceil(#upgrades/2)
 
@@ -50,7 +51,7 @@ function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, o
         self.font:drawText(level, iconTextBaseX, iconTextBaseY + 1*iconGap)
         self.font:drawText(xpGained, iconTextBaseX, iconTextBaseY + 2*iconGap)
         self.font:drawText(enemiesDefeated, iconTextBaseX, iconTextBaseY + 3*iconGap)
-        self.font:drawText(ore, iconTextBaseX, iconTextBaseY + 4*iconGap)
+        self.font:drawText(cores, iconTextBaseX, iconTextBaseY + 4*iconGap)
 
         for i=1,#equipment do
             local curEquipment = equipment[i]
