@@ -15,6 +15,11 @@ local tableInsert <const> = table.insert
 local tableRemove <const> = table.remove
 local tableIndex <const> = table.indexOfElement
 
+local projectileImages = {
+    small = gfx.image.new("images/player/equipment/projectile-small"),
+    large = gfx.image.new("images/player/equipment/projectile-large"),
+}
+
 class('Projectile').extends()
 
 function Projectile:init(projectileManager, damageComponent, projectileDiameter, player)
@@ -27,6 +32,8 @@ function Projectile:init(projectileManager, damageComponent, projectileDiameter,
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
     self.border = 2
+    self.projectileImageName = "large"
+    if self.diameter < 10 then self.projectileImageName = "small" end
 
     self.collisionCheckCounter = 0
     self.collisionCheckInterval = 4
@@ -48,10 +55,11 @@ function Projectile:update()
     self.x = x
     self.y = y
 
-    gfx.setColor(gfx.kColorBlack)
-    fillCircleAtPoint(x, y, self.radius + self.border)
-    gfx.setColor(gfx.kColorWhite)
-    fillCircleAtPoint(x, y, self.radius)
+    -- gfx.setColor(gfx.kColorBlack)
+    -- fillCircleAtPoint(x, y, self.radius + self.border)
+    -- gfx.setColor(gfx.kColorWhite)
+    -- fillCircleAtPoint(x, y, self.radius)
+    projectileImages[self.projectileImageName]:drawCentered(x, y)
 
     local collisionCheckCounter = self.collisionCheckCounter
     collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval

@@ -8,11 +8,11 @@ local pd <const> = playdate
 
 class('Fly').extends(Enemy)
 
-function Fly:init(x, y, level, spriteSheetPath, cooldown)
-    if not spriteSheetPath then
-        spriteSheetPath = "images/enemies/fly-small-table-34-40"
+function Fly:init(x, y, level, spriteName, cooldown)
+    if not spriteName then
+        spriteName = "fly"
     end
-    Fly.super.init(self, x, y, level, spriteSheetPath)
+    Fly.super.init(self, x, y, level, spriteName)
     self.attackCooldown = stats.attackCooldown
     self.attackDamage = stats.attackDamage
     self.health = stats.health

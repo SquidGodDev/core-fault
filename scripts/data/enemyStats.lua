@@ -1,50 +1,51 @@
 enemyStats = {
     slime = {
-        health = 4,
-        attackDamage = 2,
+        health = 25,
+        attackDamage = 10,
         attackCooldown = 1000,
-        velocity = 1,
-        experience = 2
-    },
-    slimeMedium = {
-        health = 6,
-        attackDamage = 4,
-        attackCooldown = 1000,
-        velocity = 1,
-        experience = 6
+        velocity = 0.5,
+        experience = 1
     },
     crab = {
-        health = 6,
-        attackDamage = 4,
+        health = 50,
+        attackDamage = 10,
         attackCooldown = 1000,
-        velocity = 0.6,
-        experience = 3
-    },
-    crabMedium = {
-        health = 10,
-        attackDamage = 6,
-        attackCooldown = 1000,
-        velocity = 0.6,
-        experience = 7
+        velocity = 1.25,
+        experience = 2
     },
     fly = {
-        health = 4,
-        attackDamage = 1,
+        health = 75,
+        attackDamage = 5,
         attackCooldown = 1000,
-        velocity = 1,
-        experience = 4,
-        projectileDamage = 1,
+        velocity = 0.4,
+        experience = 3,
+        projectileDamage = 10,
         projectileDiameter = 8,
-        projectileCooldown = 6000,
+        projectileCooldown = 12000,
         projectileSpeed = 2
     },
-    flyMedium = {
-        health = 6,
-        attackDamage = 1,
+    slimeMedium = {
+        health = 100,
+        attackDamage = 20,
         attackCooldown = 1000,
-        velocity = 1,
-        experience = 8,
-        projectileDamage = 2,
+        velocity = 0.8,
+        experience = 4
+    },
+    
+    crabMedium = {
+        health = 125,
+        attackDamage = 30,
+        attackCooldown = 1000,
+        velocity = 1.15,
+        experience = 5
+    },
+    flyMedium = {
+        health = 150,
+        attackDamage = 40,
+        attackCooldown = 1000,
+        velocity = 0.25,
+        experience = 6,
+        projectileDamage = 10,
         projectileDiameter = 8,
         projectileCooldown = 4000,
         projectileSpeed = 3

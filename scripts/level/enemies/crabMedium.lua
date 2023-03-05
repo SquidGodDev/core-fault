@@ -6,7 +6,7 @@ local stats <const> = enemyStats["crabMedium"]
 class('CrabMedium').extends(Crab)
 
 function CrabMedium:init(x, y, level)
-    CrabMedium.super.init(self, x, y, level, "images/enemies/crab-medium-table-80-34")
+    CrabMedium.super.init(self, x, y, level, "crabMedium")
     self.attackCooldown = stats.attackCooldown
     self.attackDamage = stats.attackDamage
     self.health = stats.health

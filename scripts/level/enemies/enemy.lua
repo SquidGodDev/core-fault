@@ -8,10 +8,19 @@ local random <const> = math.random
 local kImageUnflipped <const> = gfx.kImageUnflipped
 local kImageFlippedX <const> = gfx.kImageFlippedX
 
+local enemySprites <const> = {
+    slime = gfx.imagetable.new("images/enemies/slime-small-table-36-34"),
+    slimeMedium = gfx.imagetable.new("images/enemies/slime-medium-table-50-50"),
+    crab = gfx.imagetable.new("images/enemies/crab-small-table-40-34"),
+    crabMedium = gfx.imagetable.new("images/enemies/crab-medium-table-80-34"),
+    fly = gfx.imagetable.new("images/enemies/fly-small-table-34-40"),
+    flyMedium = gfx.imagetable.new("images/enemies/fly-medium-table-34-80")
+}
+
 class('Enemy').extends(gfx.sprite)
 
-function Enemy:init(x, y, levelManager, spritesheetPath)
-    self.spritesheet = gfx.imagetable.new(spritesheetPath)
+function Enemy:init(x, y, levelManager, spriteName)
+    self.spritesheet = enemySprites[spriteName]
     self.animationLoopCount = 1
     self.animationFrameTime = 6
     self.animationFrame = 1

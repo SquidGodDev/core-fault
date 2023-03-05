@@ -15,7 +15,12 @@ class('GameOverScene').extends(gfx.sprite)
 function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, cores)
     TOTAL_CORES += cores
     self.upgrades = upgrades
-    self.selectedUpgrade = math.ceil(#upgrades/2)
+    self.selectedUpgrade = math.ceil(1)
+
+    self.upgradeImages = {}
+    for k, upgrade in pairs(self.upgrades) do
+        self.upgradeImages[k] = gfx.image.new(upgrade.imagePath)
+    end
 
     local xpGained = level * 10
 
@@ -101,7 +106,7 @@ function GameOverScene:update()
     end
 
     if pd.buttonJustPressed(pd.kButtonA) then
-        MUSIC_PLAYER:switchSong("gameplay")
+        MUSIC_PLAYER:switchSong("title")
         SCENE_MANAGER:switchScene(TitleScene)
     end
 end
@@ -132,6 +137,9 @@ function GameOverScene:drawUpgrades()
         local upgradeName = upgradeObject.name
         local upgradeLevel = upgradeObject.level
         local upgradeText = upgradeName .. " lvl " .. upgradeLevel
+
+        self.upgradeImages[self.selectedUpgrade]:drawCentered(upgradeCenter, 180)
+        
         gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
         self.font:drawTextAligned(upgradeText, upgradeCenter, 209, kTextAlignment.center)
     gfx.popContext()

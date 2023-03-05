@@ -7,7 +7,7 @@ class('FlyMedium').extends(Fly)
 
 function FlyMedium:init(x, y, level)
     self.projectileCooldown = stats.projectileCooldown
-    FlyMedium.super.init(self, x, y, level, "images/enemies/fly-medium-table-34-80", self.projectileCooldown)
+    FlyMedium.super.init(self, x, y, level, "flyMedium", self.projectileCooldown)
     self.attackCooldown = stats.attackCooldown
     self.attackDamage = stats.attackDamage
     self.health = stats.health

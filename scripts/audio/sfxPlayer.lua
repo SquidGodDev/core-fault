@@ -14,7 +14,7 @@ function SfxPlayer:init(soundName)
 
     local volume = soundFile.level
     for i=1,self.max do
-        local soundSample = files[i]:copy()
+        local soundSample = files[i]
         soundSample:setVolume(volume)
         self.sounds[i] = soundSample
     end

@@ -17,7 +17,7 @@ function Ore:init(x, y, oreSpawner)
     self:add()
     self:setZIndex(self.y)
 
-    self.health = 5
+    self.health = 100
 
     self.flashTime = 100
 

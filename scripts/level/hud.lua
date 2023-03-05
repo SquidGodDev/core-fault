@@ -52,6 +52,8 @@ function HUD:init(time, maxExperience, levelScene)
     self.timeSprite:setIgnoresDrawOffset(true)
     self.timeSprite:add()
     local timeWidth, timeHeight = 40, 7
+    self.timeImage = gfx.image.new(timeWidth, timeHeight)
+    self.timeSprite:setImage(self.timeImage)
 
     local warningSpriteImageTable = gfx.imagetable.new("images/ui/power-warning-table-389-38")
     local warningSpriteAnimationLoop
@@ -80,12 +82,11 @@ function HUD:init(time, maxExperience, levelScene)
     self.clock = pd.timer.new(time)
     self.clock.updateCallback = function(timer)
         local timeString = timeFormat(timer.timeLeft)
-        local timeImage = gfx.image.new(timeWidth, timeHeight)
-        gfx.pushContext(timeImage)
+        gfx.pushContext(self.timeImage)
+            gfx.clear(gfx.kColorClear)
             gfx.setImageDrawMode(gfx.kDrawModeFillBlack)
             self.clockFont:drawTextAligned(timeString, timeWidth/2, 0, kTextAlignment.center)
         gfx.popContext()
-        self.timeSprite:setImage(timeImage)
 
         self.timeWarningSound = SfxPlayer("time-warning")
         if timer.timeLeft < 12500 then

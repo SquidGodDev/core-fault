@@ -5,11 +5,11 @@ local stats <const> = enemyStats["slime"]
 
 class('Slime').extends(Enemy)
 
-function Slime:init(x, y, level, spriteSheetPath)
-    if not spriteSheetPath then
-        spriteSheetPath = "images/enemies/slime-small-table-36-34"
+function Slime:init(x, y, level, spriteName)
+    if not spriteName then
+        spriteName = "slime"
     end
-    Slime.super.init(self, x, y, level, spriteSheetPath)
+    Slime.super.init(self, x, y, level, spriteName)
     self.attackCooldown = stats.attackCooldown
     self.attackDamage = stats.attackDamage
     self.health = stats.health
