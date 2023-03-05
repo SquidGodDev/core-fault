@@ -208,6 +208,8 @@ function UnlockScene:init()
     self.menuMoveSound = SfxPlayer("sfx-menu-move")
     self.menuSelectSound = SfxPlayer("sfx-menu-select")
     self.menuBackSound = SfxPlayer("sfx-menu-back")
+
+    self.transitioningOut = false
 end
 
 function UnlockScene:animateIn()
@@ -288,7 +290,8 @@ function UnlockScene:update()
                 end)
             end
         end
-    elseif pd.buttonJustPressed(pd.kButtonB) then
+    elseif pd.buttonJustPressed(pd.kButtonB) and not self.transitioningOut then
+        self.transitioningOut = true
         self:animateOut()
         SCENE_MANAGER:switchScene(TitleScene)
         self.menuBackSound:play()
