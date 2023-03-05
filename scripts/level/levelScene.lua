@@ -84,7 +84,7 @@ function LevelScene:setupEnemySpawner()
     end
 
     self.enemyCount = 0
-    self.maxEnemies = math.min(2 + self.curLevel * 4, 20)
+    self.maxEnemies = math.min(2 + self.curLevel * 2, 16)
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000

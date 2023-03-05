@@ -29,6 +29,14 @@ function Beam:init(player, data)
 
     self.beamDamage = data.damage
 
+    self:calculateNextAngle()
+
+    self.reticleSprite = gfx.sprite.new(gfx.image.new("images/player/equipment/reticle-small"))
+    self.reticleSprite:add()
+    self.reticleSprite:setZIndex(Z_INDEXES.EQUIPMENT + 1)
+    self.reticleSprite.offsetX, self.reticleSprite.offsetY = self:getNextTarget()
+    self.reticleSprite.player = player
+
     -- Components
     self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
@@ -37,15 +45,26 @@ function Beam:init(player, data)
     self.sfxPlayer = SfxPlayer("sfx-beam")
 end
 
-function Beam:fireBeam()
-    local x, y = self.player.x, self.player.y
+function Beam:calculateNextAngle()
     beamDirection = (beamDirection + angleSpeed) % 360
+end
+
+function Beam:getNextTarget()
     local angleInRad = rad(-beamDirection)
     local angleCos = cos(angleInRad)
     local angleSine = sin(angleInRad)
 
     local targetXOffset = angleCos * self.lineLength
     local targetYOffset = angleSine * self.lineLength
+    return targetXOffset, targetYOffset
+end
+
+function Beam:fireBeam()
+    local x, y = self.player.x, self.player.y
+    
+    local targetXOffset = self.reticleSprite.offsetX
+    local targetYOffset = self.reticleSprite.offsetY
+    
 
     self:moveTo(x, y)
 
@@ -76,4 +95,13 @@ function Beam:fireBeam()
     self.damageComponent:dealDamage(hitObjects)
 
     self.sfxPlayer:play()
+
+    self:calculateNextAngle()
+    self.reticleSprite.offsetX, self.reticleSprite.offsetY = self:getNextTarget()
+end
+
+function Beam:update()
+    local reticleX = playdate.math.lerp(self.reticleSprite.x, self.reticleSprite.player.x + self.reticleSprite.offsetX, 0.25)
+    local reticleY = playdate.math.lerp(self.reticleSprite.y, self.reticleSprite.player.y + self.reticleSprite.offsetY, 0.25)
+    self.reticleSprite:moveTo(reticleX, reticleY)
 end

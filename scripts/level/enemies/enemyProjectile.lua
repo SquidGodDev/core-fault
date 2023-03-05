@@ -14,6 +14,8 @@ local tableInsert <const> = table.insert
 local tableRemove <const> = table.remove
 local tableIndex <const> = table.indexOfElement
 
+local enemyProjectileImage = gfx.image.new("images/enemies/enemy-projectile")
+
 class('EnemyProjectile').extends()
 
 function EnemyProjectile:init(x, y, xVelocity, yVelocity, damage, projectileDiameter, player)
@@ -47,12 +49,7 @@ function EnemyProjectile:update()
     self.x = x
     self.y = y
 
-    gfx.pushContext()
-        gfx.setColor(gfx.kColorWhite)
-        fillCircleAtPoint(x, y, self.radius + self.borderSize)
-        gfx.setColor(gfx.kColorBlack)
-        fillCircleAtPoint(x, y, self.radius)
-    gfx.popContext()
+    enemyProjectileImage:drawCentered(x, y)
 
     local collisionCheckCounter = self.collisionCheckCounter
     collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval
