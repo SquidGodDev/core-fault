@@ -91,13 +91,13 @@ unlocks = {
         maxLevel = 3,
         cost = {1, 5, 10, 20}
     },
-    {
-        name = "discharge",
-        isEquipment = true,
-        level = 0,
-        maxLevel = 3,
-        cost = {2, 7, 12, 25}
-    },
+    -- {
+    --     name = "discharge",
+    --     isEquipment = true,
+    --     level = 0,
+    --     maxLevel = 3,
+    --     cost = {2, 7, 12, 25}
+    -- },
     {
         name = "subterraneanRocket",
         isEquipment = true,

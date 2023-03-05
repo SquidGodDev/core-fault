@@ -75,24 +75,24 @@ equipment = {
         imagePath = "images/ui/equipmentIcons/iconStaticField",
         constructor = StaticField
     },
-    discharge = {
-        name = "Discharge",
-        description = "Discharges damage in an area around the player based on a percentage of damage taken recently",
-        level = 1,
-        damage = 10,
-        bonusDamageScaling = 0.5,
-        cooldown = 2000,
-        radius = 50,
-        levelStats = {
-            {radius = 5},
-            {damage = 4, cooldown = -100},
-            {radius = 8, cooldown = -100},
-            {damage = 10, cooldown = -200},
-            {damage = 6, cooldown = -100, radius = 12},
-        },
-        imagePath = "images/ui/equipmentIcons/iconDischarge",
-        constructor = Discharge
-    },
+    -- discharge = {
+    --     name = "Discharge",
+    --     description = "Discharges damage in an area around the player based on a percentage of damage taken recently",
+    --     level = 1,
+    --     damage = 10,
+    --     bonusDamageScaling = 0.5,
+    --     cooldown = 2000,
+    --     radius = 50,
+    --     levelStats = {
+    --         {radius = 5},
+    --         {damage = 4, cooldown = -100},
+    --         {radius = 8, cooldown = -100},
+    --         {damage = 10, cooldown = -200},
+    --         {damage = 6, cooldown = -100, radius = 12},
+    --     },
+    --     imagePath = "images/ui/equipmentIcons/iconDischarge",
+    --     constructor = Discharge
+    -- },
     subterraneanRocket = {
         name = "Subterranean Rocket",
         description = "Periodically causes an explosion at a distance circling the player",
