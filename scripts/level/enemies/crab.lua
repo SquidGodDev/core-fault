@@ -5,11 +5,8 @@ local stats <const> = enemyStats["crab"]
 
 class('Crab').extends(Enemy)
 
-function Crab:init(x, y, level, spriteSheetPath)
-    if not spriteSheetPath then
-        spriteSheetPath = "images/enemies/crab-small-table-40-34"
-    end
-    Crab.super.init(self, x, y, level, spriteSheetPath)
+function Crab:init(x, y, level)
+    Crab.super.init(self, x, y, level, "crab")
     self.attackCooldown = stats.attackCooldown
     self.attackDamage = stats.attackDamage
     self.health = stats.health

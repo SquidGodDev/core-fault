@@ -1,44 +1,37 @@
 local pd <const> = playdate
-local sampleplayer <const> = playdate.sound.sampleplayer.new
+local fileplayer <const> = playdate.sound.fileplayer.new
 
 local songs <const> = {
-    title = sampleplayer("audio/music/title"),
-    gameplay = sampleplayer("audio/music/gameplay"),
+    title = fileplayer("audio/music/title"),
+    gameplay = fileplayer("audio/music/gameplay"),
 }
 
 class('MusicPlayer').extends()
 
 function MusicPlayer:init(song)
     self.lowPassFilter = pd.sound.twopolefilter.new(pd.sound.kFilterLowPass)
-    self.lowPassFilter:setResonance(0.95)
-    self.lowPassFilter:setFrequency(1000)
+    self.lowPassFilter:setResonance(0.65)
+    self.lowPassFilter:setFrequency(500)
 
     self.currentSong = songs[song]
     self.currentSong:play(0)
+    self.nextSong = songs[song]
 
-    self.fadeOutTime = 1000
-    self.transitioning = false
+    self.fadeOutTime = 10000
     self.ducking = false
 end
 
 function MusicPlayer:switchSong(song)
-    if self.transitioning then
-        return
-    end
-
     self.ducking = false
-    self.transitioning = true
     local songFile = songs[song]
-    local fadeTimer = pd.timer.new(self.fadeOutTime, 1, 0)
-    fadeTimer.updateCallback = function(timer)
-        self.currentSong:setVolume(timer.value)
-    end
-    fadeTimer.timerEndedCallback = function()
-        self.transitioning = false
-        self.currentSong = songFile
-        self.currentSong:setVolume(1)
-        songFile:play(0)
-    end
+    self.nextSong = songFile
+
+    self.currentSong:setVolume(0, 0, 1, function(thisFile, musicPlayer)
+        thisFile:stop()
+        musicPlayer.currentSong = musicPlayer.nextSong
+        musicPlayer.currentSong:setVolume(1)
+        musicPlayer.currentSong:play(0)
+    end, self)
 end
 
 function MusicPlayer:addLowPass()
@@ -54,8 +47,8 @@ function MusicPlayer:duck(time)
         return
     end
     self.ducking = true
-    local duckStartTime = math.floor(time*.3)
-    local duckEndTime = math.floor(time*.7)
+    local duckStartTime = math.floor(time*.1)
+    local duckEndTime = math.floor(time*.9)
     local minVolume = 0
     local duckStartTimer = pd.timer.new(duckStartTime, 1, minVolume, pd.easingFunctions.inOutCubic)
     duckStartTimer.updateCallback = function(timer)
