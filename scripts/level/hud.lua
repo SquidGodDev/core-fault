@@ -132,7 +132,7 @@ function HUD:init(time, maxExperience, levelScene)
 end
 
 function HUD:update()
-    -- self.fillSprite:setClipRect(0, 0, self.fillSpriteWidth, self.clipHeight)
+    self.fillSprite:setClipRect(0, 0, self.fillSpriteWidth, self.clipHeight)
 end
 
 function HUD:addExperience(amount)
