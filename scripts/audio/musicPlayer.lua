@@ -9,6 +9,10 @@ local songs <const> = {
 class('MusicPlayer').extends()
 
 function MusicPlayer:init(song)
+    for _, track in pairs(songs) do
+        track:setStopOnUnderrun(false)
+    end
+
     self.lowPassFilter = pd.sound.twopolefilter.new(pd.sound.kFilterLowPass)
     self.lowPassFilter:setResonance(0.65)
     self.lowPassFilter:setFrequency(500)
