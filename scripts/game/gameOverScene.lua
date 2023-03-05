@@ -89,16 +89,20 @@ function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, c
     end)
     self:moveTo(200, 120)
     self:add()
+
+    self.menuMoveSound = SfxPlayer("sfx-menu-move")
 end
 
 function GameOverScene:update()
     if pd.buttonJustPressed(pd.kButtonLeft) then
+        self.menuMoveSound:play()
         self.selectedUpgrade -= 1
         if self.selectedUpgrade < 1 then
             self.selectedUpgrade = 1
         end
         self:drawUpgrades()
     elseif pd.buttonJustPressed(pd.kButtonRight) then
+        self.menuMoveSound:play()
         self.selectedUpgrade += 1
         if self.selectedUpgrade > #self.upgrades then
             self.selectedUpgrade = #self.upgrades
@@ -140,7 +144,7 @@ function GameOverScene:drawUpgrades()
         local upgradeText = upgradeName .. " lvl " .. upgradeLevel
 
         self.upgradeImages[self.selectedUpgrade]:drawCentered(upgradeCenter, 180)
-        
+
         gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
         self.font:drawTextAligned(upgradeText, upgradeCenter, 209, kTextAlignment.center)
     gfx.popContext()
