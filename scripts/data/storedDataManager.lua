@@ -1,3 +1,4 @@
+import "scripts/data/unlockData"
 
 local pd <const> = playdate
 
@@ -7,12 +8,14 @@ function loadGameData()
     local gameData = pd.datastore.read()
     if gameData then
         TOTAL_CORES = gameData.totalCores
+        unlocks = gameData.unlocks
     end
 end
 
 function saveGameData()
     local gameData = {
-        totalCores = TOTAL_CORES
+        totalCores = TOTAL_CORES,
+        unlocks = unlocks
     }
     pd.datastore.write(gameData)
 end
@@ -25,4 +28,4 @@ function pd.gameWillSleep()
     saveGameData()
 end
 
--- loadGameData()
+loadGameData()
