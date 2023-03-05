@@ -14,6 +14,7 @@ class('GameOverScene').extends(gfx.sprite)
 
 function GameOverScene:init(equipment, upgrades, time, level, enemiesDefeated, cores)
     TOTAL_CORES += cores
+    TOTAL_DEATHS += 1
     self.upgrades = upgrades
     self.selectedUpgrade = math.ceil(1)
 

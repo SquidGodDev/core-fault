@@ -147,8 +147,8 @@ function TitleScene:createSlidesTimer()
     local slideText = {}
     slideText[1] = "Connecting..."
     slideText[2] = "Orbital link established"
-    -- TODO: Keep track of death count
-    slideText[3] = "Droid 00001 online"
+    local deathCount = string.format("%05d", TOTAL_DEATHS + 1)
+    slideText[3] = "Droid " .. deathCount .. " online"
     slideText[4] = "Core deposits detected"
     slideText[5] = "Fauna class: X (hostile)"
     slideText[6] = "Depth UNKNOWN"
