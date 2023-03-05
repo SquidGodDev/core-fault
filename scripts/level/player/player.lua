@@ -64,6 +64,7 @@ function Player:init(x, y, health, gameManager, levelScene)
     local healthbar <const> = Healthbar(self.MaxHealth, health, self)
     self.healthbar = healthbar
     self.flashTime = 100
+    self.invincible = false
 
     self.equipmentObjects = {}
 
@@ -235,6 +236,7 @@ function Player:levelDefeated()
     local digImageTable = gfx.imagetable.new("images/player/player-dig-table-34-34")
     self.animateOutAnimationLoop = gfx.animation.loop.new(100, digImageTable, false)
     self.playerState = playerStates.animatingOut
+    self.invincible = true
 end
 
 function Player:removeActivePlayerElements()
