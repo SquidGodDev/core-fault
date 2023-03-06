@@ -31,12 +31,7 @@ function MapGenerator:init()
     end
 
     gfx.setBackgroundColor(gfx.kColorBlack)
-    local blackImage = gfx.image.new(400, 240, gfx.kColorBlack)
-    gfx.sprite.setBackgroundDrawingCallback(
-        function()
-            blackImage:draw(0, 0)
-        end
-    )
+    gfx.clear(gfx.kColorBlack)
     gfx.sprite.setAlwaysRedraw(false)
 
     self:createTilemapSprite("westWall", 0, 0)

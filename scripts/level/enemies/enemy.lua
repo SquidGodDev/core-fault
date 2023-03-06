@@ -7,6 +7,13 @@ local sqrt <const> = math.sqrt
 local random <const> = math.random
 local kImageUnflipped <const> = gfx.kImageUnflipped
 local kImageFlippedX <const> = gfx.kImageFlippedX
+local sfxPlayer <const> = SfxPlayer
+
+-- Enemy Consts
+local invincibilityTime <const> = 100
+local directionUpdateInterval <const> = 60
+local dieTimerMax <const> = 20
+
 
 local enemySprites <const> = {
     slime = gfx.imagetable.new("images/enemies/slime-small-table-36-34"),
@@ -45,7 +52,6 @@ function Enemy:init(x, y, levelManager, spriteName)
 
     self.playerTag = TAGS.PLAYER
 
-    self.invincibilityTime = 100
     self.invincible = false
 
     self.velocity = 0
@@ -57,34 +63,36 @@ function Enemy:init(x, y, levelManager, spriteName)
     self:moveTo(x, y)
 
     self.directionUpdateCount = 0
-    self.directionUpdateInterval = 60
     self.randomMoveUpdateInterval = 40
 
-    self.dieTimerMax = 20
-    self.dieTimer = self.dieTimerMax
+    self.dieTimer = dieTimerMax
 
     self.imageFlip = kImageUnflipped
 
     self.attackOnCooldown = false
 
-    self.dieSound = SfxPlayer("sfx-enemy-death")
-    self.damageSound = SfxPlayer("sfx-enemy-damage")
+    self.dieSound = sfxPlayer("sfx-enemy-death")
+    self.damageSound = sfxPlayer("sfx-enemy-damage")
+
+    self.spriteWidth, self.spriteHeight = self:getSize()
 end
 
 function Enemy:update()
-    local spriteWidth, spriteHeight = self:getSize()
+    local playerX, playerY = self.player.x, self.player.y
+    local x, y = self.x, self.y
 
     if self.dieTimer < 0 then
         self:die(true)
         return
     end
-    if self.y < self.player.y - (120 + spriteHeight) 
-            or self.y > self.player.y + (120 + spriteHeight)
-            or self.x < self.player.x - (200 + spriteWidth) 
-            or self.x > self.player.x + (200 + spriteWidth) then
+    if y < playerY - (120 + self.spriteHeight)
+        or y > playerY + (120 + self.spriteHeight)
+        or x < playerX - (200 + self.spriteWidth)
+        or x > playerX + (200 + self.spriteWidth)
+    then
         self.dieTimer = self.dieTimer - 1
     else
-        self.dieTimer = self.dieTimerMax
+        self.dieTimer = dieTimerMax
     end
 
     local curImageFlip <const> = self.imageFlip
@@ -96,18 +104,30 @@ function Enemy:update()
         local animationFrame = self.animationFrame % self.maxAnimationFrame + 1
         self.animationFrame = animationFrame
         self:setImage(self.spritesheet:getImage(animationFrame), curImageFlip)
+        self:setZIndex(y)
     end
 
     local xVelocity, yVelocity = self.xVelocity, self.yVelocity
     local directionUpdateCount <const> = self.directionUpdateCount
     if directionUpdateCount == 0 then
-        local player = self.player
-        local xDiff = player.x - self.x
-        local yDiff = player.y - self.y
-        local magnitude = sqrt(xDiff * xDiff + yDiff * yDiff)
-        local scaledMagnitude = self.maxVelocity / magnitude
-        xVelocity = xDiff * scaledMagnitude
-        yVelocity = yDiff * scaledMagnitude
+        local xDiff = playerX - x
+        local yDiff = playerY - y
+
+        local maxVelocity = self.maxVelocity
+        if xDiff < 0 then
+            xVelocity = -maxVelocity
+        else
+            xVelocity = maxVelocity
+        end
+        if yDiff < 0 then
+            yVelocity = -maxVelocity
+        else
+            yVelocity = maxVelocity
+        end
+        -- local magnitude = sqrt(xDiff * xDiff + yDiff * yDiff)
+        -- local scaledMagnitude = self.maxVelocity / magnitude
+        -- xVelocity = xDiff * scaledMagnitude
+        -- yVelocity = yDiff * scaledMagnitude
 
         if xVelocity < 0 and curImageFlip == kImageUnflipped then
             self.imageFlip = kImageFlippedX
@@ -116,7 +136,7 @@ function Enemy:update()
         end
         self.xVelocity = xVelocity
         self.yVelocity = yVelocity
-        self.randomMoveUpdateInterval = math.random(30, 50)
+        self.randomMoveUpdateInterval = random(30, 50)
     elseif directionUpdateCount == self.randomMoveUpdateInterval then
         local randomMoveAmount <const> = 3
         xVelocity = (random() - 0.5) * randomMoveAmount
@@ -130,9 +150,8 @@ function Enemy:update()
         self.xVelocity = xVelocity
         self.yVelocity = yVelocity
     end
-    self.directionUpdateCount = (directionUpdateCount + 1) % self.directionUpdateInterval
+    self.directionUpdateCount = (directionUpdateCount + 1) % directionUpdateInterval
     self:moveBy(xVelocity, yVelocity)
-    self:setZIndex(self.y)
 end
 
 function Enemy:setAttackCooldown()
@@ -158,7 +177,7 @@ function Enemy:damage(amount)
 
     self:setImageDrawMode(gfx.kDrawModeFillWhite)
     self.invincible = true
-    pd.timer.new(self.invincibilityTime, function()
+    pd.timer.new(invincibilityTime, function()
         self:setImageDrawMode(gfx.kDrawModeCopy)
         self.invincible = false
     end)

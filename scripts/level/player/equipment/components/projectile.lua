@@ -32,8 +32,10 @@ function Projectile:init(projectileManager, damageComponent, projectileDiameter,
     self.diameter = projectileDiameter
     self.radius = projectileDiameter / 2
     self.border = 2
-    self.projectileImageName = "large"
-    if self.diameter < 10 then self.projectileImageName = "small" end
+    self.projectileImage = projectileImages.large
+    if self.diameter < 10 then
+        self.projectileImage = projectileImages.small
+    end
 
     self.collisionCheckCounter = 0
     self.collisionCheckInterval = 4
@@ -59,7 +61,7 @@ function Projectile:update()
     -- fillCircleAtPoint(x, y, self.radius + self.border)
     -- gfx.setColor(gfx.kColorWhite)
     -- fillCircleAtPoint(x, y, self.radius)
-    projectileImages[self.projectileImageName]:drawCentered(x, y)
+    self.projectileImage:drawCentered(x, y)
 
     local collisionCheckCounter = self.collisionCheckCounter
     collisionCheckCounter = (collisionCheckCounter + 1) % self.collisionCheckInterval
