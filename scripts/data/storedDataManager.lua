@@ -9,7 +9,7 @@ function loadGameData()
     local gameData = pd.datastore.read()
     if gameData then
         if gameData.totalCores then
-            TOTAL_CORES = gameData
+            TOTAL_CORES = gameData.totalCores
         end
         if gameData.unlocks then
             unlocks = gameData.unlocks
