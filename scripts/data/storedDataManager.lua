@@ -10,6 +10,8 @@ function loadGameData()
     if gameData then
         if gameData.totalCores then
             TOTAL_CORES = gameData.totalCores
+        else
+            TOTAL_CORES = 0
         end
         if gameData.unlocks then
             unlocks = gameData.unlocks

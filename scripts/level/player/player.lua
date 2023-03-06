@@ -103,7 +103,7 @@ function Player:init(x, y, health, gameManager, levelScene)
     self:setTag(TAGS.PLAYER)
 
     local playerWidth, playerHeight = self:getSize()
-    local hurtboxBuffer = 4
+    local hurtboxBuffer = 8
     hurtboxWidth = playerWidth - hurtboxBuffer * 2
     hurtboxHeight = playerHeight - hurtboxBuffer * 2
     hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer

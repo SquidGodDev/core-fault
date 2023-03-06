@@ -25,29 +25,29 @@ enemyStats = {
         projectileSpeed = 2
     },
     slimeMedium = {
-        health = 100,
+        health = 50,
         attackDamage = 20,
         attackCooldown = 1000,
         velocity = 0.8,
-        experience = 4
+        experience = 3
     },
     
     crabMedium = {
-        health = 125,
+        health = 100,
         attackDamage = 30,
         attackCooldown = 1000,
         velocity = 1.15,
-        experience = 5
+        experience = 4.5
     },
     flyMedium = {
         health = 150,
         attackDamage = 40,
         attackCooldown = 1000,
         velocity = 0.25,
-        experience = 6,
+        experience = 4,
         projectileDamage = 10,
         projectileDiameter = 8,
-        projectileCooldown = 4000,
+        projectileCooldown = 8000,
         projectileSpeed = 3
     },
 }

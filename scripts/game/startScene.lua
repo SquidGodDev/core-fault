@@ -45,7 +45,7 @@ function StartScene:update()
     if self.selected or not self.equipmentPanel:isActive() then
         return
     end
-    local crankTicks = pd.getCrankTicks(3)
+    local crankTicks = pd.getCrankTicks(1)
     if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
         self.menuMoveSound:play()
         self.equipmentPanel:selectLeft()

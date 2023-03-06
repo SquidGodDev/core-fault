@@ -297,7 +297,7 @@ function UnlockScene:update()
         self.menuBackSound:play()
     end
 
-    local crankTicks = pd.getCrankTicks(8)
+    local crankTicks = pd.getCrankTicks(2)
 
     if pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
         local selectedRow = self.scrollbarList:getSelectedRow()

@@ -8,7 +8,7 @@ class('OreSpawner').extends(gfx.sprite)
 function OreSpawner:init(gameManager, mapGenerator, level)
     self.gameManager = gameManager
 
-    local levelOreCount = 5 + level * 2
+    local levelOreCount = math.max(2 + level, (level - 5) * 2, (level - 10) * 3)
 
     for _=1,levelOreCount do
         local spawnX, spawnY = mapGenerator:getRandomEmptyPosition()

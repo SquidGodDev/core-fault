@@ -89,12 +89,12 @@ function UpgradeScene:update()
     if not self.curPanel:isActive() then
         return
     end
-    local crankTicks = pd.getCrankTicks(3)
+
     if self.state == states.upgradeSelect then
-        if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+        if pd.buttonJustPressed(pd.kButtonLeft)then
             self.menuMoveSound:play()
             self.upgradePanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+        elseif pd.buttonJustPressed(pd.kButtonRight)then
             self.menuMoveSound:play()
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
@@ -106,10 +106,10 @@ function UpgradeScene:update()
             self.state = states.finished
         end
     elseif self.state == states.equipmentSelect then
-        if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+        if pd.buttonJustPressed(pd.kButtonLeft) then
             self.menuMoveSound:play()
             self.equipmentPanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+        elseif pd.buttonJustPressed(pd.kButtonRight) then
             self.menuMoveSound:play()
             self.equipmentPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
@@ -127,10 +127,10 @@ function UpgradeScene:update()
             end
         end
     elseif self.state == states.equipmentSwap then
-        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
+        if pd.buttonJustPressed(pd.kButtonLeft) or pd.buttonJustPressed(pd.kButtonUp) then
             self.menuMoveSound:play()
             self.equipmentSwapPanel:selectLeft()
-        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) or crankTicks == 1 then
+        elseif pd.buttonJustPressed(pd.kButtonRight) or pd.buttonJustPressed(pd.kButtonDown) then
             self.menuMoveSound:play()
             self.equipmentSwapPanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then

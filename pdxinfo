@@ -1,7 +1,7 @@
 name=Core Fault
 author=SquidGod + davemakes
-description=
+description=Send droids deep into an alien planet to mine resources and fight off subterranean creatures
 bundleID=com.squidave.corefault
 imagePath=launcherImages
 launchSoundPath=audio/sfx/sfx-startup
-version=0.1
+version=1.0

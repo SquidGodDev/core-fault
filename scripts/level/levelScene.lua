@@ -25,7 +25,8 @@ function LevelScene:init(gameManager, curLevel, time, playerHealth)
     self.playerHealth = playerHealth
 
     -- TODO: Calculate level experience scaling
-    self.hud = HUD(time, 6 + curLevel * 6, self)
+    local levelExperience = 6 + curLevel * 6 + math.max(0, (curLevel - 7) * 12) + math.max(0, curLevel - 3)
+    self.hud = HUD(time, levelExperience, self)
     self:setupLevelLayout()
     self:setupOreSpawner()
     self:setupEnemySpawner()
@@ -84,7 +85,8 @@ function LevelScene:setupEnemySpawner()
     end
 
     self.enemyCount = 0
-    self.maxEnemies = math.min(2 + self.curLevel * 2, 16)
+    self.maxEnemies = math.min(2 + self.curLevel * 2, 10)
+    -- self.maxEnemies = 100
     self.enemiesDefeated = 0
 
     local levelStartDelay = 1000

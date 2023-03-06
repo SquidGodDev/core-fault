@@ -15,7 +15,7 @@ SpawnProbabilities = {
     },
     {
         {8, Slime},
-        {4, Crab}
+        {3, Crab}
     },
     {
         {8, Slime},
@@ -23,9 +23,14 @@ SpawnProbabilities = {
         {4, Fly}
     },
     {
+        {8, Slime},
+        {4, SlimeMedium}
+    },
+    {
         {4, Slime},
         {8, Crab},
-        {8, Fly}
+        {8, Fly},
+        {2, SlimeMedium}
     },
     {
         {4, Slime},
@@ -36,17 +41,15 @@ SpawnProbabilities = {
     {
         {2, Slime},
         {4, Crab},
-        {4, Fly},
         {8, SlimeMedium},
-        {4, CrabMedium}
+        {2, CrabMedium}
     },
     {
         {2, Slime},
         {2, Crab},
-        {4, Fly},
+        {2, Fly},
         {8, SlimeMedium},
-        {8, CrabMedium},
-        {4, FlyMedium}
+        {8, CrabMedium}
     },
     {
         {1, Slime},
