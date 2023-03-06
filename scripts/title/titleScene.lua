@@ -90,7 +90,7 @@ function TitleScene:update()
 
     self.crankIndicatorSprite:setImage(self.crankAnimationLoop:image())
     if self.inputActive then
-        local crankTicks = pd.getCrankTicks(4)
+        local crankTicks = pd.getCrankTicks(1)
         if pd.buttonJustPressed(pd.kButtonUp) or crankTicks == -1 then
             if self.arrowIndex > 1 then
                 self.arrowIndex = 1
