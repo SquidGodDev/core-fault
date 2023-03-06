@@ -82,7 +82,7 @@ function Enemy:update()
     local x, y = self.x, self.y
 
     if self.dieTimer < 0 then
-        self:die(true)
+        self:die()
         return
     end
     if y < playerY - (120 + self.spriteHeight)
@@ -183,8 +183,8 @@ function Enemy:damage(amount)
     end)
 end
 
-function Enemy:die(noExperience)
-    if noExperience then
+function Enemy:die()
+    if self.health > 0 then
         self.levelManager:enemyDied(0)
     else
         self.dieSound:play()
