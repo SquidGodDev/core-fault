@@ -257,6 +257,7 @@ function Player:damage(amount)
     self.damageSound:play()
     self.healthbar:damage(amount)
     if self.healthbar:isDead() then
+        self.invincible = true
         self.deathSound:play()
         self.levelScene:playerDied()
         -- TODO: Player death animation
