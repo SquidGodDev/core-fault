@@ -21,7 +21,7 @@ function OreSpawner:init(gameManager, mapGenerator, level)
     self.coresSprite:setZIndex(Z_INDEXES.UI)
     self.coresSprite:setIgnoresDrawOffset(true)
     self.coresSprite:add()
-    self:drawOreCount(0)
+    self:drawOreCount(self.gameManager.minedOre)
 end
 
 function OreSpawner:spawnOre(x, y)
