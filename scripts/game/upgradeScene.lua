@@ -69,7 +69,7 @@ function UpgradeScene:init(gameManager, curLevel)
         self.state = states.equipmentSelect
         local equipmentLevel = 1
         if curLevel >= 7 then
-            equipmentLevel = math.floor((curLevel - 3)/2)
+            equipmentLevel = math.floor(curLevel / 6)
         end
         self.equipmentPanel = SelectionPanel(availableEquipment, true, equipmentLevel, curLevel >= 7)
         self.curPanel = self.equipmentPanel
@@ -99,9 +99,10 @@ function UpgradeScene:update()
             self.upgradePanel:selectRight()
         elseif pd.buttonJustPressed(pd.kButtonA) then
             self.menuSelectSound:play()
-            self.selectedUpgrade = self.upgradePanel:select()
+            local selectedUpgradeLevel = 0
+            self.selectedUpgrade, selectedUpgradeLevel = self.upgradePanel:select()
             self.upgradePanel:animateOut()
-            self.selectedUpgrade.level += 1
+            self.selectedUpgrade.level = selectedUpgradeLevel
             self.gameManager:upgradesSelected(self.selectedUpgrade, nil, nil)
             self.state = states.finished
         end
@@ -117,6 +118,7 @@ function UpgradeScene:update()
             self.selectedNewEquipment, self.selectedNewEquipmentLevel = self.equipmentPanel:select()
             self.equipmentPanel:animateOut()
             local equipmentTableLength = #self.gameManager.equipment
+            self.selectedNewEquipment.level = self.selectedNewEquipmentLevel
             if equipmentTableLength < 3 then
                 self.gameManager:upgradesSelected(nil, self.selectedNewEquipment, equipmentTableLength + 1)
                 self.state = states.finished
@@ -137,7 +139,6 @@ function UpgradeScene:update()
             self.menuSelectSound:play()
             local swappedIndex = self.equipmentSwapPanel:select()
             self.state = states.finished
-            self.selectedNewEquipment.level += 1
             self.gameManager:upgradesSelected(nil, self.selectedNewEquipment, swappedIndex)
         end
     end

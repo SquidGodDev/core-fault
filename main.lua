@@ -52,6 +52,8 @@ math.randomseed(pd.getSecondsSinceEpoch())
 SCENE_MANAGER = SceneManager()
 MUSIC_PLAYER = MusicPlayer("title")
 
+DEBUG_KEY = false
+
 -- GameManager()
 TitleScene()
 
@@ -73,3 +75,10 @@ function pd.update()
         end
     end
 end
+
+
+-- function pd.keyPressed(key)
+--     if key == "`" then
+--         DEBUG_KEY = true
+--     end
+-- end
