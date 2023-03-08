@@ -45,20 +45,19 @@ function StartScene:update()
     if self.selected or not self.equipmentPanel:isActive() then
         return
     end
-    local crankTicks = pd.getCrankTicks(1)
-    if pd.buttonJustPressed(pd.kButtonLeft) or crankTicks == -1 then
+    if pd.buttonJustPressed(pd.kButtonLeft) then
         self.menuMoveSound:play()
         self.equipmentPanel:selectLeft()
-    elseif pd.buttonJustPressed(pd.kButtonRight) or crankTicks == 1 then
+    elseif pd.buttonJustPressed(pd.kButtonRight) then
         self.menuMoveSound:play()
         self.equipmentPanel:selectRight()
     elseif pd.buttonJustPressed(pd.kButtonA) then
         self.selected = true
-        local selectedEquipment = self.equipmentPanel:select()
+        local selectedEquipment, selectedEquipmentLevel = self.equipmentPanel:select()
         self.equipmentPanel:animateOut()
         if selectedEquipment then
             self.menuSelectSound:play()
-            self.gameManager:startEquipmentSelected(selectedEquipment)
+            self.gameManager:startEquipmentSelected(selectedEquipment, selectedEquipmentLevel)
         end
     end
 end

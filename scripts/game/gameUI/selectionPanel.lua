@@ -18,7 +18,7 @@ local getEquipmentUnlockLevel = function(equipmentObj)
     for i=1,#unlocks do
         local unlockData = unlocks[i]
         if unlockData.name == equipmentKey then
-            return unlockData.level
+            return unlockData.level + 1
         end
     end
 end
@@ -131,14 +131,15 @@ function SelectionPanel:getItemLevel(item)
     local itemLevel = item.level
     if self.isEquipment then
         itemLevel = self.equipmentLevel
-        if self.addUnlockLevel then
-            return itemLevel + getEquipmentUnlockLevel(item)
-        end
+        local unlockLevel = getEquipmentUnlockLevel(item)
         local maxLevel = #item.levelStats + 1
+        if self.addUnlockLevel then
+            return math.min(maxLevel, itemLevel + unlockLevel)
+        end
         if itemLevel > maxLevel then
             itemLevel = maxLevel
         end
-        return itemLevel
+        return math.max(itemLevel, unlockLevel)
     else
         return itemLevel + 1
     end

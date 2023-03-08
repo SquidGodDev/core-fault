@@ -124,7 +124,7 @@ function SwapPanel:select()
     pd.timer.new(100, function()
         self.aButtonSprite:setImage(self.aButtonImage)
     end)
-    return self.selectIndex
+    return self.selectIndex, self.newEquipmentLevel
 end
 
 function SwapPanel:drawUI()

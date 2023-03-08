@@ -20,7 +20,7 @@ function Beam:init(player, data)
 
     self.beamCooldown = data.cooldown
 
-    self.lineLength = 90
+    self.lineLength = data.length
     self.lineWidth = 5
 
     self.drawTime = 500

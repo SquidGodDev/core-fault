@@ -9,6 +9,8 @@ function Equipment:init(player, data)
     self:setZIndex(Z_INDEXES.EQUIPMENT)
     self:add()
 
+    local dataCopy = table.shallowcopy(data)
+
     local level = data.level
     local levelStats = data.levelStats
     for i=1,level-1 do
@@ -16,12 +18,12 @@ function Equipment:init(player, data)
         for key, value in pairs(data) do
             local stat = levelStat[key]
             if stat then
-                data[key] = value + stat
+                dataCopy[key] = value + stat
             end
         end
     end
 
-    return data
+    return dataCopy
 end
 
 function Equipment:disable()
