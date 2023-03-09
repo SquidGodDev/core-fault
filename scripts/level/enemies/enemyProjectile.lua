@@ -39,6 +39,8 @@ function EnemyProjectile:init(x, y, xVelocity, yVelocity, damage, projectileDiam
 
     self.playerHalfWidth = player.hurtboxHalfWidth
     self.playerHalfHeight = player.hurtboxHalfHeight
+    self.playerXOffset = player.hurtboxXOffset
+    self.playerYOffset = player.hurtboxYOffset
 
     tableInsert(projectilesArray, self)
 end
@@ -68,7 +70,7 @@ function EnemyProjectile:update()
         end
         return
     end
-    if abs(x - playerX) < self.playerHalfWidth and abs(y - playerY) < self.playerHalfHeight then
+    if abs(x - (playerX - self.playerXOffset)) < self.playerHalfWidth and abs(y - (playerY - self.playerYOffset)) < self.playerHalfHeight then
         self.player:damage(self.damage)
         local index = tableIndex(projectilesArray, self)
         if index then
