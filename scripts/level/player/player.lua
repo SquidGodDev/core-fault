@@ -67,7 +67,10 @@ function Player:init(x, y, health, gameManager, levelScene)
     self:initializeUpgrades()
     self:initializeEquipment()
 
-    local healthbar <const> = Healthbar(self.MaxHealth, health + self.Restoration + self.bonusHealth, self)
+    if self.gameManager.curLevel == 1 then
+        health = self.MaxHealth
+    end
+    local healthbar <const> = Healthbar(self.MaxHealth, health + self.Restoration, self)
     self.healthbar = healthbar
     self.flashTime = 100
     self.invincible = false
