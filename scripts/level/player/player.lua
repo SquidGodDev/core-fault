@@ -62,15 +62,15 @@ function Player:init(x, y, health, gameManager, levelScene)
     self.PercentDamage = 0
     self.BonusDamage = 0
 
-    local healthbar <const> = Healthbar(self.MaxHealth, health, self)
-    self.healthbar = healthbar
-    self.flashTime = 100
-    self.invincible = false
-
     self.equipmentObjects = {}
 
     self:initializeUpgrades()
     self:initializeEquipment()
+
+    local healthbar <const> = Healthbar(self.MaxHealth, health + self.Restoration + self.bonusHealth, self)
+    self.healthbar = healthbar
+    self.flashTime = 100
+    self.invincible = false
 
     local healthRegenTickRate = 500
     local healthRegen <const> = self.HealthRegen
@@ -169,7 +169,7 @@ function Player:update()
         self:setImage(self.animateOutAnimationLoop:image())
         if not self.animateOutAnimationLoop:isValid() then
             self.playerState = playerStates.inactive
-            self.levelScene:levelDefeated(self.healthbar:getHealth() + self.Restoration)
+            self.levelScene:levelDefeated(self.healthbar:getHealth())
         end
         return
     end
