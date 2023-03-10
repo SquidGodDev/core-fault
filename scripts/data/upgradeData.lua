@@ -23,7 +23,7 @@ upgrades = {
     },
     health = {
         name = "Health",
-        description = "Increases max health by {}",
+        description = "Max health increased by {}",
         level = 0,
         maxLevel = 5,
         value = 10,
@@ -34,7 +34,7 @@ upgrades = {
     },
     healthRegen = {
         name = "Health Regen",
-        description = "Increases health regen by {}",
+        description = "Restores {} health every 1/2 second",
         level = 0,
         maxLevel = 5,
         value = 0.25,
@@ -45,7 +45,7 @@ upgrades = {
     },
     critChance = {
         name = "Crit Chance",
-        description = "Increases crit chance by {}",
+        description = "Crit chance set to {}",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -56,7 +56,7 @@ upgrades = {
     },
     critDamage = {
         name = "Crit Damage",
-        description = "Increases crit damage by {}",
+        description = "Crits deal 1{} damage",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -67,7 +67,7 @@ upgrades = {
     },
     moveSpeed = {
         name = "Move Speed",
-        description = "Increases move speed by {}",
+        description = "Move speed increased by {}",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -89,7 +89,7 @@ upgrades = {
     },
     piercing = {
         name = "Piercing",
-        description = "Projectiles pass through {} more enemies",
+        description = "Projectiles pass through {} enemies",
         level = 0,
         maxLevel = 5,
         value = 1,
