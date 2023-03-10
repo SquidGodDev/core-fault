@@ -10,11 +10,9 @@ function RadioWaves:init(player, data)
     data = RadioWaves.super.init(self, player, data)
 
     local cooldown = data.cooldown
-    local velocity = data.velocity
-    local damage = data.damage
     local projectileCount = data.projectileCount
 
-    local projectileComponent = FiresProjectile(player, velocity, damage)
+    local projectileComponent = FiresProjectile(player, data)
 
     local fireAngles = table.create(projectileCount, 0)
     local angleIncrement = 360 / projectileCount

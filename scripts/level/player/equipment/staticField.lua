@@ -26,7 +26,7 @@ function StaticField:init(player, data)
     self.staticFieldSprite:add()
     self.staticFieldSprite:setZIndex(Z_INDEXES.EQUIPMENT)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
+    self.aoeDamageComponent = DoesAOEDamage(player, data)
     FollowsPlayer(self, player)
 
     self.sfxPlayer = SfxPlayer("sfx-static-field")

@@ -12,7 +12,6 @@ function Discharge:init(player, data)
 
     local radius = data.radius
     local cooldown = data.cooldown
-    local damage = data.damage
     local bonusDamageScaling = data.bonusDamageScaling
 
     local diameter = radius * 2
@@ -28,7 +27,7 @@ function Discharge:init(player, data)
     local flashTime = 200
     self:setVisible(false)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, damage, radius)
+    self.aoeDamageComponent = DoesAOEDamage(player, data)
     FollowsPlayer(self, player)
 
     local playerHealthbar = player.healthbar

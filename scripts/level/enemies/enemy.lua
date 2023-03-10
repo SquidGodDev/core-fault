@@ -42,6 +42,7 @@ function Enemy:init(x, y, levelManager, spriteName)
     self.maxVelocity = 1
 
     self.experience = 10
+    self.hitStun = 0
 
     self.levelManager = levelManager
 
@@ -107,6 +108,13 @@ function Enemy:update()
         self:setZIndex(y)
     end
 
+    self.hitStun -= 1
+    if self.hitStun <= 0 then
+        self.hitStun = 0
+    else
+        return
+    end
+
     local xVelocity, yVelocity = self.xVelocity, self.yVelocity
     local directionUpdateCount <const> = self.directionUpdateCount
     if directionUpdateCount == 0 then
@@ -165,7 +173,10 @@ function Enemy:canAttack()
     return not self.attackOnCooldown
 end
 
-function Enemy:damage(amount)
+function Enemy:damage(amount, hitStun)
+    if hitStun and hitStun > self.hitStun then
+        self.hitStun = hitStun
+    end
     if self.invincible then
         return
     end

@@ -27,8 +27,6 @@ function Beam:init(player, data)
 
     self.enemyTag = TAGS.ENEMY
 
-    self.beamDamage = data.damage
-
     self:calculateNextAngle()
 
     self.reticleSprite = gfx.sprite.new(gfx.image.new("images/player/equipment/reticle-small"))
@@ -40,7 +38,7 @@ function Beam:init(player, data)
     -- Components
     self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
-    self.damageComponent = DoesDamage(player, self.beamDamage)
+    self.damageComponent = DoesDamage(player, data)
 
     self.sfxPlayer = SfxPlayer("sfx-beam")
 end

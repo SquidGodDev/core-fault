@@ -15,6 +15,7 @@ equipment = {
         level = 1,
         damage = 15,
         cooldown = 700,
+        hitStun = 10,
         levelStats = {
             {damage = 6},
             {damage = 3, cooldown = -200},
@@ -32,6 +33,7 @@ equipment = {
         damage = 20,
         cooldown = 1500,
         length = 96,
+        hitStun = 10,
         levelStats = {
             {cooldown = -200, length = 24},
             {damage = 6, length = 12},
@@ -49,6 +51,7 @@ equipment = {
         damage = 16,
         cooldown = 400,
         velocity = 6,
+        hitStun = 7,
         levelStats = {
             {damage = 4},
             {velocity = 1},
@@ -66,6 +69,7 @@ equipment = {
         damage = 3,
         cooldown = 400,
         radius = 40,
+        hitStun = 2,
         levelStats = {
             {radius = 16},
             {damage = 6},
@@ -102,6 +106,7 @@ equipment = {
         cooldown = 1000,
         radius = 16,
         distance = 100,
+        hitStun = 10,
         levelStats = {
             {damage = 6, radius = 8},
             {damage = 6, cooldown = -100},
@@ -135,6 +140,7 @@ equipment = {
         cooldown = 2000,
         velocity = 6,
         projectileCount = 4,
+        hitStun = 5,
         levelStats = {
             {damage = 6, projectileCount = 2},
             {velocity = 1},
@@ -152,6 +158,8 @@ equipment = {
         damage = 48,
         cooldown = 1500,
         velocity = 3,
+        hitStun = 15,
+        size = 15,
         levelStats = {
             {damage = 6},
             {velocity = 1, cooldown = -200},

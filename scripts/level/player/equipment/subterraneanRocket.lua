@@ -32,7 +32,7 @@ function SubterraneanRocket:init(player, data)
 
     self.explosionDistance = data.distance
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
+    self.aoeDamageComponent = DoesAOEDamage(player, data)
 
     self.sfxPlayer = SfxPlayer("sfx-sub-rocket")
 

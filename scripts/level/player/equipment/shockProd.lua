@@ -16,7 +16,6 @@ function ShockProd:init(player, data)
     self.cooldown = data.cooldown
     self.facingRight = true
 
-    self.damage = data.damage
     self.enemyTag = TAGS.ENEMY
     self.hitboxHeight = 32
     self.hitboxwidth = 64
@@ -28,7 +27,7 @@ function ShockProd:init(player, data)
     -- Components
     FollowsPlayer(self, player)
     self.cooldownTimer = HasCooldown(self.cooldown, self.fireShock, self)
-    self.damageComponent = DoesDamage(player, self.damage)
+    self.damageComponent = DoesDamage(player, data)
 
     self.sfxPlayer = SfxPlayer("sfx-shock-prod")
 end
