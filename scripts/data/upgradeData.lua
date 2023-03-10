@@ -6,6 +6,7 @@ import "scripts/level/player/upgrades/health"
 import "scripts/level/player/upgrades/healthRegen"
 import "scripts/level/player/upgrades/moveSpeed"
 import "scripts/level/player/upgrades/piercing"
+import "scripts/level/player/upgrades/restoration"
 
 -- Use {} in description where value should be inserted
 
@@ -107,6 +108,6 @@ upgrades = {
         scaling = 10,
         percent = false,
         imagePath = "images/ui/upgradeIcons/iconUpgradeRestoration",
-        constructor = Piercing
+        constructor = Restoration
     }
 }
