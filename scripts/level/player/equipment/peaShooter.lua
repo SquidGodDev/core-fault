@@ -11,6 +11,7 @@ function PeaShooter:init(player, data)
     data = PeaShooter.super.init(self, player, data)
 
     local cooldown = data.cooldown
+    self.hitStun = data.hitStun
 
     local projectileComponent = FiresProjectile(player, data)
 

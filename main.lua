@@ -7,7 +7,7 @@ COLLISION_GROUPS = {
 }
 
 Z_INDEXES = {
-    UI = 32000,
+    UI = 32766,
     PLAYER = 100,
     EQUIPMENT = 90
 }

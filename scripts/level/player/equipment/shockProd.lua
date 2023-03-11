@@ -14,6 +14,7 @@ function ShockProd:init(player, data)
     data = ShockProd.super.init(self, player, data)
 
     self.cooldown = data.cooldown
+    self.hitStun = data.hitStun
     self.facingRight = true
 
     self.enemyTag = TAGS.ENEMY

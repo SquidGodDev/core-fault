@@ -31,6 +31,7 @@ function SubterraneanRocket:init(player, data)
     self:setVisible(false)
 
     self.explosionDistance = data.distance
+    self.hitStun = data.hitStun
 
     self.aoeDamageComponent = DoesAOEDamage(player, data)
 

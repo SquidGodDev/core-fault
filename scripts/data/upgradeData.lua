@@ -7,6 +7,7 @@ import "scripts/level/player/upgrades/healthRegen"
 import "scripts/level/player/upgrades/moveSpeed"
 import "scripts/level/player/upgrades/piercing"
 import "scripts/level/player/upgrades/restoration"
+import "scripts/level/player/upgrades/stun"
 
 -- Use {} in description where value should be inserted
 
@@ -109,5 +110,16 @@ upgrades = {
         percent = false,
         imagePath = "images/ui/upgradeIcons/iconUpgradeRestoration",
         constructor = Restoration
+    },
+    stun = {
+        name = "Stun",
+        description = "Enemies are stunned {} longer",
+        level = 0,
+        maxLevel = 5,
+        value = 0.1,
+        scaling = 0.1,
+        percent = true,
+        imagePath = "images/ui/upgradeIcons/iconUpgradeStun",
+        constructor = Stun
     }
 }

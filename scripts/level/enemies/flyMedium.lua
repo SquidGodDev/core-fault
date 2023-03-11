@@ -12,6 +12,7 @@ function FlyMedium:init(x, y, level)
     self.attackDamage = stats.attackDamage
     self.health = stats.health
     self.maxVelocity = stats.velocity
+    self.resistance = stats.resistance
 
     self.experience = stats.experience
 

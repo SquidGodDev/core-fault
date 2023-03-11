@@ -10,6 +10,7 @@ function DoesDamage:init(player, data)
     self.oreTag = TAGS.ORE
     self.damage = data.damage
     self.hitStun = data.hitStun or 0
+    self.percentStun = player.percentStun
     self.CritChance = player.CritChance
     self.CritDamage = player.CritDamage
     self.BonusDamage = player.BonusDamage
@@ -32,7 +33,7 @@ function DoesDamage:dealDamage(hitEntities)
         local curObject = hitEntities[i]
         local hitEntityTag = curObject:getTag()
         if hitEntityTag == self.enemyTag or hitEntityTag == self.oreTag then
-            curObject:damage(damageAmount, self.hitStun)
+            curObject:damage(damageAmount, self.hitStun * (1 + self.percentStun))
         end
     end
 
@@ -48,7 +49,7 @@ function DoesDamage:dealDamageSingle(hitEntity)
 
     local hitEntityTag = hitEntity:getTag()
     if hitEntityTag == self.enemyTag or hitEntityTag == self.oreTag then
-        hitEntity:damage(damageAmount, self.hitStun)
+        hitEntity:damage(damageAmount, self.hitStun * (1 + self.percentStun))
     end
 
     self.BonusDamage = self.BaseBonusDamage

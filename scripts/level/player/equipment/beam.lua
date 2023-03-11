@@ -19,6 +19,7 @@ function Beam:init(player, data)
     data = Beam.super.init(self, player, data)
 
     self.beamCooldown = data.cooldown
+    self.hitStun = data.hitStun
 
     self.lineLength = data.length
     self.lineWidth = 5
