@@ -47,7 +47,7 @@ upgrades = {
     },
     critChance = {
         name = "Crit Chance",
-        description = "Crit chance set to {}",
+        description = "Chance to get a crit set to {}",
         level = 0,
         maxLevel = 5,
         value = 0.1,
