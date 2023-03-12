@@ -7,7 +7,6 @@ import "scripts/level/player/equipment/subterraneanRocket"
 import "scripts/level/player/equipment/radioWaves"
 import "scripts/level/player/equipment/plasmaCannon"
 import "scripts/level/player/equipment/pocketDrill"
-import "scripts/level/player/equipment/overdrive"
 
 equipment = {
     shockProd = {
@@ -171,22 +170,4 @@ equipment = {
         imagePath = "images/ui/equipmentIcons/iconPlasmaCannon",
         constructor = PlasmaCannon
     },
-    overdrive = {
-        name = "Overdrive",
-        description = "Periodically causes player to rush forward, damaging nearby enemies",
-        level = 1,
-        damage = 20,
-        velocity = 4,
-        cooldown = 2000,
-        duration = 600,
-        levelStats = {
-            {damage = 4},
-            {damage = 4},
-            {damage = 4},
-            {damage = 4},
-            {damage = 4},
-        },
-        imagePath = "images/ui/equipmentIcons/iconOverdrive",
-        constructor = Overdrive
-    }
 }

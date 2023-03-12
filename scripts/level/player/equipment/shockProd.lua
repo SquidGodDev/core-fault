@@ -19,7 +19,7 @@ function ShockProd:init(player, data)
 
     self.enemyTag = TAGS.ENEMY
     self.hitboxHeight = 32
-    self.hitboxWidth = 64
+    self.hitboxwidth = 64
 
     local imagetable = gfx.imagetable.new("images/player/equipment/shockProd")
     self.animationLoop = gfx.animation.loop.new(50, imagetable, false)
@@ -53,10 +53,10 @@ function ShockProd:fireShock()
         self:setCenter(1, 0.5)
     end
 
-    local rectX, rectY = self.x - self.hitboxWidth, self.y - self.hitboxHeight / 2
+    local rectX, rectY = self.x - self.hitboxwidth, self.y - self.hitboxHeight / 2
     if self.facingRight then
         rectX, rectY = self.x, self.y - self.hitboxHeight / 2
     end
-    local hitObjects = querySpritesInRect(rectX, rectY, self.hitboxWidth, self.hitboxHeight)
+    local hitObjects = querySpritesInRect(rectX, rectY, self.hitboxwidth, self.hitboxHeight)
     self.damageComponent:dealDamage(hitObjects)
 end
