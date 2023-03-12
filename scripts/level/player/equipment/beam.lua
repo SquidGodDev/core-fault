@@ -36,8 +36,14 @@ function Beam:init(player, data)
     self.reticleSprite.offsetX, self.reticleSprite.offsetY = self:getNextTarget()
     self.reticleSprite.player = player
 
+    -- Beam Array
+    self.beamSpreadAngle = 10
+    self.beamCount = 5
+    self.beamDelay = 100
+    self.spread = false
+
     -- Components
-    self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
+    self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeamArray, self)
     FollowsPlayer(self, player)
     self.damageComponent = DoesDamage(player, data)
 
@@ -58,12 +64,28 @@ function Beam:getNextTarget()
     return targetXOffset, targetYOffset
 end
 
-function Beam:fireBeam()
+function Beam:fireBeamArray()
+    local baseAngle = pd.getCrankPosition() - 90 - math.floor(self.beamCount/2) * self.beamSpreadAngle
+    for i=0,self.beamCount-1 do
+        local delay = i * self.beamDelay
+        pd.timer.performAfterDelay(delay, function()
+            if spread then
+                self:fireBeam(baseAngle + i * self.beamSpreadAngle)
+            else
+                self:fireBeam(pd.getCrankPosition() - 90)
+            end
+        end)
+    end
+end
+
+function Beam:fireBeam(angle)
     local x, y = self.player.x, self.player.y
-    
-    local targetXOffset = self.reticleSprite.offsetX
-    local targetYOffset = self.reticleSprite.offsetY
-    
+
+    local angleInRad = rad(angle)
+    local angleCos = cos(angleInRad)
+    local angleSine = sin(angleInRad)
+    local targetXOffset = angleCos * self.lineLength
+    local targetYOffset = angleSine * self.lineLength
 
     self:moveTo(x, y)
 
@@ -94,13 +116,4 @@ function Beam:fireBeam()
     self.damageComponent:dealDamage(hitObjects)
 
     self.sfxPlayer:play()
-
-    self:calculateNextAngle()
-    self.reticleSprite.offsetX, self.reticleSprite.offsetY = self:getNextTarget()
-end
-
-function Beam:update()
-    local reticleX = playdate.math.lerp(self.reticleSprite.x, self.reticleSprite.player.x + self.reticleSprite.offsetX, 0.25)
-    local reticleY = playdate.math.lerp(self.reticleSprite.y, self.reticleSprite.player.y + self.reticleSprite.offsetY, 0.25)
-    self.reticleSprite:moveTo(reticleX, reticleY)
 end
