@@ -132,5 +132,12 @@ unlocks = {
         level = 0,
         maxLevel = 3,
         cost = {20, 50, 70, 100}
+    },
+    {
+        name = "overdrive",
+        isEquipment = true,
+        level = 0,
+        maxLevel = 3,
+        cost = {20, 50, 70, 100}
     }
 }

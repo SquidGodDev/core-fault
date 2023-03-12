@@ -93,9 +93,12 @@ function Player:init(x, y, health, gameManager, levelScene)
 
     self:setZIndex(Z_INDEXES.PLAYER)
 
-    self.velocity = 0
     self.xVelocity = 0
     self.yVelocity = 0
+
+    -- Rush
+    self.rushAngle = nil
+    self.velocityModifier = 0
 
     self:moveTo(x, y)
     setDrawOffset(-(x - 200), -(y - 120))
@@ -180,7 +183,7 @@ function Player:update()
 
     local playerX, playerY = self.x, self.y
 
-    local crankPos = getCrankPosition()
+    local crankPos = self.rushAngle or getCrankPosition()
     local dirIndex = floor((crankPos + 22.5) / 45) % 8 + 1
     local animationStartIndex = 1 + (dirIndex - 1) * 2
     local animationLoop <const> = self.animationLoop
@@ -288,13 +291,29 @@ function Player:heal(amount)
     self.healthbar:heal(amount)
 end
 
+function Player:setVelocityModifier(velocity)
+    self.velocityModifier = velocity
+    self.rushAngle = getCrankPosition()
+    self.invincible = true
+end
+
+function Player:updateVelocityModifer(velocity)
+    self.velocityModifier = velocity
+end
+
+function Player:clearVelocityModifier()
+    self.velocityModifier = 0
+    self.rushAngle = nil
+    self.invincible = false
+end
+
 function Player:updateMovement(crankAngle)
-    local maxVelocity <const> = self.MaxVelocity
+    local velocity <const> = self.MaxVelocity + self.velocityModifier
     local angleCos = calculatedCosine[floor(crankAngle)]
     local angleSin = calculatedSine[floor(crankAngle)]
-    local maxX = angleCos * maxVelocity
-    local maxY = angleSin * maxVelocity
-    self.xVelocity = maxX
-    self.yVelocity = maxY
-    self:moveWithCollisions(self.x + maxX, self.y + maxY)
+    local xVelocity = angleCos * velocity
+    local yVelocity = angleSin * velocity
+    self.xVelocity = xVelocity
+    self.yVelocity = yVelocity
+    self:moveWithCollisions(self.x + xVelocity, self.y + yVelocity)
 end
