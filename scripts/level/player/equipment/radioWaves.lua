@@ -11,6 +11,7 @@ function RadioWaves:init(player, data)
 
     local cooldown = data.cooldown
     local projectileCount = data.projectileCount
+    self.hitStun = data.hitStun
 
     local projectileComponent = FiresProjectile(player, data)
 

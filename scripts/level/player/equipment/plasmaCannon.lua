@@ -13,6 +13,8 @@ function PlasmaCannon:init(player, data)
 
     local projectileComponent = FiresProjectile(player, data)
 
+    self.hitStun = data.hitStun
+
     self.sfxPlayer = SfxPlayer("sfx-plasma-cannon")
 
     self.cooldownTimer = pd.timer.new(cooldown, function()

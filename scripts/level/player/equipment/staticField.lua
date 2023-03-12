@@ -10,6 +10,7 @@ class('StaticField').extends(Equipment)
 function StaticField:init(player, data)
     data = StaticField.super.init(self, player, data)
 
+    self.hitStun = data.hitStun
     local radius = data.radius
     local diameter = radius * 2
     local staticFieldImage = gfx.image.new(diameter, diameter)

@@ -43,6 +43,7 @@ function Enemy:init(x, y, levelManager, spriteName)
 
     self.experience = 10
     self.hitStun = 0
+    self.resistance = 0
 
     self.levelManager = levelManager
 
@@ -175,7 +176,7 @@ end
 
 function Enemy:damage(amount, hitStun)
     if hitStun and hitStun > self.hitStun then
-        self.hitStun = hitStun
+        self.hitStun = hitStun * (1 - self.resistance)
     end
     if self.invincible then
         return

@@ -14,7 +14,9 @@ function loadGameData()
             TOTAL_CORES = 0
         end
         if gameData.unlocks then
-            unlocks = gameData.unlocks
+            for i=1, #unlocks do
+                unlocks.level = gameData.unlocks.level
+            end
         end
         if gameData.totalDeaths then
             TOTAL_DEATHS = gameData.totalDeaths

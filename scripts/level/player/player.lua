@@ -61,6 +61,7 @@ function Player:init(x, y, health, gameManager, levelScene)
     self.Restoration = 0
     self.PercentDamage = 0
     self.BonusDamage = 0
+    self.percentStun = 0
 
     self.equipmentObjects = {}
 

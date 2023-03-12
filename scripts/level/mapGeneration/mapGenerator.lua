@@ -4,6 +4,7 @@ local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
 local mapPatterns <const> = mapPatterns
+local mapZ <const> = -32767
 
 class('MapGenerator').extends()
 
@@ -57,6 +58,7 @@ function MapGenerator:createTilemapSprite(name, x, y)
     tilemapSprite:setCollideRect(0, 0, tilemapSprite:getSize())
     tilemapSprite:setCenter(0, 0)
     tilemapSprite:moveTo(x, y)
+    tilemapSprite:setZIndex(mapZ + 1)
     tilemapSprite:add()
 end
 
@@ -69,6 +71,7 @@ function MapGenerator:createBlockSprite(x, y)
     blockSprite:setCollideRect(0, 0, blockSprite:getSize())
     blockSprite:setCenter(0, 0)
     blockSprite:moveTo(blockX, blockY)
+    blockSprite:setZIndex(mapZ + 2)
     blockSprite:add()
 end
 
@@ -78,5 +81,6 @@ function MapGenerator:createGroundSprite(x, y)
     local groundSprite = gfx.sprite.new(self.groundImage)
     groundSprite:setCenter(0, 0)
     groundSprite:moveTo(groundX, groundY)
+    groundSprite:setZIndex(mapZ)
     groundSprite:add()
 end
