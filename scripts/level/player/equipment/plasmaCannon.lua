@@ -7,13 +7,13 @@ local pd <const> = playdate
 class('PlasmaCannon').extends(Equipment)
 
 function PlasmaCannon:init(player, data)
-    data = PlasmaCannon.super.init(self, player, data)
+    local dataCopy = PlasmaCannon.super.init(self, player, data)
 
-    local cooldown = data.cooldown
+    local cooldown = dataCopy.cooldown
 
-    local projectileComponent = FiresProjectile(player, data)
+    local projectileComponent = FiresProjectile(player, dataCopy)
 
-    self.hitStun = data.hitStun
+    self.hitStun = dataCopy.hitStun
 
     self.sfxPlayer = SfxPlayer("sfx-plasma-cannon")
 

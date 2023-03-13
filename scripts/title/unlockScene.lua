@@ -330,4 +330,11 @@ function UnlockScene:update()
         self.unlockListSprite:setImage(unlockListImage)
     end
     self.updateDisplay = false
+
+    -- if DEBUG_KEY then -- FOR DEBUG
+    --     for i=1, #unlocks do
+    --         unlocks[i].level = 0
+    --     end
+    --     TOTAL_CORES = 999
+    -- end
 end

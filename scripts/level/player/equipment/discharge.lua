@@ -8,11 +8,11 @@ local gfx <const> = playdate.graphics
 class('Discharge').extends(Equipment)
 
 function Discharge:init(player, data)
-    data = Discharge.super.init(self, player, data)
+    local dataCopy = Discharge.super.init(self, player, data)
 
-    local radius = data.radius
-    local cooldown = data.cooldown
-    local bonusDamageScaling = data.bonusDamageScaling
+    local radius = dataCopy.radius
+    local cooldown = dataCopy.cooldown
+    local bonusDamageScaling = dataCopy.bonusDamageScaling
 
     local diameter = radius * 2
 
@@ -27,7 +27,7 @@ function Discharge:init(player, data)
     local flashTime = 200
     self:setVisible(false)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data)
+    self.aoeDamageComponent = DoesAOEDamage(player, dataCopy)
     FollowsPlayer(self, player)
 
     local playerHealthbar = player.healthbar

@@ -8,10 +8,10 @@ local gfx <const> = playdate.graphics
 class('StaticField').extends(Equipment)
 
 function StaticField:init(player, data)
-    data = StaticField.super.init(self, player, data)
+    local dataCopy = StaticField.super.init(self, player, data)
 
-    self.hitStun = data.hitStun
-    local radius = data.radius
+    self.hitStun = dataCopy.hitStun
+    local radius = dataCopy.radius
     local diameter = radius * 2
     local staticFieldImage = gfx.image.new(diameter, diameter)
     gfx.pushContext(staticFieldImage)
@@ -27,12 +27,12 @@ function StaticField:init(player, data)
     self.staticFieldSprite:add()
     self.staticFieldSprite:setZIndex(Z_INDEXES.EQUIPMENT)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data)
+    self.aoeDamageComponent = DoesAOEDamage(player, dataCopy)
     FollowsPlayer(self, player)
 
     self.sfxPlayer = SfxPlayer("sfx-static-field")
 
-    self.cooldownTimer = pd.timer.new(data.cooldown, function()
+    self.cooldownTimer = pd.timer.new(dataCopy.cooldown, function()
         self.aoeDamageComponent:dealAOEDamage(self.x, self.y)
     end)
     self.cooldownTimer.repeats = true

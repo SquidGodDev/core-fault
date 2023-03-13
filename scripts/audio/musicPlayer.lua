@@ -6,6 +6,8 @@ local songs <const> = {
     gameplay = fileplayer("audio/music/gameplay"),
 }
 
+local maxVolume = 0.4
+
 class('MusicPlayer').extends()
 
 function MusicPlayer:init(song)
@@ -19,6 +21,7 @@ function MusicPlayer:init(song)
 
     self.currentSong = songs[song]
     self.currentSong:play(0)
+    self.currentSong:setVolume(maxVolume)
     self.nextSong = songs[song]
 
     self.fadeOutTime = 10000
@@ -33,7 +36,7 @@ function MusicPlayer:switchSong(song)
     self.currentSong:setVolume(0, 0, 1, function(thisFile, musicPlayer)
         thisFile:stop()
         musicPlayer.currentSong = musicPlayer.nextSong
-        musicPlayer.currentSong:setVolume(1)
+        musicPlayer.currentSong:setVolume(maxVolume)
         musicPlayer.currentSong:play(0)
     end, self)
 end
@@ -56,12 +59,12 @@ function MusicPlayer:duck(time)
     local minVolume = 0
     local duckStartTimer = pd.timer.new(duckStartTime, 1, minVolume, pd.easingFunctions.inOutCubic)
     duckStartTimer.updateCallback = function(timer)
-        self.currentSong:setVolume(timer.value)
+        self.currentSong:setVolume(timer.value * maxVolume)
     end
     duckStartTimer.timerEndedCallback = function()
         local duckEndTimer = pd.timer.new(duckEndTime, minVolume, 1, pd.easingFunctions.inOutCubic)
         duckEndTimer.updateCallback = function(timer)
-            self.currentSong:setVolume(timer.value)
+            self.currentSong:setVolume(timer.value * maxVolume)
         end
         duckEndTimer.timerEndedCallback = function()
             self.ducking = false

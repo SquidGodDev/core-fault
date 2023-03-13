@@ -8,12 +8,12 @@ local gfx <const> = playdate.graphics
 class('PeaShooter').extends(Equipment)
 
 function PeaShooter:init(player, data)
-    data = PeaShooter.super.init(self, player, data)
+    local dataCopy = PeaShooter.super.init(self, player, data)
 
-    local cooldown = data.cooldown
-    self.hitStun = data.hitStun
+    local cooldown = dataCopy.cooldown
+    self.hitStun = dataCopy.hitStun
 
-    local projectileComponent = FiresProjectile(player, data)
+    local projectileComponent = FiresProjectile(player, dataCopy)
 
     self.sfxPlayer = SfxPlayer("sfx-pea-shooter")
 

@@ -15,9 +15,9 @@ local sin <const> = math.sin
 class('SubterraneanRocket').extends(Equipment)
 
 function SubterraneanRocket:init(player, data)
-    data = SubterraneanRocket.super.init(self, player, data)
+    local dataCopy = SubterraneanRocket.super.init(self, player, data)
 
-    local radius = data.radius
+    local radius = dataCopy.radius
     local diameter = radius * 2
     local explosionImage = gfx.image.new(diameter, diameter)
     gfx.pushContext(explosionImage)
@@ -30,10 +30,10 @@ function SubterraneanRocket:init(player, data)
     local flashTime = 200
     self:setVisible(false)
 
-    self.explosionDistance = data.distance
-    self.hitStun = data.hitStun
+    self.explosionDistance = dataCopy.distance
+    self.hitStun = dataCopy.hitStun
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data)
+    self.aoeDamageComponent = DoesAOEDamage(player, dataCopy)
 
     self.sfxPlayer = SfxPlayer("sfx-sub-rocket")
 
@@ -45,7 +45,7 @@ function SubterraneanRocket:init(player, data)
     self.reticleSprite.offsetY = explosionY
     self.reticleSprite.player = player
 
-    self.cooldownTimer = pd.timer.new(data.cooldown, function()
+    self.cooldownTimer = pd.timer.new(dataCopy.cooldown, function()
         self.sfxPlayer:play()
         
         explosionX = self.reticleSprite.x

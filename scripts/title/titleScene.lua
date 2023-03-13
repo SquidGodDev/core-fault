@@ -6,6 +6,8 @@ import "scripts/title/unlockScene"
 local pd <const> = playdate
 local gfx <const> = playdate.graphics
 
+local menuTextPosition = 280
+
 class('TitleScene').extends(gfx.sprite)
 
 function TitleScene:init()
@@ -18,8 +20,8 @@ function TitleScene:init()
     self.panelImage = gfx.image.new("images/ui/mainMenu/main-menu-panel")
     gfx.pushContext(self.panelImage)
         tallRobotFont:drawText("REMOTE DROID INTERFACE", 16, 16)
-        tallRobotFont:drawText("Deploy", 290, 82)
-        tallRobotFont:drawText("Shop", 290, 118)
+        tallRobotFont:drawText("Deploy", menuTextPosition, 82)
+        tallRobotFont:drawText("Workshop", menuTextPosition, 118)
         --gfx.setImageDrawMode(gfx.kDrawModeFillWhite)
         --gfx.drawText("Connecting", 76, 136)
     gfx.popContext()
@@ -40,7 +42,7 @@ function TitleScene:init()
     end
 
     self.arrowIndex = 1
-    self.arrowX, self.arrowY = 278, 92
+    self.arrowX, self.arrowY = menuTextPosition - 12, 92
     self.arrowGap = 36
     self.arrowSprite = gfx.sprite.new()
     self.arrowSprite:moveTo(self.arrowX, self.arrowY)

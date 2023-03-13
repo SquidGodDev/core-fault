@@ -11,10 +11,10 @@ local querySpritesInRect <const> = gfx.sprite.querySpritesInRect
 class('ShockProd').extends(Equipment)
 
 function ShockProd:init(player, data)
-    data = ShockProd.super.init(self, player, data)
+    local dataCopy = ShockProd.super.init(self, player, data)
 
-    self.cooldown = data.cooldown
-    self.hitStun = data.hitStun
+    self.cooldown = dataCopy.cooldown
+    self.hitStun = dataCopy.hitStun
     self.facingRight = true
 
     self.enemyTag = TAGS.ENEMY
@@ -28,7 +28,7 @@ function ShockProd:init(player, data)
     -- Components
     FollowsPlayer(self, player)
     self.cooldownTimer = HasCooldown(self.cooldown, self.fireShock, self)
-    self.damageComponent = DoesDamage(player, data)
+    self.damageComponent = DoesDamage(player, dataCopy)
 
     self.sfxPlayer = SfxPlayer("sfx-shock-prod")
 end
