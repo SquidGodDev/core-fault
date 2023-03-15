@@ -229,7 +229,10 @@ function Player:initializeEquipment()
     local equipment = self.gameManager.equipment
     local attackSpeed <const> = self.AttackSpeed
     for i=1, #equipment do
-        local equipmentData = equipment[i]
+        local equipmentData = {}
+        for key, value in pairs(equipment[i]) do
+            equipmentData[key] = value
+        end
         local equipmentConstructor = equipmentData.constructor
         if equipmentData.cooldown then
             equipmentData.cooldown *= attackSpeed

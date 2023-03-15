@@ -7,9 +7,9 @@ local gfx <const> = playdate.graphics
 class('PocketDrill').extends(Equipment)
 
 function PocketDrill:init(player, data)
-    data = PocketDrill.super.init(self, player, data)
+    local dataCopy = PocketDrill.super.init(self, player, data)
 
-    local cooldown = data.cooldown
+    local cooldown = dataCopy.cooldown
 
     self.sfxPlayer = SfxPlayer("sfx-pocket-drill")
 

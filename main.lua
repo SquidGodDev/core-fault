@@ -26,6 +26,7 @@ import "CoreLibs/object"
 import "CoreLibs/graphics"
 import "CoreLibs/sprites"
 import "CoreLibs/timer"
+-- import "CoreLibs/frameTimer" -- FOR DEBUG
 import "CoreLibs/animation"
 import "CoreLibs/crank"
 import "CoreLibs/ui"
@@ -59,6 +60,7 @@ TitleScene()
 
 local spriteUpdate <const> = gfx.sprite.update
 local timerUpdate <const> = pd.timer.updateTimers
+-- local frameTimerUpdate <const> = pd.frameTimer.updateTimers -- FOR DEBUG
 local drawFPS <const> = pd.drawFPS
 
 gfx.setColor(gfx.kColorWhite)
@@ -66,6 +68,7 @@ gfx.setColor(gfx.kColorWhite)
 function pd.update()
     spriteUpdate()
     timerUpdate()
+    -- frameTimerUpdate() -- FOR DEBUG
     -- drawFPS(5, 5)
 
     for i=1, #projectiles do
@@ -77,8 +80,13 @@ function pd.update()
 end
 
 
--- function pd.keyPressed(key)
---     if key == "`" then
+-- function playdate.keyPressed(key) -- FOR DEBUG
+--     if key == "`" and DEBUG_KEY == false then
+--         print("DEBUG KEY PRESSED")
 --         DEBUG_KEY = true
+--         playdate.frameTimer.new(2, function()
+--             DEBUG_KEY = false
+--             print("RESET")
+--         end)
 --     end
 -- end

@@ -71,7 +71,7 @@ function Projectile:update()
     end
 
     local player <const> = self.player
-    if abs(x - player.x) > 210 or abs(y - player.y) > 130 then
+    if abs(x - player.x) > 220 or abs(y - player.y) > 140 then
         local index = tableIndex(projectilesArray, self)
         if index then
             tableRemove(projectilesArray, index)

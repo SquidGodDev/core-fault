@@ -7,18 +7,18 @@ local gfx <const> = playdate.graphics
 class('RadioWaves').extends(Equipment)
 
 function RadioWaves:init(player, data)
-    data = RadioWaves.super.init(self, player, data)
+    local dataCopy = RadioWaves.super.init(self, player, data)
 
-    local cooldown = data.cooldown
-    local projectileCount = data.projectileCount
-    self.hitStun = data.hitStun
+    local cooldown = dataCopy.cooldown
+    local projectileCount = dataCopy.projectileCount
+    self.hitStun = dataCopy.hitStun
 
-    local projectileComponent = FiresProjectile(player, data)
+    local projectileComponent = FiresProjectile(player, dataCopy)
 
     local fireAngles = table.create(projectileCount, 0)
     local angleIncrement = 360 / projectileCount
     for i=0,projectileCount-1 do
-        table.insert(fireAngles, i*angleIncrement + 45)
+        table.insert(fireAngles, i*angleIncrement + angleIncrement * 0.5)
     end
 
     self.sfxPlayer = SfxPlayer("sfx-radio-waves")

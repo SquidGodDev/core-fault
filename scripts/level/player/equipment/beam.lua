@@ -16,12 +16,12 @@ local sin <const> = math.sin
 class('Beam').extends(Equipment)
 
 function Beam:init(player, data)
-    data = Beam.super.init(self, player, data)
+    local dataCopy = Beam.super.init(self, player, data)
 
-    self.beamCooldown = data.cooldown
-    self.hitStun = data.hitStun
+    self.beamCooldown = dataCopy.cooldown
+    self.hitStun = dataCopy.hitStun
 
-    self.lineLength = data.length
+    self.lineLength = dataCopy.length
     self.lineWidth = 5
 
     self.drawTime = 500
@@ -39,7 +39,7 @@ function Beam:init(player, data)
     -- Components
     self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
-    self.damageComponent = DoesDamage(player, data)
+    self.damageComponent = DoesDamage(player, dataCopy)
 
     self.sfxPlayer = SfxPlayer("sfx-beam")
 end

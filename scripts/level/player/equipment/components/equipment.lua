@@ -9,7 +9,10 @@ function Equipment:init(player, data)
     self:setZIndex(Z_INDEXES.EQUIPMENT)
     self:add()
 
-    local dataCopy = table.shallowcopy(data)
+    local dataCopy = {}
+    for key, value in pairs(data) do
+        dataCopy[key] = value
+    end
 
     local level = data.level
     local levelStats = data.levelStats
