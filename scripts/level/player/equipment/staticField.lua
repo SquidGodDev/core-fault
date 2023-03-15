@@ -10,6 +10,7 @@ class('StaticField').extends(Equipment)
 function StaticField:init(player, data)
     data = StaticField.super.init(self, player, data)
 
+    self.hitStun = data.hitStun
     local radius = data.radius
     local diameter = radius * 2
     local staticFieldImage = gfx.image.new(diameter, diameter)
@@ -26,7 +27,7 @@ function StaticField:init(player, data)
     self.staticFieldSprite:add()
     self.staticFieldSprite:setZIndex(Z_INDEXES.EQUIPMENT)
 
-    self.aoeDamageComponent = DoesAOEDamage(player, data.damage, radius)
+    self.aoeDamageComponent = DoesAOEDamage(player, data)
     FollowsPlayer(self, player)
 
     self.sfxPlayer = SfxPlayer("sfx-static-field")

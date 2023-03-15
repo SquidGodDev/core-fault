@@ -64,6 +64,13 @@ unlocks = {
         cost = {20, 50, 70, 90}
     },
     {
+        name = "stun",
+        isEquipment = false,
+        level = 0,
+        maxLevel = 3,
+        cost = {5, 15, 45, 60}
+    },
+    {
         name = "shockProd",
         isEquipment = true,
         level = 0,

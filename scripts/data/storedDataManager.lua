@@ -14,10 +14,25 @@ function loadGameData()
             TOTAL_CORES = 0
         end
         if gameData.unlocks then
-            unlocks = gameData.unlocks
+            for i=1, #unlocks do
+                local unlock = unlocks[i]
+                local gameDataUnlockLevel = findUnlockLevel(gameData.unlocks, unlock)
+                if gameDataUnlockLevel then
+                    unlock.level = gameDataUnlockLevel
+                end
+            end
         end
         if gameData.totalDeaths then
             TOTAL_DEATHS = gameData.totalDeaths
+        end
+    end
+end
+
+function findUnlockLevel(gameDataUnlocks, unlock)
+    for i=1, #gameDataUnlocks do
+        local gameDataUnlock = gameDataUnlocks[i]
+        if gameDataUnlock.name == unlock.name then
+            return gameDataUnlock.level
         end
     end
 end

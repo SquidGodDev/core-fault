@@ -19,15 +19,14 @@ function Beam:init(player, data)
     data = Beam.super.init(self, player, data)
 
     self.beamCooldown = data.cooldown
+    self.hitStun = data.hitStun
 
-    self.lineLength = 90
+    self.lineLength = data.length
     self.lineWidth = 5
 
     self.drawTime = 500
 
     self.enemyTag = TAGS.ENEMY
-
-    self.beamDamage = data.damage
 
     self:calculateNextAngle()
 
@@ -40,7 +39,7 @@ function Beam:init(player, data)
     -- Components
     self.cooldownTimer = HasCooldown(self.beamCooldown, self.fireBeam, self)
     FollowsPlayer(self, player)
-    self.damageComponent = DoesDamage(player, self.beamDamage)
+    self.damageComponent = DoesDamage(player, data)
 
     self.sfxPlayer = SfxPlayer("sfx-beam")
 end

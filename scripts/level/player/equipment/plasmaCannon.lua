@@ -10,11 +10,10 @@ function PlasmaCannon:init(player, data)
     data = PlasmaCannon.super.init(self, player, data)
 
     local cooldown = data.cooldown
-    local velocity = data.velocity
-    local damage = data.damage
-    local size = 15
 
-    local projectileComponent = FiresProjectile(player, velocity, damage, size)
+    local projectileComponent = FiresProjectile(player, data)
+
+    self.hitStun = data.hitStun
 
     self.sfxPlayer = SfxPlayer("sfx-plasma-cannon")
 

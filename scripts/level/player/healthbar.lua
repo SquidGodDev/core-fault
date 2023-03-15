@@ -7,6 +7,9 @@ function Healthbar:init(maxHealth, health, player)
     self.player = player
     self.maxHealth = maxHealth
     self.health = health
+    if self.health > maxHealth then
+        self.health = maxHealth
+    end
 
     self:setZIndex(Z_INDEXES.UI)
     self:add()

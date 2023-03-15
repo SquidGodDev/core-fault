@@ -25,7 +25,7 @@ function LevelScene:init(gameManager, curLevel, time, playerHealth)
     self.playerHealth = playerHealth
 
     -- TODO: Calculate level experience scaling
-    local levelExperience = 6 + curLevel * 6 + math.max(0, (curLevel - 7) * 12) + math.max(0, curLevel - 3)
+    local levelExperience = 6 + curLevel * 6 + math.max(0, (curLevel - 7) * 12) + math.max(0, (curLevel - 4) * 6)
     self.hud = HUD(time, levelExperience, self)
     self:setupLevelLayout()
     self:setupOreSpawner()

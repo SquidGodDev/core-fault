@@ -6,6 +6,8 @@ import "scripts/level/player/upgrades/health"
 import "scripts/level/player/upgrades/healthRegen"
 import "scripts/level/player/upgrades/moveSpeed"
 import "scripts/level/player/upgrades/piercing"
+import "scripts/level/player/upgrades/restoration"
+import "scripts/level/player/upgrades/stun"
 
 -- Use {} in description where value should be inserted
 
@@ -23,7 +25,7 @@ upgrades = {
     },
     health = {
         name = "Health",
-        description = "Increases max health by {}",
+        description = "Max health increased by {}",
         level = 0,
         maxLevel = 5,
         value = 10,
@@ -34,7 +36,7 @@ upgrades = {
     },
     healthRegen = {
         name = "Health Regen",
-        description = "Increases health regen by {}",
+        description = "Restores {} health every 1/2 second",
         level = 0,
         maxLevel = 5,
         value = 0.25,
@@ -45,7 +47,7 @@ upgrades = {
     },
     critChance = {
         name = "Crit Chance",
-        description = "Increases crit chance by {}",
+        description = "Chance to get a crit set to {}",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -56,7 +58,7 @@ upgrades = {
     },
     critDamage = {
         name = "Crit Damage",
-        description = "Increases crit damage by {}",
+        description = "Crits deal 1{} damage",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -67,7 +69,7 @@ upgrades = {
     },
     moveSpeed = {
         name = "Move Speed",
-        description = "Increases move speed by {}",
+        description = "Move speed increased by {}",
         level = 0,
         maxLevel = 5,
         value = 0.1,
@@ -89,7 +91,7 @@ upgrades = {
     },
     piercing = {
         name = "Piercing",
-        description = "Projectiles pass through {} more enemies",
+        description = "Projectiles pass through {} enemies",
         level = 0,
         maxLevel = 5,
         value = 1,
@@ -107,6 +109,17 @@ upgrades = {
         scaling = 10,
         percent = false,
         imagePath = "images/ui/upgradeIcons/iconUpgradeRestoration",
-        constructor = Piercing
+        constructor = Restoration
+    },
+    stun = {
+        name = "Stun",
+        description = "Enemies are stunned {} longer",
+        level = 0,
+        maxLevel = 5,
+        value = 0.1,
+        scaling = 0.1,
+        percent = true,
+        imagePath = "images/ui/upgradeIcons/iconUpgradeStun",
+        constructor = Stun
     }
 }

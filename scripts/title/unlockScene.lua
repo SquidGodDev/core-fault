@@ -57,9 +57,10 @@ local getUnlockData <const> = function(unlock)
     if unlock.isEquipment then
         local equipmentData = equipment[unlock.name]
         local name = equipmentData.name
-        local description = equipmentData.description
         local maxLevel = unlock.maxLevel
         local level = unlock.level
+        local equipmentLevelDescription = "Starts at level " .. level+2 .. ". "
+        local description = equipmentLevelDescription .. equipmentData.description
         return name, description, level, maxLevel, cost
     else
         local upgradeData = upgrades[unlock.name]

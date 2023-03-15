@@ -5,10 +5,10 @@ local gfx <const> = playdate.graphics
 
 class('DoesAOEDamage').extends()
 
-function DoesAOEDamage:init(player, damage, radius)
-    self.radius = radius
-    self.diameter = radius * 2
-    self.damageComponent = DoesDamage(player, damage)
+function DoesAOEDamage:init(player, data)
+    self.radius = data.radius
+    self.diameter = self.radius * 2
+    self.damageComponent = DoesDamage(player, data)
 end
 
 function DoesAOEDamage:addBonusDamage(amount)

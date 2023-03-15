@@ -4,6 +4,7 @@ enemyStats = {
         attackDamage = 10,
         attackCooldown = 1000,
         velocity = 0.5,
+        resistance = 0.0,
         experience = 1
     },
     crab = {
@@ -11,6 +12,7 @@ enemyStats = {
         attackDamage = 10,
         attackCooldown = 1000,
         velocity = 1.25,
+        resistance = 0.5,
         experience = 2
     },
     fly = {
@@ -22,6 +24,7 @@ enemyStats = {
         projectileDamage = 10,
         projectileDiameter = 8,
         projectileCooldown = 12000,
+        resistance = 0.2,
         projectileSpeed = 2
     },
     slimeMedium = {
@@ -29,6 +32,7 @@ enemyStats = {
         attackDamage = 20,
         attackCooldown = 1000,
         velocity = 0.8,
+        resistance = 0.4,
         experience = 3
     },
     
@@ -37,6 +41,7 @@ enemyStats = {
         attackDamage = 30,
         attackCooldown = 1000,
         velocity = 1.15,
+        resistance = 0.75,
         experience = 4.5
     },
     flyMedium = {
@@ -48,6 +53,7 @@ enemyStats = {
         projectileDamage = 10,
         projectileDiameter = 8,
         projectileCooldown = 8000,
+        resistance = 0.5,
         projectileSpeed = 3
     },
 }

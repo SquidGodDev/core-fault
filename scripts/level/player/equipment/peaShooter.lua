@@ -11,10 +11,9 @@ function PeaShooter:init(player, data)
     data = PeaShooter.super.init(self, player, data)
 
     local cooldown = data.cooldown
-    local velocity = data.velocity
-    local damage = data.damage
+    self.hitStun = data.hitStun
 
-    local projectileComponent = FiresProjectile(player, velocity, damage)
+    local projectileComponent = FiresProjectile(player, data)
 
     self.sfxPlayer = SfxPlayer("sfx-pea-shooter")
 

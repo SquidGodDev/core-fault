@@ -40,7 +40,8 @@ function GameManager:init()
     StartScene(self)
 end
 
-function GameManager:startEquipmentSelected(selectedEquipment)
+function GameManager:startEquipmentSelected(selectedEquipment, selectedEquipmentLevel)
+    selectedEquipment.level = selectedEquipmentLevel
     table.insert(self.equipment, selectedEquipment)
     self.sceneManager:switchScene(LevelScene, self, self.curLevel, self.time, self.playerHealth)
 end

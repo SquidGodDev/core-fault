@@ -30,6 +30,7 @@ local setDrawOffset <const> = gfx.setDrawOffset
 
 local smoothSpeed <const> = 0.06
 
+local hurtboxXOffset, hurtboxYOffset
 local hurtboxWidth
 local hurtboxHeight
 local hurtboxHalfWidth
@@ -60,16 +61,20 @@ function Player:init(x, y, health, gameManager, levelScene)
     self.Restoration = 0
     self.PercentDamage = 0
     self.BonusDamage = 0
-
-    local healthbar <const> = Healthbar(self.MaxHealth, health, self)
-    self.healthbar = healthbar
-    self.flashTime = 100
-    self.invincible = false
+    self.percentStun = 0
 
     self.equipmentObjects = {}
 
     self:initializeUpgrades()
     self:initializeEquipment()
+
+    if self.gameManager.curLevel == 1 then
+        health = self.MaxHealth
+    end
+    local healthbar <const> = Healthbar(self.MaxHealth, health + self.Restoration, self)
+    self.healthbar = healthbar
+    self.flashTime = 100
+    self.invincible = false
 
     local healthRegenTickRate = 500
     local healthRegen <const> = self.HealthRegen
@@ -103,15 +108,21 @@ function Player:init(x, y, health, gameManager, levelScene)
     self:setTag(TAGS.PLAYER)
 
     local playerWidth, playerHeight = self:getSize()
-    local hurtboxBuffer = 8
-    hurtboxWidth = playerWidth - hurtboxBuffer * 2
-    hurtboxHeight = playerHeight - hurtboxBuffer * 2
-    hurtboxHalfWidth = playerWidth / 2 - hurtboxBuffer
-    hurtboxHalfHeight = playerHeight / 2 - hurtboxBuffer
+    local hurtboxWidthBuffer = 8
+    local hurtboxHeightBuffer = 12
+    local xOffset, yOffset = 0, 6
+    hurtboxWidth = playerWidth - hurtboxWidthBuffer * 2
+    hurtboxHeight = playerHeight - hurtboxHeightBuffer * 2
+    hurtboxHalfWidth = hurtboxWidth / 2
+    hurtboxHalfHeight = hurtboxHeight / 2
+    hurtboxXOffset = hurtboxHalfWidth - xOffset
+    hurtboxYOffset = hurtboxHalfHeight - yOffset
     self.hurtboxWidth = hurtboxWidth
     self.hurtboxHeight = hurtboxHeight
     self.hurtboxHalfWidth = hurtboxHalfWidth
     self.hurtboxHalfHeight = hurtboxHalfHeight
+    self.hurtboxXOffset = hurtboxXOffset
+    self.hurtboxYOffset = hurtboxYOffset
 
     self.enemyTag = TAGS.ENEMY
 
@@ -162,7 +173,7 @@ function Player:update()
         self:setImage(self.animateOutAnimationLoop:image())
         if not self.animateOutAnimationLoop:isValid() then
             self.playerState = playerStates.inactive
-            self.levelScene:levelDefeated(self.healthbar:getHealth() + self.Restoration)
+            self.levelScene:levelDefeated(self.healthbar:getHealth())
         end
         return
     end
@@ -193,9 +204,9 @@ function Player:update()
     setDrawOffset(smoothedX, smoothedY)
 
     -- Check if being damaged by enemies
-    local hurtboxX = playerX - hurtboxHalfWidth
-    local hurtboxY = playerY - hurtboxHalfHeight
-    local overlappingSprites = querySpritesInRect(hurtboxX, hurtboxY, hurtboxWidth, hurtboxHeight)
+    local queryX = playerX - hurtboxXOffset
+    local queryY = playerY - hurtboxYOffset
+    local overlappingSprites = querySpritesInRect(queryX, queryY, hurtboxWidth, hurtboxHeight)
     for i=1, #overlappingSprites do
         local enemy = overlappingSprites[i]
         if enemy:getTag() == self.enemyTag and enemy:canAttack() then

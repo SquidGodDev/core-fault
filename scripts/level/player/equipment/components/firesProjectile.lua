@@ -16,16 +16,14 @@ end
 
 class('FiresProjectile').extends()
 
-function FiresProjectile:init(player, velocity, damage, size)
+function FiresProjectile:init(player, data)
     self.player = player
     self.pierceCount = player.Piercing
-    self.velocity = velocity
-    self.damageComponent = DoesDamage(player, damage)
+    self.velocity = data.velocity
+    self.damageComponent = DoesDamage(player, data)
 
-    self.projectileDiameter = 5
-    if size then
-        self.projectileDiameter = size
-    end
+    local size = data.size or 5
+    self.projectileDiameter = size
     local projectilePoolCount <const> = 30
     self.projectilePool = table.create(projectilePoolCount, 0)
     for i=1,projectilePoolCount do
