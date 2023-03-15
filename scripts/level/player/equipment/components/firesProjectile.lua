@@ -46,7 +46,7 @@ function FiresProjectile:fireProjectile(angleAdjustment)
     if projectileInstance then
         projectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     else
-        local newProjectileInstance = Projectile(self, self.damageComponent)
+        local newProjectileInstance = Projectile(self, self.damageComponent, self.projectileDiameter, self.player)
         newProjectileInstance:activate(x, y, xVelocity, yVelocity, self.pierceCount)
     end
 end
